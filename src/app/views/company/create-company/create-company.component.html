@@ -1,0 +1,56 @@
+<div class="top">
+</div>
+<div>
+    <div class="title row">
+        <div class="col-md-12 my-5 text-center">
+            <h1>Informacion del studio</h1>
+        </div>
+        <div class="formActt col-2"></div>
+        <div class="formActt col-8" *ngIf="dataCompany">
+            <form class="row g-3" [formGroup]="CompanyForm">
+                <div class="col-md-12">
+                    <label for="inputEmail4" class="form-label">Nombre del estudio</label>
+                    <input type="text" class="form-control disabled" [placeholder]="dataCompany.nameCompany" id="inputEmail4" disabled>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" formControlName="addressCompany" id="inputPassword4" placeholder="Ingrese la dirección">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputAddress" class="form-label">Teléfono</label>
+                    <input type="text" class="form-control" formControlName="telephoneCompnay" id="inputAddress" placeholder="Ingrese el teléfono">
+                </div>
+                <fieldset class="col-md-2">
+                    <legend class="col-form-label pt-0">Tipo</legend>
+                    <div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" formControlName="typeCompany" name="typeCompany" id="gridRadios1" value="estudio" checked>
+                        <label class="form-check-label" for="gridRadios1">
+                          Estudio
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" formControlName="typeCompany" name="typeCompany" id="gridRadios2" value="modelo">
+                        <label class="form-check-label" for="gridRadios2">
+                          Modelo
+                        </label>
+                      </div>
+                    </div>
+                </fieldset>
+                <div class="col-md-10">
+                    <label for="inputCity" class="form-label">Cargar logo</label>
+                    <input type="text" class="form-control" formControlName="logoCompany" id="inputCity">
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" [disabled]="CompanyForm.invalid" (click)="saveForm()" class="btn btn-acss">
+                        <i class="fa-solid fa-angle-right icon-R"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="formActt col-2"></div>
+    </div>
+</div>
+
+<div class="top">
+</div>

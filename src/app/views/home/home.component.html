@@ -1,12 +1,101 @@
-<app-navbar></app-navbar>
-
-
 <div *ngIf="!userService.loggedIn()" class="container text-center py-5">
     <h2>para ver el contenido inicia sesión</h2>
     <button class="btn btn-primary mt-3" [routerLink]="['/login']">Iniciar sesión</button>
 </div>
 
-<div *ngIf="userService.loggedIn()" class="container mt-5">
+<div class="block" *ngFor="let rol of roles">
+  <div *ngIf="rol.nameUserType === 'moderator'">
+    <div class="row" *ngIf="userService.loggedIn()">
+      <div class="col-md-12 text-center my-5">
+          <h2>Modelos</h2>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
+          <table class="table" *ngIf="dataModels">
+              <thead class="table-dark">
+                  <tr class="text-center">
+                      <th scope="col">Modelo</th>
+                      <th scope="col">Opciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr class="text-center" *ngFor="let model of dataModels">
+                      <th scope="row">{{model.nickname}}</th>
+                      <td>
+                          <button  class="btn btn-primary" (click)="launchBots(model)">
+                              Lanzar bot
+                          </button>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      <div class="col-md-1"></div>
+  </div>
+  </div>
+</div>
+
+    
+<div *ngIf="userService.loggedIn()">
+  <div *ngIf="isAdmin && usuario">
+    <div class="row">
+      <div class="col-md-12 text-center my-5">
+        <h1>bienvenido {{usuario.name}}</h1>
+      </div>
+      <div class="col-md-6" (click)="getSedes()">
+        <div class="card text-white mx-3">
+          <div class="card-img-overlay">
+            <h5 class="card-title text-center my-5">CREAR USUARIOS</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" (click)="getModels()">
+        <div class="card text-white mx-3">
+          <div class="card-img-overlay">
+            <h5 class="card-title text-center my-5">MODELOS</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Lanzar bots</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Lanzar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div *ngIf="userService.loggedIn()"  class="container mt-5">
     <div class="row">
         <div class="col-12">
             <h3>Modelos registradas</h3>
@@ -23,9 +112,9 @@
                     <tr *ngFor="let item of dataModels">
                     <th scope="row">{{item.name_model}}</th>
                     <td>
-                        <button class="btn btn-primary" (click)="lanzarBots(item.name_model)">Lanzar bots</button>
+                        <button class="btn btn-primary" (click)="lanzarBots(item.name_model)">Lanzar bots</button> -->
                         <!-- <button class="btn btn-primary" data-bs-toggle="modal" (click)="verModelo(item)" data-bs-target="#LaunchBot">Lanzar bots</button> -->
-                    </td>
+                    <!-- </td>
                   </tr>
                 </tbody>
             </table>
@@ -37,10 +126,10 @@
             <h3>Numero de cuentas <span>{{lenghtAccts}}</span></h3>
         </div>
     </div>
-</div>
+</div> -->
   
 <!-- Modal -->
-<div *ngIf="modelo" class="modal fade" id="LaunchBot" tabindex="-1" aria-labelledby="LaunchBotLabel" aria-hidden="true">
+<!-- <div *ngIf="modelo" class="modal fade" id="LaunchBot" tabindex="-1" aria-labelledby="LaunchBotLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -69,4 +158,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

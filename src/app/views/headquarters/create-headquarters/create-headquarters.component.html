@@ -1,0 +1,129 @@
+<div *ngIf="url != 'headquarters'" class="top">
+</div>
+<div class="row mb-5">
+    <div class="col-md-1 my-5 text-center">
+      <button class="btn" (click)="goBack()">
+          <i class="iconReturn fa-solid fa-circle-chevron-left"></i>
+      </button>
+    </div>
+    <div class="col-md-10 my-5 title text-center">
+      <h1>Sedes</h1>
+    </div>
+    <div class="col-12 text-center mb-5">
+        <button class="btn bnt-Actt" data-bs-toggle="modal" data-bs-target="#SedeModal">
+            <i class="fa-solid fa-plus icon-R"></i>
+        </button>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-12 text-center mt-3" *ngIf="dataHeadquarters && dataHeadquarters.length === 0">
+      <h3>No tienes ninguna sede. Create una en el boton de arriba</h3>
+    </div>
+    <div class="col-10">
+        <ngb-accordion *ngIf="dataHeadquarters">
+            <ngb-panel *ngFor="let headquarter of dataHeadquarters" title="{{headquarter.nameHeadquarter}}">
+                <ng-template ngbPanelContent>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <button class="btn bnt-Actt-I" data-bs-toggle="modal" data-bs-target="#SedeUpdateModal" (click)="getHeadquarter(headquarter._id)">
+                                <i class="fa-solid fa-pen-to-square icon-I"></i>
+                            </button>
+                            <button class="btn bnt-Actt-I" (click)="deleteHeadquarter(headquarter._id)">
+                                <i class="fa-solid fa-trash icon-I"></i>
+                            </button>
+                            <button class="btn bnt-Actt-I" (click)="addPeople(headquarter._id)">
+                                <i class="fa-solid fa-user-plus icon-I"></i>
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <label for="inputAddress" class="form-label">Dirección</label>
+                            <input [(ngModel)]="headquarter.addressHQ" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-6">
+                            <label for="inputNumber" class="form-label">Teléfono</label>
+                            <input [(ngModel)]="headquarter.telephoneNumber" type="text" class="form-control" disabled>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+    <!-- <div class="col-1"></div> -->
+    <div class="col-12 text-center" *ngIf="dataHeadquarters && url != 'headquarters'">
+      <button type="submit" [disabled]="dataHeadquarters.length === 0" (click)="continue()" class="btn btn-acss">
+          <i class="fa-solid fa-angle-right icon-R"></i>
+      </button>
+  </div>
+</div>
+
+<div *ngIf="url != 'headquarters'" class="top">
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="SedeModal" tabindex="-1" aria-labelledby="sedeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sedeModalLabel">Crear sede</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form class="row g-3" [formGroup]="HeadquarterForm">
+              <div class="col-md-12">
+                  <label for="inputNameSede" class="form-label">Nombre de la sede</label>
+                  <input type="text" class="form-control" formControlName="nameHeadquarter" placeholder="Ingrese el nombre" id="inputNameSede">
+              </div>
+              <div *ngIf="getValue('nameHeadquarter')?.invalid && (getValue('nameHeadquarter')?.touched || getValue('nameHeadquarter')?.dirty)">
+                <p class="fieldErr" *ngIf="getValue('nameHeadquarter')?.errors?.required">El campo es requerido</p>
+              </div>
+              <div class="col-md-6">
+                  <label for="inputAddress" class="form-label">Dirección</label>
+                  <input type="text" class="form-control" formControlName="addressHQ" id="inputAddress" placeholder="Ingrese la dirección">
+              </div>
+              <div class="col-md-6">
+                  <label for="inputNumber" class="form-label">Teléfono</label>
+                  <input type="text" class="form-control" formControlName="telephoneNumber" id="inputNumber" placeholder="Ingrese el teléfono">
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="submit" [disabled]="HeadquarterForm.invalid" (click)="saveForm()" data-bs-dismiss="modal" class="btn btn-primary">Guardar sede</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal update-->
+<div class="modal fade" id="SedeUpdateModal" tabindex="-1" aria-labelledby="sedeUpdateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sedeUpdateModalLabel">Editar sede</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form class="row g-3" *ngIf="dataHeadquarter" [formGroup]="HeadquarterUpdateForm">
+              <div class="col-md-12">
+                  <label for="inputNameSede" class="form-label">Nombre de la sede</label>
+                  <input [ngModel]="dataHeadquarter.nameHeadquarter" type="text" class="form-control" formControlName="nameHeadquarter" placeholder="Ingrese el nombre" id="inputNameSede">
+              </div>
+              <div *ngIf="getValue('nameHeadquarter')?.invalid && (getValue('nameHeadquarter')?.touched || getValue('nameHeadquarter')?.dirty)">
+                <p class="fieldErr" *ngIf="getValue('nameHeadquarter')?.errors?.required">El campo es requerido</p>
+              </div>
+              <div class="col-md-6">
+                  <label for="inputAddress" class="form-label">Dirección</label>
+                  <input [ngModel]="dataHeadquarter.addressHQ" type="text" class="form-control" formControlName="addressHQ" id="inputAddress" placeholder="Ingrese la dirección">
+              </div>
+              <div class="col-md-6">
+                  <label for="inputNumber" class="form-label">Teléfono</label>
+                  <input [ngModel]="dataHeadquarter.telephoneNumber" type="text" class="form-control" formControlName="telephoneNumber" id="inputNumber" placeholder="Ingrese el teléfono">
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="submit" [disabled]="HeadquarterUpdateForm?.invalid" (click)="updateHeadquarter(dataHeadquarter._id)" data-bs-dismiss="modal" class="btn btn-primary">Actualizar sede</button>
+      </div>
+    </div>
+  </div>
+</div>

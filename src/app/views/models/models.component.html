@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-12 mt-3">
+        <button class="btn" (click)="goBack()">
+            <i class="iconReturn fa-solid fa-circle-chevron-left"></i>
+        </button>
+      </div>
+    <div class="col-md-12 text-center my-5">
+        <h2>Sedes</h2>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table" *ngIf="dataHeadquarters">
+            <thead class="table-dark">
+                <tr class="text-center">
+                    <th scope="col">Sede</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center" *ngFor="let headquarter of dataHeadquarters">
+                    <th scope="row">{{headquarter.nameHeadquarter}}</th>
+                    <td>
+                        <button  (click)="getModelos(headquarter._id)" class="btn btn-primary">
+                            Modelos
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>

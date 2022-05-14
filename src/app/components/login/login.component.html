@@ -14,17 +14,19 @@
                 <div class="mb-4 form-group">
                     <label for="email" class="form-label">Correo electrónico</label>
                     <input type="email" class="form-control" formControlName="email" name="email">
-                    <div *ngIf="emailField?.errors && emailField?.touched">
-                        <p class="fieldErr" *ngIf="emailField?.hasError('required')">El campo es requerido</p>
-                        <p class="fieldErr" *ngIf="emailField?.hasError('pattern')">Email no valido</p>
+                    <div *ngIf="getValue('email')?.invalid && (getValue('email')?.touched || getValue('email')?.dirty)">
+                        <!-- <p class="fieldErr" *ngIf="emailField?.hasError('required')">El campo es requerido</p> -->
+                        <p class="fieldErr" *ngIf="getValue('email')?.errors?.required">El campo es requerido</p>
+                        <p class="fieldErr" *ngIf="getValue('email')?.errors?.pattern">Email no valido</p>
                     </div>
                 </div>
                 <div class="mb-4 form-group">
                     <label for="password" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" formControlName="password" name="password">
                     <span class="olvPass"><a href="#">Recuperar contraseña</a></span>
-                    <div *ngIf="passwordField?.errors && passwordField?.touched">
-                        <p class="fieldErr" *ngIf="passwordField?.hasError('required')">El campo es requerido y es minimo de 6 caracteres</p>
+                    <div *ngIf="getValue('password')?.invalid && (getValue('password')?.touched || getValue('password')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('password')?.errors?.required">El campo es requerido</p>
+                        <p class="fieldErr" *ngIf="getValue('password')?.errors?.minlength">El campo es minimo de 6 caracteres</p>
                     </div>
                 </div>
                 <div class="mb-4 form-check">
@@ -88,25 +90,26 @@
             <!-- <form [formGroup]="login" (ngSubmit)="onSubmit()"> -->
             <form [formGroup]="registerForm">
                 <div class="mb-4 form-group">
-                    <label for="email" class="form-label">Nombre de usuario</label>
-                    <input type="email" class="form-control" formControlName="username" name="email">
-                    <div *ngIf="usernameFieldRegister?.errors && usernameFieldRegister?.touched">
-                        <p class="fieldErr" *ngIf="usernameFieldRegister?.hasError('required')">El campo es requerido</p>
+                    <label for="username" class="form-label">Nombre de usuario</label>
+                    <input type="text" class="form-control" formControlName="username" name="username">
+                    <div *ngIf="getValueRegister('username')?.invalid && (getValueRegister('username')?.touched || getValueRegister('username')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueRegister('username')?.errors?.required">El campo es requerido</p>
                     </div>
                 </div>
                 <div class="mb-4 form-group">
                     <label for="email" class="form-label">Correo electrónico</label>
                     <input type="email" class="form-control" formControlName="email" name="email">
-                    <div *ngIf="emailFieldRegister?.errors && emailFieldRegister?.touched">
-                        <p class="fieldErr" *ngIf="emailFieldRegister?.hasError('required')">El campo es requerido</p>
-                        <p class="fieldErr" *ngIf="emailFieldRegister?.hasError('pattern')">Email no valido</p>
+                    <div *ngIf="getValueRegister('email')?.invalid && (getValueRegister('email')?.touched || getValueRegister('email')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueRegister('email')?.errors?.required">El campo es requerido</p>
+                        <p class="fieldErr" *ngIf="getValueRegister('email')?.errors?.pattern">Email no valido</p>
                     </div>
                 </div>
                 <div class="mb-4 form-group">
                     <label for="password" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" formControlName="password" name="password">
-                    <div *ngIf="passwordFieldRegister?.errors && passwordFieldRegister?.touched">
-                        <p class="fieldErr" *ngIf="passwordFieldRegister?.hasError('required')">El campo es requerido y es minimo de 6 caracteres</p>
+                    <div *ngIf="getValueRegister('password')?.invalid && (getValueRegister('password')?.touched || getValueRegister('password')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueRegister('password')?.errors?.minlength">El campo es minimo de 6 caracteres</p>
+                        <p class="fieldErr" *ngIf="getValueRegister('password')?.errors?.required">El campo es requerido</p>
                     </div>
                 </div>
                 <!-- <div class="mb-4 form-check">

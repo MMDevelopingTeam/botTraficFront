@@ -1,0 +1,277 @@
+<div class="top">
+</div>
+
+<div class="row" *ngIf="dataHeadquarter">
+    <div class="col-md-1 text-center my-5">
+        <button class="btn" (click)="goBack()">
+            <i class="iconReturn fa-solid fa-circle-chevron-left"></i>
+        </button>
+    </div>
+    <div class="col-md-11 title text-center my-5">
+        <h1>Sede {{dataHeadquarter.nameHeadquarter}}</h1>
+    </div>
+    <!-- <div class="col-md-12 text-center">
+        <h2>Monitores</h2>
+    </div> -->
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div style="float: right;" class="my-5">
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#createmoderatorModal">
+                <i class="iconReturn fa-solid fa-plus"></i>
+            </button>
+            <!-- <button class="btn">
+                <i class="iconReturn fa-solid fa-trash-can"></i>
+            </button> -->
+        </div>
+        <h2 class="text-center my-5">Monitores</h2>
+        <div class="my-5">
+            <table class="table" *ngIf="dataUsers">
+                <thead class="table-dark">
+                  <tr class="text-center">
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Opciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="text-center" *ngFor="let user of dataUsers">
+                    <th scope="row">{{user.user}}</th>
+                    <td>
+                        <div>
+                            <button class="btn" (click)="editUser(user)" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                <i class="fa-solid fa-user-pen iconTrash"></i>
+                            </button>
+                            <button class="btn" (click)="deleteUser(user._id)">
+                                <i class="fa-solid fa-trash-can iconTrash" style="color: brown;"></i>
+                            </button>
+                        </div>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+            <h3 *ngIf="dataUsers && dataUsers.length === 0" class="text-center">No tienes monitores</h3>
+        </div>
+        <div style="float: right;" class="my-5">
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#createModelModal">
+                <i class="iconReturn fa-solid fa-plus"></i>
+            </button>
+            <!-- <button class="btn">
+                <i class="iconReturn fa-solid fa-trash-can"></i>
+            </button> -->
+        </div>
+        <h2 class="text-center my-5">Modelos</h2>
+        <div class="my-5">
+            <table class="table" *ngIf="dataModels">
+                <thead class="table-dark">
+                  <tr class="text-center">
+                    <th scope="col">NickName</th>
+                    <th scope="col">Plataforma</th>
+                    <th scope="col">Turno</th>
+                    <th scope="col">Opciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="text-center" *ngFor="let model of dataModels">
+                    <th scope="row">{{model.nickname}}</th>
+                    <th scope="row">{{model.platform}}</th>
+                    <th scope="row">1</th>
+                    <td>
+                        <div>
+                            <button class="btn" (click)="editModel(model)" data-bs-toggle="modal" data-bs-target="#editModelModal">
+                                <i class="fa-solid fa-user-pen iconTrash"></i>
+                            </button>
+                            <button class="btn" (click)="deleteModel(model._id)">
+                                <i class="fa-solid fa-trash-can iconTrash" style="color: brown;"></i>
+                            </button>
+                        </div>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+            <h3 *ngIf="dataModels && dataModels.length === 0" class="text-center">No tienes modelos</h3>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+
+<div class="top mt-5">
+</div>
+  
+<!-- Modal moderator-->
+<div class="modal fade" id="createmoderatorModal" tabindex="-1" aria-labelledby="createmoderatorModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createmoderatorModalLabel">Crear monitor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3" [formGroup]="userForm">
+          <div class="col-md-6">
+              <label for="inputUser" class="form-label">Usuario</label>
+              <input type="text" class="form-control" formControlName="user" placeholder="Ingrese el usuario" id="inputUser">
+          </div>
+          <div *ngIf="getValueFormUser('user')?.invalid && (getValueFormUser('user')?.touched || getValueFormUser('user')?.dirty)">
+            <p class="fieldErr" *ngIf="getValueFormUser('user')?.errors?.required">El campo es requerido</p>
+          </div>
+          <div class="col-md-6">
+            <label for="inputName" class="form-label">Nombre</label>
+            <input type="text" class="form-control" formControlName="name" id="inputName" placeholder="Ingrese el nombre">
+          </div>
+          <div *ngIf="getValueFormUser('name')?.invalid && (getValueFormUser('name')?.touched || getValueFormUser('name')?.dirty)">
+            <p class="fieldErr" *ngIf="getValueFormUser('name')?.errors?.required">El campo es requerido</p>
+          </div>
+          <div class="col-md-12">
+            <label for="inputEmail" class="form-label">Email</label>
+            <input type="text" class="form-control" formControlName="email" id="inputEmail" placeholder="Ingrese el email">
+          </div>
+          <div *ngIf="getValueFormUser('email')?.invalid && (getValueFormUser('email')?.touched || getValueFormUser('email')?.dirty)">
+            <p class="fieldErr" *ngIf="getValueFormUser('email')?.errors?.required">El campo es requerido</p>
+            <p class="fieldErr" *ngIf="getValueFormUser('email')?.errors?.pattern">Email no valido</p>
+          </div>
+          <div class="col-md-12">
+            <label for="inputPassword" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" formControlName="password" id="inputPassword" placeholder="Ingrese la contraseña">
+          </div>
+          <div *ngIf="getValueFormUser('password')?.invalid && (getValueFormUser('password')?.touched || getValueFormUser('password')?.dirty)">
+            <p class="fieldErr" *ngIf="getValueFormUser('password')?.errors?.required">El campo es requerido</p>
+            <p class="fieldErr" *ngIf="getValueFormUser('password')?.errors?.minlength">El campo es minimo de 6 caracteres</p>
+          </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" [disabled]="!userForm.valid" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveFormUser()">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<!-- Modal  model-->
+<div class="modal fade" id="createModelModal" tabindex="-1" aria-labelledby="createModelModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModelModalLabel">Crear modelo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3" [formGroup]="modelForm">
+          <div class="col-md-6">
+              <label for="inputNickname" class="form-label">Nickname</label>
+              <input type="text" class="form-control" formControlName="nickname" placeholder="Ingrese el nickname" id="inputNickname">
+          </div>
+          <div *ngIf="getValue('nickname')?.invalid && (getValue('nickname')?.touched || getValue('nickname')?.dirty)">
+            <p class="fieldErr" *ngIf="getValue('nickname')?.errors?.required">El campo nickname es requerido</p>
+          </div>
+          <div class="col-md-6">
+            <label for="inputPlatform" class="form-label">Plataforma</label>
+            <input type="text" class="form-control" formControlName="platform" id="inputPlatform" placeholder="Ingrese la plataforma">
+          </div>
+          <div *ngIf="getValue('platform')?.invalid && (getValue('platform')?.touched || getValue('platform')?.dirty)">
+            <p class="fieldErr" *ngIf="getValue('platform')?.errors?.required">El campo plataforma es requerido</p>
+          </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!modelForm.valid" (click)="saveFormModel()">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal update model-->
+<div class="modal fade" id="editModelModal" tabindex="-1" aria-labelledby="editModelModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModelModalLabel">Editar modelo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="dataModel">
+        <form class="row g-3" [formGroup]="modelUpdateForm">
+          <div class="col-md-6">
+              <label for="inputNickname" class="form-label">Nickname</label>
+              <input type="text" class="form-control" formControlName="nickname" [ngModel]="dataModel.nickname" placeholder="Ingrese el nickname" id="inputNickname">
+          </div>
+          <div *ngIf="getValue('nickname')?.invalid && (getValue('nickname')?.touched || getValue('nickname')?.dirty)">
+            <p class="fieldErr" *ngIf="getValue('nickname')?.errors?.required">El campo nickname es requerido</p>
+          </div>
+          <div class="col-md-6">
+            <label for="inputPlatform" class="form-label">Plataforma</label>
+            <input type="text" class="form-control" formControlName="platform" [ngModel]="dataModel.platform" id="inputPlatform" placeholder="Ingrese la plataforma">
+          </div>
+          <div *ngIf="getValue('platform')?.invalid && (getValue('platform')?.touched || getValue('platform')?.dirty)">
+            <p class="fieldErr" *ngIf="getValue('platform')?.errors?.required">El campo plataforma es requerido</p>
+          </div>
+          <div class="col-md-12">
+            <fieldset class="row mb-3">
+              <legend class="col-form-label col-sm-2 pt-0">Acceso</legend>
+              <div class="col-sm-10">
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="isAllowed" type="radio" id="gridRadios1" checked value="true">
+                  <label class="form-check-label" for="gridRadios1">
+                    Permitir modelo
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" formControlName="isAllowed" type="radio" id="gridRadios2" value="false">
+                  <label class="form-check-label" for="gridRadios2">
+                    No permitir modelo
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveFormModelUpdate()">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal update user-->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editUserModalLabel">Editar Monitor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="dataUser">
+        <form class="row g-3" [formGroup]="userUdateForm">
+          <div class="col-md-6">
+              <label for="inputuser" class="form-label">Usuario</label>
+              <input type="text" class="form-control" formControlName="user" [ngModel]="dataUser.user" placeholder="Ingrese el usuario" id="inputuser">
+          </div>
+          <div *ngIf="getValueFormUserUpdate('user')?.invalid && (getValueFormUserUpdate('user')?.touched || getValueFormUserUpdate('user')?.dirty)">
+            <p class="fieldErr" *ngIf="getValueFormUserUpdate('user')?.errors?.required">El campo es requerido</p>
+          </div>
+          <div class="col-md-6">
+            <label for="inputname" class="form-label">Nombre</label>
+            <input type="text" class="form-control" formControlName="name" [ngModel]="dataUser.name" id="inputname" placeholder="Ingrese el nombre">
+          </div>
+          <div *ngIf="getValueFormUserUpdate('name')?.invalid && (getValueFormUserUpdate('name')?.touched || getValueFormUserUpdate('name')?.dirty)">
+            <p class="fieldErr" *ngIf="getValueFormUserUpdate('name')?.errors?.required">El campo es requerido</p>
+          </div>
+          <div class="col-md-12">
+            <label for="inputemail" class="form-label">Email</label>
+            <input type="text" class="form-control" formControlName="email" [ngModel]="dataUser.email" id="inputemail" placeholder="Ingrese el nombre">
+          </div>
+          <div *ngIf="getValueFormUserUpdate('email')?.invalid && (getValueFormUserUpdate('email')?.touched || getValueFormUserUpdate('email')?.dirty)">
+            <p class="fieldErr" *ngIf="getValueFormUserUpdate('email')?.errors?.required">El campo es requerido</p>
+            <p class="fieldErr" *ngIf="getValueFormUserUpdate('email')?.errors?.pattern">Email no valido</p>
+          </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveFormUserUpdate()">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>

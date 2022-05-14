@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
+import { NavbarService } from '../../services/navbar.service';
 
 declare var jQuery: any;
 
@@ -11,7 +12,8 @@ declare var jQuery: any;
 export class NavbarComponent implements OnInit {
 
   constructor(
-    public userService: UserService
+    public userService: UserService,
+    public nav: NavbarService
   ) { }
 
   ngOnInit(): void {
