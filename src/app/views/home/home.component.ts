@@ -111,7 +111,21 @@ export class HomeComponent implements OnInit {
   }
 
   launchBots(model:any) {
-
+    const data = {
+      "name_model": model
+    }
+    this.botService.launchBot(data).subscribe(
+      (data:any) => {
+        console.log(data)
+        Swal.fire({
+          icon: 'success',
+          title: 'Bots lanzados correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      },
+      err => console.log(err)
+    )
   }
 
 }

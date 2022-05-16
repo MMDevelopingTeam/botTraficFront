@@ -22,7 +22,7 @@
                   <tr class="text-center" *ngFor="let model of dataModels">
                       <th scope="row">{{model.nickname}}</th>
                       <td>
-                          <button  class="btn btn-primary" (click)="launchBots(model)">
+                          <button  class="btn btn-primary" (click)="launchBots(model.nickname)">
                               Lanzar bot
                           </button>
                       </td>
