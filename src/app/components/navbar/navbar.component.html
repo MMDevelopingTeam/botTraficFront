@@ -13,11 +13,11 @@
             <a class="nav-link disabled">Disabled</a>
           </li>
         </ul>
-      </div>
-      <div class="btnAcc">
-        <button *ngIf="!userService.loggedIn();" [routerLink]="['/login']" class="btn btn-primary">Iniciar sesión</button>
-        <button *ngIf="!userService.loggedIn();" [routerLink]="['/register']" class="btn btn-primary">Registrarse</button>
-        <button *ngIf="userService.loggedIn();" (click)="logOut()" class="btn btn-danger">Cerrar sesión</button>
+        <div class="btnAcc">
+          <button *ngIf="!userService.loggedIn();" [routerLink]="['/login']" class="btn btn-primary">Iniciar sesión</button>
+          <button *ngIf="!userService.loggedIn();" [routerLink]="['/register']" class="btn btn-primary">Registrarse</button>
+          <button *ngIf="userService.loggedIn();" (click)="logOut()" class="btn btn-danger">Cerrar sesión</button>
+        </div>
       </div>
     </div>
   </nav>
