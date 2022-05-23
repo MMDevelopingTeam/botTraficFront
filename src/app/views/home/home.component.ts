@@ -85,22 +85,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  lanzarBots(name_model: String){
-    const data = {
-      name_model
-    }
-    this.botService.launchBot(data).subscribe(
-      (res:any) => {
-        Swal.fire({
-          icon: 'success',
-          title: "bots lanzados",
-          showConfirmButton: false,
-          timer: 2000
-        })
-      },
-      res => console.log(res)
-    )
-  }
 
   getSedes() {
     this.router.navigate([`headquarters/${this.usuario.company_idCompany}`]);
@@ -112,17 +96,26 @@ export class HomeComponent implements OnInit {
 
   launchBots(model:any) {
     const data = {
-      "name_model": model
+      nameModel: model,
+      userId: localStorage.getItem('idUser')
     }
-    this.botService.launchBot(data).subscribe(
-      (data:any) => {
-        console.log(data)
-        Swal.fire({
-          icon: 'success',
-          title: 'Bots lanzados correctamente',
-          showConfirmButton: false,
-          timer: 1500
-        })
+    this.userService.getTokenBot(data).subscribe(
+      (res: any) => {
+        const info = {
+          token: res.token
+        }
+        this.botService.launchBot(info).subscribe(
+          (data:any) => {
+            console.log(data)
+            Swal.fire({
+              icon: 'success',
+              title: 'Bots lanzados correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          err => console.log(err)
+        )
       },
       err => console.log(err)
     )
