@@ -121,4 +121,30 @@ export class HomeComponent implements OnInit {
     )
   }
 
+  killBots(model:any) {
+    const data = {
+      nameModel: model,
+      userId: localStorage.getItem('idUser')
+    }
+    this.userService.getTokenkillBot(data).subscribe(
+      (res: any) => {
+        const info = {
+          token: res.token
+        }
+        this.botService.killBot(info).subscribe(
+          (data:any) => {
+            console.log(data)
+            Swal.fire({
+              icon: 'success',
+              title: 'Bots kill correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          err => console.log(err)
+        )
+      },
+      err => console.log(err)
+    )
+  }
 }

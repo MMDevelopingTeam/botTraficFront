@@ -83,6 +83,10 @@ export class UserService {
     return this.http.post(`${this.urlUser}/getTokenBot`, data);
   }
 
+  getTokenkillBot(data: any) {
+    return this.http.post(`${this.urlUser}/getTokenkillBot`, data);
+  }
+
   logout(){
     localStorage.removeItem('token');
     localStorage.removeItem('idUser');

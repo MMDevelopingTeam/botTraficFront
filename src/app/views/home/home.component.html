@@ -23,7 +23,10 @@
                       <th scope="row">{{model.nickname}}</th>
                       <td>
                           <button  class="btn btn-primary" (click)="launchBots(model.nickname)">
-                              Lanzar bot
+                              Lanzar bots
+                          </button>
+                          <button  class="btn btn-danger m-1" (click)="killBots(model.nickname)">
+                              Matar bots
                           </button>
                       </td>
                   </tr>

@@ -25,5 +25,8 @@ export class BotService {
   launchBot(name_model: any) {
     return this.http.post(`${this.urlBot}`, name_model)
   }
+  killBot(name_model: any) {
+    return this.http.post(`${this.urlBot}/killbot`, name_model)
+  }
 
 }
