@@ -56,83 +56,37 @@ export class LoginComponent implements OnInit {
   }
 
   saveLogin(event: Event) {
-    event.preventDefault();
-    const value = this.loginForm.value;
-    this.userService.getUserByEmail(value.email).subscribe(
-      (data:any) => {
-        if (this.loginForm.valid) {
-          const value = this.loginForm.value;
-          this.userService.signIn(value).subscribe(
-            (res:any) => {
-              localStorage.setItem('token', res.token);
-              localStorage.setItem('idUser', res.user._id);
-              Swal.fire({
-                icon: 'success',
-                title: "Login exitoso",
-                showConfirmButton: false,
-                timer: 1500
-              })
-              this.router.navigate(['/']);
-            },
-            err => {
-              return Swal.fire({
-                icon: 'warning',
-                title: err.error.message,
-                showConfirmButton: false,
-                timer: 5000
-              })
-            }
-          )
-        } else{
-          this.loginForm.markAllAsTouched();
+    // event.preventDefault();
+    if (this.loginForm.valid) {
+      const value = this.loginForm.value;
+      this.userService.signIn(value).subscribe(
+        (res:any) => {
+          localStorage.setItem('token', res.token);
+          if (res.user.headquarters_idHeadquarter) {
+            localStorage.setItem('idUser', res.user._id);
+          }
+          else{
+            localStorage.setItem('idUserAdmin', res.user._id);  
+          }
+          Swal.fire({
+            icon: 'success',
+            title: "Login exitoso",
+            showConfirmButton: false,
+            timer: 1500
+          })
+          if (res.user.isConfigFull === false) {
+            this.router.navigate([`company/${res.user.company_idCompany}`]);
+            return;
+          }
+          return this.router.navigate(['/']);
+        },
+        err => {
+          // console.log(err.error.message);
         }
-      },
-      err => {
-        console.error('Hay un error al obtener la data')
-        console.clear()
-      }
-    )
-
-
-    this.userService.getUserAdminByEmail(value.email).subscribe(
-      (data:any) => {
-        if (this.loginForm.valid) {
-          const value = this.loginForm.value;
-          this.userService.signInUserAdmin(value).subscribe(
-            (res:any) => {
-              console.log(res);
-              localStorage.setItem('token', res.token);
-              localStorage.setItem('idUserAdmin', res.user._id);              
-              Swal.fire({
-                icon: 'success',
-                title: "Login exitoso",
-                showConfirmButton: false,
-                timer: 1500
-              })
-              if (res.user.isConfigFull === false) {
-                this.router.navigate([`company/${res.user.company_idCompany}`]);
-                return;
-              }
-              this.router.navigate(['/']);
-            },
-            err => {
-              return Swal.fire({
-                icon: 'warning',
-                title: err.error.message,
-                showConfirmButton: false,
-                timer: 5000
-              })
-            }
-          )
-        } else{
-          this.loginForm.markAllAsTouched();
-        }
-      },
-      err => {
-        console.error('Hay un error al obtener la data')
-        console.clear()
-      }
-    )
+      )
+    } else{
+      this.loginForm.markAllAsTouched();
+    }
   }
 
   saveRegister(event: Event) {
@@ -172,6 +126,4 @@ export class LoginComponent implements OnInit {
   getValueRegister(value: string) {
     return this.registerForm.get(value)
   }
-
-
 }

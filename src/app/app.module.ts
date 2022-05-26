@@ -26,6 +26,8 @@ import { RolesDirective } from './directive/roles.directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModelsComponent } from './views/models/models.component';
 import { ModelsHeadQComponent } from './views/models/models-head-q/models-head-q.component';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -55,10 +57,12 @@ import { ModelsHeadQComponent } from './views/models/models-head-q/models-head-q
     MatIconModule,
     MatListModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })

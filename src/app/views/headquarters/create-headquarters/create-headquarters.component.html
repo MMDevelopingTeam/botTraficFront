@@ -105,18 +105,18 @@
           <form class="row g-3" *ngIf="dataHeadquarter" [formGroup]="HeadquarterUpdateForm">
               <div class="col-md-12">
                   <label for="inputNameSede" class="form-label">Nombre de la sede</label>
-                  <input [ngModel]="dataHeadquarter.nameHeadquarter" type="text" class="form-control" formControlName="nameHeadquarter" placeholder="Ingrese el nombre" id="inputNameSede">
+                  <input type="text" class="form-control" formControlName="nameHeadquarter" placeholder="Ingrese el nombre" id="inputNameSede">
               </div>
               <div *ngIf="getValue('nameHeadquarter')?.invalid && (getValue('nameHeadquarter')?.touched || getValue('nameHeadquarter')?.dirty)">
                 <p class="fieldErr" *ngIf="getValue('nameHeadquarter')?.errors?.required">El campo es requerido</p>
               </div>
               <div class="col-md-6">
                   <label for="inputAddress" class="form-label">Dirección</label>
-                  <input [ngModel]="dataHeadquarter.addressHQ" type="text" class="form-control" formControlName="addressHQ" id="inputAddress" placeholder="Ingrese la dirección">
+                  <input type="text" class="form-control" formControlName="addressHQ" id="inputAddress" placeholder="Ingrese la dirección">
               </div>
               <div class="col-md-6">
                   <label for="inputNumber" class="form-label">Teléfono</label>
-                  <input [ngModel]="dataHeadquarter.telephoneNumber" type="text" class="form-control" formControlName="telephoneNumber" id="inputNumber" placeholder="Ingrese el teléfono">
+                  <input type="text" class="form-control" formControlName="telephoneNumber" id="inputNumber" placeholder="Ingrese el teléfono">
               </div>
           </form>
       </div>

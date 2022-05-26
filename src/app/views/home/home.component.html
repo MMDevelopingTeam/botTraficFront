@@ -22,10 +22,10 @@
                   <tr class="text-center" *ngFor="let model of dataModels">
                       <th scope="row">{{model.nickname}}</th>
                       <td>
-                          <button  class="btn btn-primary" (click)="launchBots(model.nickname)">
+                          <button  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#launchBotModal" (click)="dataModel(model.nickname)">
                               Lanzar bots
                           </button>
-                          <button  class="btn btn-danger m-1" (click)="killBots(model.nickname)">
+                          <button  class="btn btn-danger m-1" data-bs-toggle="modal" data-bs-target="#killBotModal" (click)="dataModelKillbot(model.nickname)">
                               Matar bots
                           </button>
                       </td>
@@ -86,82 +86,60 @@
   </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div *ngIf="userService.loggedIn()"  class="container mt-5">
-    <div class="row">
-        <div class="col-12">
-            <h3>Modelos registradas</h3>
-        </div>
-        <div class="col-12">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Username</th>
-                        <th scope="col">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of dataModels">
-                    <th scope="row">{{item.name_model}}</th>
-                    <td>
-                        <button class="btn btn-primary" (click)="lanzarBots(item.name_model)">Lanzar bots</button> -->
-                        <!-- <button class="btn btn-primary" data-bs-toggle="modal" (click)="verModelo(item)" data-bs-target="#LaunchBot">Lanzar bots</button> -->
-                    <!-- </td>
-                  </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-12">
-            <h3>Numero de proxys: <span>{{lenghtProxys}}</span></h3>
-        </div>
-        <div class="col-12 mt-3">
-            <h3>Numero de cuentas <span>{{lenghtAccts}}</span></h3>
-        </div>
-    </div>
-</div> -->
-  
-<!-- Modal -->
-<!-- <div *ngIf="modelo" class="modal fade" id="LaunchBot" tabindex="-1" aria-labelledby="LaunchBotLabel" aria-hidden="true">
+<!-- Modal Launch bot-->
+<div class="modal fade" id="launchBotModal" tabindex="-1" aria-labelledby="launchBotModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Lanzar bots</h5>
+        <h5 class="modal-title" id="launchBotModalLabel">Lanzar bots</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="row">
-            <div class="col-7">
-                <label for="basic-url" class="form-label">Modelo</label>
-                <div class="input-group">
-                  <input type="text" class="form-control" id="basic-url" [placeholder]="modelo.name_model" disabled>
-                </div>
-            </div>
-            <div class="col-5">
-                <label for="basic-urlDos" class="form-label">Número de bots</label>
-                <div class="input-group">
-                  <input type="text" class="form-control" id="basic-urlDos" placeholder="10" disabled>
-                </div>
-            </div>
-        </div>
+        <form [formGroup]="launchBotsForm">
+          <div class="col-md-12">
+            <label for="nBots" class="form-label">Numéro de bots</label>
+            <input type="number" formControlName="nBots" class="form-control" id="nBots" placeholder="Escribe el numéro de bots">
+          </div>
+          <div *ngIf="getValue('nBots')?.invalid && (getValue('nBots')?.touched || getValue('nBots')?.dirty)" class="mt-2">
+            <p class="fieldErr" *ngIf="getValue('nBots')?.errors?.min">El numero minimo es 10</p>
+            <p class="fieldErr" *ngIf="getValue('nBots')?.errors?.required">El campo es requerido</p>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Lanzar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" [disabled]="launchBotsForm.invalid" class="btn btn-primary" data-bs-dismiss="modal" (click)="launchBots()">Lanzar</button>
       </div>
     </div>
   </div>
-</div> -->
+</div>
+
+<!-- Modal kill bot-->
+<div class="modal fade" id="killBotModal" tabindex="-1" aria-labelledby="killBotModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="killBotModalLabel">kill bots</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="killBotsForm">
+          <div *ngIf="lengthkillbots !== null" class="col-md-12">
+            <span>Numero de bots corriendo:</span><h3>{{lengthkillbots}}</h3>
+          </div>
+          <div class="col-md-12">
+            <label for="nBots" class="form-label">Numéro de killBots</label>
+            <input type="number" formControlName="nBots" class="form-control" id="nBots" placeholder="Escribe el numéro de bots">
+          </div>
+          <div *ngIf="getValueKillbot('nBots')?.invalid && (getValueKillbot('nBots')?.touched || getValueKillbot('nBots')?.dirty)" class="mt-2">
+            <p class="fieldErr" *ngIf="getValueKillbot('nBots')?.errors?.required">El campo es requerido</p>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" [disabled]="killBotsForm.invalid" class="btn btn-primary" data-bs-dismiss="modal" (click)="killBots()">Matar</button>
+      </div>
+    </div>
+  </div>
+</div>

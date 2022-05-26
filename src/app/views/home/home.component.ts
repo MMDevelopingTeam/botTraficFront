@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { NavbarService } from '../../services/navbar.service';
 import { ModelsService } from '../../services/models.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -14,23 +15,40 @@ import { ModelsService } from '../../services/models.service';
 export class HomeComponent implements OnInit {
   
   dataModels:any
-  lenghtProxys: any
+  lengthProxys: any
   dataUserType: any
-  lenghtAccts: any
+  lengthAccts: any
+  lengthkillbots: any
 
   isAdmin: any
 
   modelo: any
+  modeloKillbot: any
   usuario: any
   roles:any
-  
+
+  launchBotsForm: FormGroup
+  killBotsForm: FormGroup
+
   constructor(
     public userService: UserService,
     public botService: BotService,
     public modelsService: ModelsService,
     private router: Router,
-    public nav: NavbarService
-  ) { }
+    public nav: NavbarService,
+    private fb: FormBuilder,
+  ) {
+    this.launchBotsForm = this.fb.group({
+      nameModel: [this.modelo],
+      userId: [localStorage.getItem('idUser')],
+      nBots: ['', [Validators.min(10), Validators.required]]
+    });
+    this.killBotsForm = this.fb.group({
+      nameModel: [this.modelo],
+      userId: [localStorage.getItem('idUser')],
+      nBots: ['', [Validators.required]]
+    });
+  }
 
   ngOnInit(): void {
     this.nav.show();
@@ -38,23 +56,8 @@ export class HomeComponent implements OnInit {
     if (localStorage.getItem('idUserAdmin')) {
       this.isAdmin=true
     }
-    // this.botService.getProxys().subscribe(
-    //   (res:any) => {
-    //     this.lenghtProxys=res.prsModels.length
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   }
-    // )
-    // this.botService.getAccts().subscribe(
-    //   (res:any) => {
-    //     this.lenghtAccts=res.acctsModels.length
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   }
-    // )
   }
+
 
   getInfoUrs() {
     if (this.userService.loggedIn()) {
@@ -62,7 +65,7 @@ export class HomeComponent implements OnInit {
         this.userService.getInfoUserAdmin().subscribe(
           (data: any) => {
             this.usuario = data.dataUser;
-            console.log(this.usuario);
+            // console.log(this.usuario);
           },
           (error) => console.log(error)
           );
@@ -74,7 +77,7 @@ export class HomeComponent implements OnInit {
           this.roles = data.dataUser.userTypeArray;
           this.modelsService.getModelsByIDheadQ(this.usuario.headquarters_idHeadquarter).subscribe(
             (data:any) => {
-              console.log(data)
+              // console.log(data)
               this.dataModels=data.dataModel
             },
             err => console.log(err)
@@ -94,12 +97,27 @@ export class HomeComponent implements OnInit {
     this.router.navigate([`models/${this.usuario.company_idCompany}`]);
   }
 
-  launchBots(model:any) {
+  dataModel(model: string) {
+    this.modelo=model
+  }
+  dataModelKillbot(model: any) {
+    this.modeloKillbot=model
     const data = {
-      nameModel: model,
-      userId: localStorage.getItem('idUser')
+      nameModel: model
     }
-    this.userService.getTokenBot(data).subscribe(
+    this.botService.getKillBotsByModel(data).subscribe(
+      (data:any) => {
+        // console.log(data)
+        this.lengthkillbots=data.acctsModels
+      },
+      err => {}
+    )
+  }
+
+  launchBots() {
+    let value = this.launchBotsForm.value
+    value.nameModel=this.modelo
+    this.userService.getTokenBot(value).subscribe(
       (res: any) => {
         const info = {
           token: res.token
@@ -114,19 +132,26 @@ export class HomeComponent implements OnInit {
               timer: 1500
             })
           },
-          err => console.log(err)
+          err => {}
         )
       },
       err => console.log(err)
     )
   }
 
-  killBots(model:any) {
-    const data = {
-      nameModel: model,
-      userId: localStorage.getItem('idUser')
+  killBots() {
+    let value = this.killBotsForm.value
+    value.nameModel=this.modeloKillbot
+    if (value.nBots > this.lengthkillbots) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'El numéro de killBots no puede ser mayor al numero de bots corriendo',
+        showConfirmButton: false,
+        timer: 3500
+      })
+      return;
     }
-    this.userService.getTokenkillBot(data).subscribe(
+    this.userService.getTokenkillBot(value).subscribe(
       (res: any) => {
         const info = {
           token: res.token
@@ -146,5 +171,12 @@ export class HomeComponent implements OnInit {
       },
       err => console.log(err)
     )
+  }
+
+  getValue(value: string) {
+    return this.launchBotsForm.get(value)
+  }
+  getValueKillbot(value: string) {
+    return this.killBotsForm.get(value)
   }
 }

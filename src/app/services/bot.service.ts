@@ -19,6 +19,9 @@ export class BotService {
   getProxys() {
     return this.http.get(`${this.urlStorage}/getproxys`);
   }
+  getKillBotsByModel(data: any) {
+    return this.http.post(`${this.urlStorage}/getKillBotsByModel`, data);
+  }
   getAccts() {
     return this.http.get(`${this.urlStorage}/getaccts`);
   }
