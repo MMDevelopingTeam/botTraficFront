@@ -106,7 +106,7 @@ export class LicensesComponent implements OnInit {
           this.getLicenses();
           Swal.fire({
             icon: 'success',
-            title: 'Compañia actualizada correctamente',
+            title: 'Licencia actualizada correctamente',
             showConfirmButton: false,
             timer: 2500
           })
