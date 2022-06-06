@@ -9,17 +9,22 @@ import { CreateHeadquartersComponent } from './views/headquarters/create-headqua
 import { HeadquartersComponent } from './views/headquarters/headquarters.component';
 import { ModelsComponent } from './views/models/models.component';
 import { ModelsHeadQComponent } from './views/models/models-head-q/models-head-q.component';
+import { SuperUserComponent } from './views/view-superUser/super-user/super-user.component';
+import { AuthGuard } from './guard/auth.guard';
+
+
 
 const routes: Routes = [
+  
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent, canActivate: [NoReturnRouteGuard]},
-  { path: 'register', component: LoginComponent, canActivate: [NoReturnRouteGuard]},
-  { path: 'company/:id', component: CreateCompanyComponent},
-  { path: 'models/:id', component: ModelsComponent},
-  { path: 'modelsByHeadquarter/:id', component: ModelsHeadQComponent},
-  { path: 'headquarter/:id', component: HeadquartersComponent},
-  { path: 'headquarters/:id', component: CreateHeadquartersComponent},
-  { path: 'company/headquarter/:id', component: CreateHeadquartersComponent},
+  { path: 'company/:id', component: CreateCompanyComponent, canActivate: [AuthGuard]},
+  { path: 'models/:id', component: ModelsComponent, canActivate: [AuthGuard]},
+  { path: 'dashboardSuperU', component: SuperUserComponent, canActivate: [AuthGuard]},
+  { path: 'modelsByHeadquarter/:id', component: ModelsHeadQComponent, canActivate: [AuthGuard]},
+  { path: 'headquarter/:id', component: HeadquartersComponent, canActivate: [AuthGuard]},
+  { path: 'headquarters/:id', component: CreateHeadquartersComponent, canActivate: [AuthGuard]},
+  { path: 'company/headquarter/:id', component: CreateHeadquartersComponent, canActivate: [AuthGuard]},
   { path: '**', component: PageNotFoundComponent}
 ];
 

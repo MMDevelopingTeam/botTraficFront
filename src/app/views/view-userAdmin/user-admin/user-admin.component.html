@@ -1,0 +1,23 @@
+<div>
+    <div *ngIf="usuario">
+      <div class="row">
+        <div class="col-md-12 text-center my-5">
+          <h1>bienvenido {{usuario.name}}</h1>
+        </div>
+        <div class="col-md-6" (click)="getSedes()">
+          <div class="card text-white mx-3">
+            <div class="card-img-overlay">
+              <h5 class="card-title text-center my-5">CREAR USUARIOS</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" (click)="getModels()">
+          <div class="card text-white mx-3">
+            <div class="card-img-overlay">
+              <h5 class="card-title text-center my-5">MODELOS</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

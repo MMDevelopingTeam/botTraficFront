@@ -23,6 +23,12 @@ export class ModelsService {
   getModelsByIDheadQ(id:any) {
     return this.http.get(`${this.urlModel}/byHeadquarter/${id}`);
   }
+  getModelByIDPlatform(model:any, id:any) {
+    const data={
+      nickname: model
+    }
+    return this.http.post(`${this.urlModel}/platform/${id}`, data);
+  }
   updateModel(model:any, id:any) {
     return this.http.put(`${this.urlModel}/${id}`, model);
   }

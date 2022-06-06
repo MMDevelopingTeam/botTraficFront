@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn m-3" (click)="goBack()">
+            <i class="fa-solid fa-angle-left" style="font-size: 35px;"></i>
+        </button>
+    </div>
+    <div class="col-md-4">
+        <h1 class="text-center my-4">Estadisticas globales</h1>
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-1 col-md-1"></div>
+    <div class="col-10 col-md-10">
+        <div>
+            <h3>Cuentas</h3>
+            <p><ngb-progressbar type="primary" [value]="valueAccts" [showValue]="true"></ngb-progressbar></p>
+            <h5>{{lengthAcctsFree}}/<span>{{lengthAccts}}</span></h5>
+        </div>
+        <div>
+            <h3>Proxys</h3>
+            <p><ngb-progressbar type="warning" [value]="valueProxys" [showValue]="true"></ngb-progressbar></p>
+            <h5>{{lengthProxysFree}}/<span>{{lengthProxys}}</span></h5>
+        </div>
+    </div>
+    <div class="col-1 col-md-1"></div>
+</div>

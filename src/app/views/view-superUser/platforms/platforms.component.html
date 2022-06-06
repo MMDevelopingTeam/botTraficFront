@@ -1,0 +1,133 @@
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn m-3" (click)="goBack()">
+            <i class="fa-solid fa-angle-left" style="font-size: 35px;"></i>
+        </button>
+    </div>
+    <div class="col-md-4">
+        <h1 class="text-center my-4">Plataformas</h1>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#createpermissionModal">
+            <i class="fa-solid fa-plus"></i>
+            Crear plataformas
+        </button>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table" *ngIf="platforms">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Nombre</th>
+                <th scope="col">Url</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngFor="let platform of platforms">
+                <th>{{platform.namePlatform}}</th>
+                <td>{{platform.urlPlatform}}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="getPlatform(platform)" data-bs-toggle="modal" data-bs-target="#permissionModal">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="btn btn-success mx-1" (click)="getPlatform(platform)" data-bs-toggle="modal" data-bs-target="#permissionEditModal">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deletePlatform(platform._id)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+<!-- Modal view -->
+<div class="modal fade" id="permissionModal" tabindex="-1" aria-labelledby="permissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="permissionModalLabel">Plataformas</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row" *ngIf="platform">
+          <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput" class="form-label">Nombre</label>
+              <input [(ngModel)]="platform.namePlatform" name="cc" type="text" class="form-control" id="formGroupExampleInput" disabled>
+          </div>
+          <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput2" class="form-label">Url</label>
+              <input [(ngModel)]="platform.urlPlatform" type="text" class="form-control" id="formGroupExampleInput2" disabled>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal edit -->
+<div class="modal fade" id="permissionEditModal" tabindex="-1" aria-labelledby="permissionEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="permissionEditModalLabel">Editar permisos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="platform">
+            <form class="row" [formGroup]="platformEditForm">
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="namePlatform" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValue('namePlatform')?.invalid && (getValue('namePlatform')?.touched || getValue('namePlatform')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('namePlatform')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+                    <input formControlName="urlPlatform" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdatePlatform()" [disabled]="platformEditForm.invalid">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal create -->
+<div class="modal fade" id="createpermissionModal" tabindex="-1" aria-labelledby="createpermissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createpermissionModalLabel">Crear permiso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="row" [formGroup]="platformCreateForm">
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="namePlatform" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValueCreate('namePlatform')?.invalid && (getValueCreate('namePlatform')?.touched || getValueCreate('namePlatform')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueCreate('namePlatform')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Url</label>
+                    <input formControlName="urlPlatform" type="text" class="form-control" placeholder="Ingrese la Url" id="formGroupExampleInput2">
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createPlatform()" [disabled]="platformCreateForm.invalid">Crear permiso</button>
+        </div>
+      </div>
+    </div>
+</div>

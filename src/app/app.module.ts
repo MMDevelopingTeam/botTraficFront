@@ -28,6 +28,12 @@ import { ModelsComponent } from './views/models/models.component';
 import { ModelsHeadQComponent } from './views/models/models-head-q/models-head-q.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { UserModule } from './views/view-user/user.module';
+import { SuperUserModule } from './views/view-superUser/super-user.module';
+import { UserAdminModule } from './views/view-userAdmin/user-admin.module';
+import { FilterModelPipe } from './pipes/filter-model.pipe';
 
 @NgModule({
   declarations: [
@@ -43,10 +49,18 @@ import { ToastrModule } from 'ngx-toastr';
     RolesDirective,
     ModelsComponent,
     ModelsHeadQComponent,
+    FilterModelPipe
   ],
   imports: [
-    BrowserModule,
+    UserModule,
+    SuperUserModule,
+    UserAdminModule,
+
+
     AppRoutingModule,
+
+
+    BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -59,6 +73,8 @@ import { ToastrModule } from 'ngx-toastr';
     NgbModule,
     FormsModule,
     ToastrModule.forRoot(),
+    StoreModule.forRoot({}, {}),
+    StoreDevtoolsModule.instrument({ name: 'TEST' }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},

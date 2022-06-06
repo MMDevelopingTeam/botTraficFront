@@ -38,7 +38,7 @@ export class CreateCompanyComponent implements OnInit {
         }
       )
     });
-    this.nav.hide();
+    this.nav.show();
   }
 
   saveForm() {

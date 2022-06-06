@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn m-3" (click)="goBack()">
+            <i class="fa-solid fa-angle-left" style="font-size: 35px;"></i>
+        </button>
+    </div>
+    <div class="col-md-4">
+        <h1 class="text-center my-4">Proxys</h1>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#addProxyModal">
+            <i class="fa-solid fa-plus"></i>
+            Añadir proxys
+        </button>
+    </div>
+    <div class="col-1 col-md-1"></div>
+    <div class="col-10 col-md-10">
+        <table class="table" *ngIf="proxys">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Proxy</th>
+                <th scope="col">Num Usuarios</th>
+                <th scope="col">Disponibilidad</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngFor="let proxy of proxys">
+                <th>{{proxy.proxy}}</th>
+                <td>{{proxy.Nusers}}</td>
+                <td>
+                    <i *ngIf="!proxy.isFull" class="fa-solid fa-circle-check" style="color: green;"></i>
+                    <i *ngIf="proxy.isFull" class="fa-solid fa-circle-xmark" style="color: red;"></i>
+                </td>
+                <td>
+                    <i *ngIf="!proxy.isDown" class="fa-solid fa-circle-check" style="color: green;"></i>
+                    <i *ngIf="proxy.isDown" class="fa-solid fa-circle-xmark" style="color: red;"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="col-1 col-md-1"></div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="addProxyModal" tabindex="-1" aria-labelledby="addProxyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProxyModalLabel">Agregar proxys</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-12 col-md-12">
+                <form [formGroup]="proxysForm">
+                    <div>
+                        <label for="floatingTextarea2">Escribe los proxys</label>
+                        <textarea formControlName="proxysStrings" class="form-control mt-2" placeholder="proxy1:port,proxy2:port,proxy3:port....." id="floatingTextarea2" style="height: 200px"></textarea>
+                        <div *ngIf="getValue('proxysStrings')?.invalid && (getValue('proxysStrings')?.touched || getValue('proxysStrings')?.dirty)">
+                            <p class="fieldErr" *ngIf="getValue('proxysStrings')?.errors?.required">El campo es requerido</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveProxys()" [disabled]="proxysForm.invalid">Guardar proxys</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -17,7 +17,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             catchError((err) => {
                 console.log(err);
                 if ( [400, 401, 403, 404, 0].indexOf(err.status) !== -1 ) {
-                    this.notificationService.showSuccess(err.error.message)
+                    this.notificationService.showErr(err.error.message)
                 }
                 return throwError(err.status);
             })

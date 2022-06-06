@@ -1,0 +1,190 @@
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn m-3" (click)="goBack()">
+            <i class="fa-solid fa-angle-left" style="font-size: 35px;"></i>
+        </button>
+    </div>
+    <div class="col-md-4">
+        <h1 class="text-center my-4">Compañias</h1>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary m-5" style="float: right;" [routerLink]="['/dashboard/superUser/companys/add']">
+            <i class="fa-solid fa-plus"></i>
+            Crear compañia
+        </button>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table" *ngIf="companys">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Nombre</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Licencias</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngFor="let company of companys">
+                <th>{{company.nameCompany}}</th>
+                <td>{{company.typeCompany}}</td>
+                <td>{{company.registerLicensesArray.length}}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="getCompany(company)" data-bs-toggle="modal" data-bs-target="#viewCompanyModal">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="btn btn-warning mx-1" (click)="getCompany(company)" (click)="redirect()">
+                      <i class="fa-solid fa-user"></i>
+                    </button>
+                    <button class="btn btn-success mx-1" (click)="redirectEdit(company._id)">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteCompany(company._id)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+
+  
+<!-- Modal view -->
+<div class="modal fade" id="viewCompanyModal" tabindex="-1" aria-labelledby="viewCompanyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewCompanyModalLabel">Compañia</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body row" *ngIf="company">
+        <div class="col-md-12 mb-3">
+            <label for="formGroupExampleInput" class="form-label">Nombre</label>
+            <input [(ngModel)]="company.nameCompany" name="cc" type="text" class="form-control" id="formGroupExampleInput" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput2" class="form-label">Tipo</label>
+            <input [(ngModel)]="company.typeCompany" type="text" class="form-control" id="formGroupExampleInput2" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput2" class="form-label">Dirección</label>
+            <input [(ngModel)]="company.addressCompany" type="text" class="form-control" id="formGroupExampleInput2" disabled>
+        </div>
+        <hr>
+        <div class="col-md-12 mb-3">
+            <h4 class="modal-title">Licencias</h4>
+        </div>
+        <div *ngIf="company.registerLicensesArray">
+          <table class="table">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Nombre de la suscripción</th>
+                <th scope="col">Fecha inicial</th>
+                <th scope="col">Fecha final</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  class="text-center" *ngFor="let licence of company.registerLicensesArray">
+                <th>{{licence.licenses_idLicense.nameLicense}}</th>
+                <td>{{licence.initialDateLicense | date: 'short'}}</td>
+                <td>{{licence.finishedDateLicense | date: 'short'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr>
+        <div class="col-md-12 mb-3">
+            <h4 class="modal-title">Contenedor de bots</h4>
+        </div>
+        <div *ngIf="company.botContainerArray">
+          <table class="table">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">IP</th>
+                <th scope="col">Tipo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  class="text-center" *ngFor="let botContainer of company.botContainerArray">
+                <th>{{botContainer.ip}}</th>
+                <td>{{botContainer.typeBot}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal edit -->
+<div class="modal fade" id="editCompanyModal" tabindex="-1" aria-labelledby="editCompanyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editCompanyModalLabel">Editar compañia</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="company">
+            <form class="row" [formGroup]="companyEditForm">
+                <div class="col-md-12 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="nameCompany" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValue('nameCompany')?.invalid && (getValue('nameCompany')?.touched || getValue('nameCompany')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('nameCompany')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputState" class="form-label">Tipo</label>
+                    <select id="inputState" class="form-select" formControlName="typeCompany">
+                      <option selected></option>
+                      <option>Estudio</option>
+                      <option>Modelo</option>
+                    </select>
+                    <div *ngIf="getValue('typeCompany')?.invalid && (getValue('typeCompany')?.touched || getValue('typeCompany')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('typeCompany')?.errors?.required">El campo es requerido</p>
+                      </div>
+                  </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Dirección</label>
+                    <input formControlName="addressCompany" type="text" class="form-control" placeholder="Ingrese la dirección" id="formGroupExampleInput2">
+                </div>
+                <hr>
+                <div class="col-md-12">
+                    <h4 class="modal-title">Licencias: {{compLicences.length}}</h4>
+                </div>
+                <div *ngIf="licences">
+                  <table class="table">
+                    <thead class="table-dark">
+                      <tr class="text-center">
+                        <th scope="col">Nombre</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr  class="text-center" *ngFor="let licence of licences">
+                        <th>{{licence.nameLicense}}</th>
+                        <td>
+                          <button class="btn btn-primary" (click)="addLicence(licence._id)">
+                            Añadir
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="clearArray()" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdateCompany()" [disabled]="companyEditForm.invalid">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>

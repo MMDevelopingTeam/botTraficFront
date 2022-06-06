@@ -6,7 +6,7 @@ import { HeadquartersService } from '../../../services/headquarters.service';
 import { NavbarService } from 'src/app/services/navbar.service';
 import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
-import { UserService } from '../../../services/user.service';
+import { CompanyService } from '../../../services/company.service';
 
 @Component({
   selector: 'app-create-headquarters',
@@ -23,7 +23,7 @@ export class CreateHeadquartersComponent implements OnInit {
   HeadquarterUpdateForm: FormGroup;
   url: any;
 
-  constructor(private _location: Location, private userService:UserService, private nav: NavbarService, private _config: NgbAccordionConfig, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private headquartersService: HeadquartersService) {
+  constructor(private _location: Location, private companyService :CompanyService, private nav: NavbarService, private _config: NgbAccordionConfig, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private headquartersService: HeadquartersService) {
 
     this.route.params.subscribe(params => {
       this.id=params.id;
@@ -50,11 +50,7 @@ export class CreateHeadquartersComponent implements OnInit {
       this.id=params.id;
       this.getHeadquarters();
     });
-    if (this.url === 'headquarters') {
-      this.nav.show();
-    }else{
-      this.nav.hide();
-    }
+    this.nav.show();
   }
 
   goBack(){
@@ -142,7 +138,7 @@ export class CreateHeadquartersComponent implements OnInit {
   }
 
   continue(){
-    this.userService.updateUserAdminIsConfigFull(localStorage.getItem('idUserAdmin')).subscribe(
+    this.companyService.updateCompanyIsConfigFull(this.id).subscribe(
       (data:any) => {
         this.router.navigate(['/']);
       },

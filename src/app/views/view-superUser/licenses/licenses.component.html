@@ -1,0 +1,135 @@
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn m-3" (click)="goBack()">
+            <i class="fa-solid fa-angle-left" style="font-size: 35px;"></i>
+        </button>
+    </div>
+    <div class="col-md-4">
+        <h1 class="text-center my-4">Licencias</h1>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#createLicenseModal">
+            <i class="fa-solid fa-plus"></i>
+            Crear licencia
+        </button>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table" *ngIf="licenses">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngFor="let license of licenses">
+                <th>{{license.nameLicense}}</th>
+                <td>{{license.descriptionLicense}}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="getLicense(license)" data-bs-toggle="modal" data-bs-target="#viewLicenseModal">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="btn btn-success mx-1" (click)="getLicense(license)" data-bs-toggle="modal" data-bs-target="#editLicenseModal">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteLicense(license._id)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+
+  
+<!-- Modal view -->
+<div class="modal fade" id="viewLicenseModal" tabindex="-1" aria-labelledby="viewCompanyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewCompanyModalLabel">licencia</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body row" *ngIf="license">
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput" class="form-label">Nombre</label>
+            <input [(ngModel)]="license.nameLicense" name="cc" type="text" class="form-control" id="formGroupExampleInput" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+            <input [(ngModel)]="license.descriptionLicense" type="text" class="form-control" id="formGroupExampleInput2" disabled>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal edit -->
+<div class="modal fade" id="editLicenseModal" tabindex="-1" aria-labelledby="editCompanyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editCompanyModalLabel">Editar licencia</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="license">
+            <form class="row" [formGroup]="licencesEditForm">
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="nameLicense" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValue('nameLicense')?.invalid && (getValue('nameLicense')?.touched || getValue('nameLicense')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('nameLicense')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+                    <input formControlName="descriptionLicense" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdateLicense()" [disabled]="licencesEditForm.invalid">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal create -->
+<div class="modal fade" id="createLicenseModal" tabindex="-1" aria-labelledby="createLicenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createLicenseModalLabel">Crear licencia</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="row" [formGroup]="licencesCreateForm">
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="nameLicense" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValueCreate('nameLicense')?.invalid && (getValueCreate('nameLicense')?.touched || getValueCreate('nameLicense')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueCreate('nameLicense')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput1" class="form-label">Dirección</label>
+                    <input formControlName="descriptionLicense" type="text" class="form-control" placeholder="Ingrese la dirección" id="formGroupExampleInput1">
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createLicense()" [disabled]="licencesCreateForm.invalid">Crear licencia</button>
+        </div>
+      </div>
+    </div>
+</div>

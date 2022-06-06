@@ -7,6 +7,7 @@ import { HeadquartersService } from '../../services/headquarters.service';
 import { ModelsService } from '../../services/models.service';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2'
+import { PlatformsService } from 'src/app/services/platforms.service';
 
 @Component({
   selector: 'app-headquarters',
@@ -28,11 +29,13 @@ export class HeadquartersComponent implements OnInit {
   userUdateForm: FormGroup;
   dataModel: any;
   dataUser: any;
+  platforms: any;
 
   constructor(
     private route: ActivatedRoute,
     private navbarService: NavbarService,
     private headquartersService: HeadquartersService,
+    private platformsService: PlatformsService,
     private modelsService: ModelsService,
     private userService: UserService,
     private _location: Location,
@@ -44,17 +47,17 @@ export class HeadquartersComponent implements OnInit {
 
     this.modelForm = this.fb.group({
       nickname: ['', Validators.required],
-      platform: ['', Validators.required],
       isAllowed: [true],
       isActive: [true],
+      platforms_idPlatform: ['', Validators.required],
       headquarters_idHeadquarter: [this.id]
     });
 
     this.modelUpdateForm = this.fb.group({
       nickname: ['', Validators.required],
-      platform: ['', Validators.required],
       isAllowed: ['',Validators.required],
       isActive: [],
+      platforms_idPlatform: ['', Validators.required],
       headquarters_idHeadquarter: [this.id]
     });
 
@@ -80,11 +83,12 @@ export class HeadquartersComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id=params.id;
     });
-    this.navbarService.hide();
+    this.navbarService.show();
     this.getHeadquarter();
     this.getModels();
     this.getUserTypes();
     this.getUsers();
+    this.getPlatforms();
   }
 
   getHeadquarter(){
@@ -106,13 +110,22 @@ export class HeadquartersComponent implements OnInit {
     )
   }
 
-  getUserTypes () {
+  getUserTypes() {
     this.userService.getUserTypes().subscribe(
       (data:any) => {
         this.dataUserType=data.dataUserT[0]._id
         console.log(this.dataUserType);
 
       }
+    )
+  }
+
+  getPlatforms() {
+    this.platformsService.getPlatforms().subscribe(
+      (data:any) => {
+        this.platforms=data.dataPlatfm
+      },
+      err => {}
     )
   }
 

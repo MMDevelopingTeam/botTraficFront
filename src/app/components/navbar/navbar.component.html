@@ -5,19 +5,37 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="!userService.loggedInSuperU()">
+
+        </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="userService.loggedInSuperU()">
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" [routerLink]="['/dashboard/superUser/companys']">Compañias</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
+            <a class="nav-link" [routerLink]="['/dashboard/superUser/licenses']">Licencias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/dashboard/superUser/botContainers']">Bot container</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/dashboard/superUser/userTypes']">Tipo de usuario</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/dashboard/superUser/platforms']">Plataformas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/dashboard/superUser/permissions']">Permisos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/dashboard/superUser/statistics']">Estadisticas</a>
           </li>
         </ul>
         <div class="btnAcc">
-          <button *ngIf="!userService.loggedIn();" [routerLink]="['/login']" class="btn btn-primary">Iniciar sesión</button>
-          <button *ngIf="!userService.loggedIn();" [routerLink]="['/register']" class="btn btn-primary">Registrarse</button>
-          <button *ngIf="userService.loggedIn();" (click)="logOut()" class="btn btn-danger">Cerrar sesión</button>
+          <button *ngIf="!userService.loggedIn()" [routerLink]="['/login']" class="btn btn-primary">Iniciar sesión</button>
+          <button *ngIf="!userService.loggedIn()" [routerLink]="['/register']" class="btn btn-primary">Registrarse</button>
+          <button *ngIf="userService.loggedIn()" (click)="logOut()" class="btn btn-danger">Cerrar sesión</button>
         </div>
       </div>
     </div>
-  </nav>
+</nav>

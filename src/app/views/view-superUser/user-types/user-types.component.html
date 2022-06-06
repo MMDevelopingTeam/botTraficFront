@@ -1,0 +1,203 @@
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn m-3" (click)="goBack()">
+            <i class="fa-solid fa-angle-left" style="font-size: 35px;"></i>
+        </button>
+    </div>
+    <div class="col-md-4">
+        <h1 class="text-center my-4">Tipo de usuario</h1>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary m-5" style="float: right;" (click)="clearArray()" data-bs-toggle="modal" data-bs-target="#createUserTypeModal">
+            <i class="fa-solid fa-plus"></i>
+            Crear tipo de usuario
+        </button>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table" *ngIf="userTypes">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Permisos</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngFor="let userType of userTypes">
+                <th>{{userType.nameUserType}}</th>
+                <td>{{userType.descriptionUserType}}</td>
+                <td>{{userType.permissionsArray.length}}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="getUserType(userType)" data-bs-toggle="modal" data-bs-target="#viewUserTypeModal">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="btn btn-success mx-1" (click)="clearArray()" (click)="getUserType(userType)" data-bs-toggle="modal" data-bs-target="#editUserTypeModal">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteUserType(userType._id)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+<!-- Modal view -->
+<div class="modal fade" id="viewUserTypeModal" tabindex="-1" aria-labelledby="viewUserTypeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewUserTypeModalLabel">Tipo de usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row" *ngIf="userType">
+          <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput" class="form-label">Nombre</label>
+              <input [(ngModel)]="userType.nameUserType" name="cc" type="text" class="form-control" id="formGroupExampleInput" disabled>
+          </div>
+          <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+              <input [(ngModel)]="userType.descriptionUserType" type="text" class="form-control" id="formGroupExampleInput2" disabled>
+          </div>
+          <hr>
+          <div class="col-md-12">
+              <h4 class="modal-title">Permisos</h4>
+          </div>
+          <div class="col-md-12 mt-3">
+            <table class="table">
+                <thead class="table-dark">
+                  <tr class="text-center">
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="userType.permissionsArray">
+                  <tr class="text-center" *ngFor="let permission of userType.permissionsArray">
+                    <th>{{permission.namePermission}}</th>
+                    <td>{{permission.PermissionDescription}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal edit -->
+<div class="modal fade" id="editUserTypeModal" tabindex="-1" aria-labelledby="editUserTypeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserTypeModalLabel">Editar tipo de usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="userType">
+            <form class="row" [formGroup]="userTypeEditForm">
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="nameUserType" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValue('nameUserType')?.invalid && (getValue('nameUserType')?.touched || getValue('nameUserType')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('nameUserType')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+                    <input formControlName="descriptionUserType" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
+                </div>
+                <hr>
+                <div class="col-md-12">
+                    <h4 class="modal-title">Permisos: {{arrayPermissions.length}}</h4>
+                </div>
+                <div *ngIf="permissions">
+                  <table class="table">
+                    <thead class="table-dark">
+                      <tr class="text-center">
+                        <th scope="col">Nombre</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr  class="text-center" *ngFor="let permission of permissions">
+                        <th>{{permission.namePermission}}</th>
+                        <td>
+                          <button class="btn btn-primary" (click)="addPermission(permission._id)">
+                            Añadir
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="clearArray()" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdateUserType()" [disabled]="userTypeEditForm.invalid">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal create -->
+<div class="modal fade" id="createUserTypeModal" tabindex="-1" aria-labelledby="createUserTypeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createUserTypeModalLabel">Crear tipo de usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="row" [formGroup]="userTypeCreateForm">
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="nameUserType" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValueCreate('nameUserType')?.invalid && (getValueCreate('nameUserType')?.touched || getValueCreate('nameUserType')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueCreate('nameUserType')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+                    <input formControlName="descriptionUserType" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
+                </div>
+                <hr>
+                <div class="col-md-12">
+                    <h4 class="modal-title">Permisos: {{arrayPermissions.length}}</h4>
+                </div>
+                <div *ngIf="permissions">
+                  <table class="table">
+                    <thead class="table-dark">
+                      <tr class="text-center">
+                        <th scope="col">Nombre</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr  class="text-center" *ngFor="let permission of permissions">
+                        <th>{{permission.namePermission}}</th>
+                        <td>
+                          <button class="btn btn-primary" (click)="addPermission(permission._id)">
+                            Añadir
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="clearArray()" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="createUserType()" [disabled]="userTypeCreateForm.invalid">Crear</button>
+        </div>
+      </div>
+    </div>
+</div>

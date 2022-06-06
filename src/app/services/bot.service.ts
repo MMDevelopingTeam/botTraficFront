@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.prod';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,27 +8,63 @@ import { Router } from '@angular/router';
 export class BotService {
 
   urlStorage = `${environment.urlLaunch}/storage`;
-  urlBot = `${environment.urlLaunch}/bot`;
+  urlBotContainer = `${environment.url}/botContainer`;
 
   constructor(private http: HttpClient) { }
 
-  getModels() {
-    return this.http.get(`${this.urlStorage}/getmodels`);
+  getAllProxys(ip: any) {
+    return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getproxys`);
+    // return this.http.get(`${this.urlStorage}/getproxys`);
   }
-  getProxys() {
-    return this.http.get(`${this.urlStorage}/getproxys`);
+  getAllProxysFree(ip: any) {
+    // return this.http.get(`${this.urlStorage}/getproxysFree`);
+    return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getproxysFree`);
   }
   getKillBotsByModel(data: any) {
     return this.http.post(`${this.urlStorage}/getKillBotsByModel`, data);
   }
-  getAccts() {
-    return this.http.get(`${this.urlStorage}/getaccts`);
+  getAllAccts(ip: any) {
+    return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getaccts`);
+    // return this.http.get(`${this.urlStorage}/getaccts`);
   }
-  launchBot(name_model: any) {
-    return this.http.post(`${this.urlBot}`, name_model)
+  getAllAcctsFree(ip: any) {
+    return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getAcctsFree`);
+    // return this.http.get(`${this.urlStorage}/getAcctsFree`);
   }
-  killBot(name_model: any) {
-    return this.http.post(`${this.urlBot}/killbot`, name_model)
+  saveProxys(proxys:any, ip:any){
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/storage/proxysString`, proxys);
+  }
+
+
+  launchBot(ip: any, name_model: any) {
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot`, name_model)
+    // return this.http.post(`http://localhost:3000/api/bot`, name_model)
+  }
+  killBot(ip: any, name_model: any) {
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/killbot`, name_model)
+    // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
+  }
+
+  /////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
+  ////////          bot container        //////////////
+  /////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
+
+  createBotContainer(BotContainer:any) {
+    return this.http.post(this.urlBotContainer, BotContainer);
+  }
+  getBotContainers() {
+    return this.http.get(this.urlBotContainer);
+  }
+  getBotContainerById(id:any) {
+    return this.http.get(`${this.urlBotContainer}/${id}`);
+  }
+  updateBotContainer(BotContainer:any, id:any) {
+    return this.http.put(`${this.urlBotContainer}/${id}`, BotContainer);
+  }
+  deleteBotContainer(id:any) {
+    return this.http.delete(`${this.urlBotContainer}/${id}`);
   }
 
 }

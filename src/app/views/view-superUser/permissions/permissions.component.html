@@ -1,0 +1,133 @@
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn m-3" (click)="goBack()">
+            <i class="fa-solid fa-angle-left" style="font-size: 35px;"></i>
+        </button>
+    </div>
+    <div class="col-md-4">
+        <h1 class="text-center my-4">Permisos</h1>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#createpermissionModal">
+            <i class="fa-solid fa-plus"></i>
+            Crear permiso
+        </button>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table" *ngIf="permissions">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngFor="let permission of permissions">
+                <th>{{permission.namePermission}}</th>
+                <td>{{permission.PermissionDescription}}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="getPermission(permission)" data-bs-toggle="modal" data-bs-target="#permissionModal">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="btn btn-success mx-1" (click)="getPermission(permission)" data-bs-toggle="modal" data-bs-target="#permissionEditModal">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deletePermission(permission._id)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+<!-- Modal view -->
+<div class="modal fade" id="permissionModal" tabindex="-1" aria-labelledby="permissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="permissionModalLabel">Permisos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row" *ngIf="permission">
+          <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput" class="form-label">Nombre</label>
+              <input [(ngModel)]="permission.namePermission" name="cc" type="text" class="form-control" id="formGroupExampleInput" disabled>
+          </div>
+          <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+              <input [(ngModel)]="permission.PermissionDescription" type="text" class="form-control" id="formGroupExampleInput2" disabled>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal edit -->
+<div class="modal fade" id="permissionEditModal" tabindex="-1" aria-labelledby="permissionEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="permissionEditModalLabel">Permisos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="permission">
+            <form class="row" [formGroup]="permissionsEditForm">
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="namePermission" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValue('namePermission')?.invalid && (getValue('namePermission')?.touched || getValue('namePermission')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('namePermission')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+                    <input formControlName="PermissionDescription" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdatePermission()" [disabled]="permissionsEditForm.invalid">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal create -->
+<div class="modal fade" id="createpermissionModal" tabindex="-1" aria-labelledby="createpermissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createpermissionModalLabel">Crear permiso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="row" [formGroup]="permissionsCreateForm">
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="namePermission" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValueCreate('namePermission')?.invalid && (getValueCreate('namePermission')?.touched || getValueCreate('namePermission')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueCreate('namePermission')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+                    <input formControlName="PermissionDescription" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createPermission()" [disabled]="permissionsCreateForm.invalid">Crear permiso</button>
+        </div>
+      </div>
+    </div>
+</div>

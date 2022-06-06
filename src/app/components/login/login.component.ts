@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { NavbarService } from 'src/app/services/navbar.service';
+import { CompanyService } from 'src/app/services/company.service';
 
 @Component({
   selector: 'app-login',
@@ -17,28 +18,15 @@ export class LoginComponent implements OnInit {
   private isValidEmail = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   loginForm: FormGroup;
-  registerForm: FormGroup;
-
-
-  // loginForm = this.fb.group({
-  //   email: ['', [Validators.required, Validators.pattern(this.isValidEmail)]],
-  //   password: ['', [Validators.required, Validators.minLength(6)]],
-  // });
-
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
+    private companyService: CompanyService,
     public nav: NavbarService
     ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern(this.isValidEmail)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-    });
-
-    this.registerForm = this.fb.group({
-      username: ['', Validators.required],
       email: ['', [Validators.required, Validators.pattern(this.isValidEmail)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
@@ -46,27 +34,25 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.nav.hide();
-    if (this.router.url == "/login") {
-      this.formLogin = true
-    } else {
-      this.formLogin = false
-    }
-
-
   }
 
   saveLogin(event: Event) {
-    // event.preventDefault();
+    event.preventDefault();
     if (this.loginForm.valid) {
       const value = this.loginForm.value;
       this.userService.signIn(value).subscribe(
         (res:any) => {
-          localStorage.setItem('token', res.token);
           if (res.user.headquarters_idHeadquarter) {
+            localStorage.setItem('token', res.token);
             localStorage.setItem('idUser', res.user._id);
           }
-          else{
-            localStorage.setItem('idUserAdmin', res.user._id);  
+          if (res.user.company_idCompany) {
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('idUserAdmin', res.user._id);
+          }
+          if (res.user.ipFrom) {
+            localStorage.setItem('tokenSuperU', res.token);
+            localStorage.setItem('idSuperUser', res.user._id);
           }
           Swal.fire({
             icon: 'success',
@@ -74,56 +60,35 @@ export class LoginComponent implements OnInit {
             showConfirmButton: false,
             timer: 1500
           })
-          if (res.user.isConfigFull === false) {
-            this.router.navigate([`company/${res.user.company_idCompany}`]);
-            return;
+          if (res.user.company_idCompany) {
+            this.companyService.getCompanyById(res.user.company_idCompany).subscribe(
+              (data:any) => {
+                if (data.dataCompany.isConfigFull === false) {
+                  this.router.navigate([`company/${res.user.company_idCompany}`]);
+                }
+                console.log(data);
+              },
+              err => {}
+            )
           }
-          return this.router.navigate(['/']);
+          if (res.user.headquarters_idHeadquarter) {
+            this.router.navigate(['/dashboard/user']);
+          }
+          if (res.user.company_idCompany) {
+            this.router.navigate(['/dashboard/userAdmin']);
+          }
+          if (res.user.ipFrom) {
+            this.router.navigate(['/dashboard/superUser']);
+          }
         },
-        err => {
-          // console.log(err.error.message);
-        }
+        err => {}
       )
     } else{
       this.loginForm.markAllAsTouched();
     }
   }
 
-  saveRegister(event: Event) {
-    event.preventDefault();
-    if (this.registerForm.valid) {
-      const value = this.registerForm.value;
-      this.userService.signUp(value).subscribe(
-        (res:any) => {
-          Swal.fire({
-            icon: 'success',
-            title: "Usuario creado correctamente",
-            showConfirmButton: false,
-            timer: 1500
-          })
-          this.router.navigate(['/']);
-        },
-        err => {
-          console.log(err);
-          return Swal.fire({
-            icon: 'warning',
-            title: err.error.message,
-            showConfirmButton: false,
-            timer: 5000
-          })
-        }
-      )
-    } else{
-      this.registerForm.markAllAsTouched();
-    }
-  }
-
   getValue(value: string) {
     return this.loginForm.get(value)
-  }
-
-
-  getValueRegister(value: string) {
-    return this.registerForm.get(value)
   }
 }

@@ -11,12 +11,17 @@ declare var jQuery: any;
 })
 export class NavbarComponent implements OnInit {
 
+  ifToken:any
+
   constructor(
     public userService: UserService,
     public nav: NavbarService
   ) { }
 
   ngOnInit(): void {
+    if (localStorage.getItem('tokenSuperU')) {
+      this.ifToken=true
+    }
   }
   
   backNav(){

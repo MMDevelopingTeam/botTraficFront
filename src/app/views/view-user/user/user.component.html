@@ -1,0 +1,102 @@
+<div class="block" *ngFor="let rol of roles">
+    <div *ngIf="rol.nameUserType === 'moderator'">
+      <div class="row" *ngIf="userService.loggedIn()">
+        <div class="col-md-12 text-center my-5">
+            <h1>Plataforma</h1>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-10 mt-5 text-center">
+        
+          <div class="my-4" *ngIf="platforms">
+            <label for="exampleInputEmail1" class="form-label">Seleccione la plataforma</label>
+            <select [(ngModel)]="idPlatfom" id="exampleInputEmail1" class="form-select" aria-label="Default select example">
+              <option selected>Seleccione la plataforma</option>
+              <option  *ngFor="let platform of platforms" [value]="platform._id">{{platform.namePlatform}}</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <input [(ngModel)]="nickname" type="text" class="form-control" placeholder="Escribe el nickname de la modelo" aria-describedby="button-addon2">
+            <button class="btn btn-primary" type="button" id="button-addon2" (click)="searchModel()">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              Buscar
+            </button>
+          </div>
+
+          <div class="card" *ngIf="!isLoading && data$">
+            <div class="card-header">
+              <h3>{{data$.nickname}}</h3>
+            </div>
+            <div class="card-body">
+              <a data-bs-toggle="modal" (click)="getModel(data$.nickname)" data-bs-target="#launchBotModal" class="btn btn-primary m-1">Lanzar bots</a>
+              <a data-bs-toggle="modal" (click)="getModel(data$.nickname)" data-bs-target="#killBotModal" class="btn btn-danger m-1">Matar bots</a>
+            </div>
+          </div>
+
+          <div *ngIf="isLoading" class="spinner-border mt-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        <div class="col-md-1"></div>
+    </div>
+    </div>
+  </div>
+
+<!-- Modal Launch bot-->
+<div class="modal fade" id="launchBotModal" tabindex="-1" aria-labelledby="launchBotModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="launchBotModalLabel">Lanzar bots</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="launchBotsForm">
+            <div *ngIf="lengthkillbots !== null" class="col-md-12">
+              <span>Numero de bots corriendole a la modelo:</span><h3>{{lengthkillbots}}</h3>
+            </div>
+            <div class="col-md-12">
+              <label for="nBots" class="form-label">Numéro de bots</label>
+              <input type="number" formControlName="nBots" class="form-control" id="nBots" placeholder="Escribe el numéro de bots">
+            </div>
+            <div *ngIf="getValue('nBots')?.invalid && (getValue('nBots')?.touched || getValue('nBots')?.dirty)" class="mt-2">
+              <p class="fieldErr" *ngIf="getValue('nBots')?.errors?.min">El numero minimo es 10</p>
+              <p class="fieldErr" *ngIf="getValue('nBots')?.errors?.required">El campo es requerido</p>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" [disabled]="launchBotsForm.invalid" class="btn btn-primary" data-bs-dismiss="modal" (click)="launchBots()">Lanzar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal kill bot-->
+  <div class="modal fade" id="killBotModal" tabindex="-1" aria-labelledby="killBotModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="killBotModalLabel">kill bots</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="killBotsForm">
+            <div *ngIf="lengthkillbots !== null" class="col-md-12">
+              <span>Numero de bots corriendole a la modelo:</span><h3>{{lengthkillbots}}</h3>
+            </div>
+            <div class="col-md-12">
+              <label for="nBots" class="form-label">Numéro de killBots</label>
+              <input type="number" formControlName="nBots" class="form-control" id="nBots" placeholder="Escribe el numéro de bots">
+            </div>
+            <div *ngIf="getValueKillbot('nBots')?.invalid && (getValueKillbot('nBots')?.touched || getValueKillbot('nBots')?.dirty)" class="mt-2">
+              <p class="fieldErr" *ngIf="getValueKillbot('nBots')?.errors?.required">El campo es requerido</p>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" [disabled]="killBotsForm.invalid" class="btn btn-primary" data-bs-dismiss="modal" (click)="killBots()">Matar</button>
+        </div>
+      </div>
+    </div>
+  </div>

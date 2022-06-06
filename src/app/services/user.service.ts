@@ -27,19 +27,10 @@ export class UserService {
     return this.http.post(this.urlSignUp, userSignup);
   }
 
-  signInUserAdmin(userSignIn:any) {
-    return this.http.post(this.urlSignInUserAdmin, userSignIn);
-  }
-  signUpUserAdmin(userSignup:any) {
-    return this.http.post(this.urlSignUpUserAdmin, userSignup);
-  }
-
   getUserByEmail(email:any) {
     return this.http.get(`${this.urlUser}/email/${email}`)
   }
-  getUserAdminByEmail(email:any) {
-    return this.http.get(`${this.urlUserAdmin}/email/${email}`)
-  }
+
 
   getInfoUser() {
     return this.http.get(`${this.urlUser}/byToken`)
@@ -53,31 +44,33 @@ export class UserService {
     return this.http.delete(`${this.urlUser}/${id}`)
   }
 
-  getInfoUserAdmin() {
-    return this.http.get(`${this.urlUserAdmin}/byToken`)
-  }
+
   updateUser(id: any, user: any) {
     return this.http.put(`${this.urlUser}/${id}`, user)
   }
-
+  
   loggedIn() {
-    return !!localStorage.getItem('token');
+    if (localStorage.getItem('token') || localStorage.getItem('tokenSuperU')) {
+      return true;
+    }
+    return false;
+  }
+  loggedInSuperU() {
+    return !!localStorage.getItem('tokenSuperU');
+  }
+  
+  getTypeUserByToken() {
+    return this.http.get(`${this.urlUser}/getTypeUserByToken`)
   }
 
   getToken() {
+    if (localStorage.getItem('tokenSuperU') && localStorage.getItem('idSuperUser')) {
+      return localStorage.getItem('tokenSuperU');
+    }
     return localStorage.getItem('token');
   }
 
-  updateUserAdminIsConfigFull(id:any) {
-    const data={
-      isConfigFull: true
-    }
-    return this.http.put(`${this.urlUserAdmin}/${id}`, data);
-  }
 
-  getUserTypes() {
-    return this.http.get(`${this.urlUserType}`);
-  }
 
   getTokenBot(data: any) {
     return this.http.post(`${this.urlUser}/getTokenBot`, data);
@@ -89,8 +82,79 @@ export class UserService {
 
   logout(){
     localStorage.removeItem('token');
+    localStorage.removeItem('tokenSuperU');
     localStorage.removeItem('idUser');
     localStorage.removeItem('idUserAdmin');
     this.router.navigate(['/'])
   }
+
+
+
+
+
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  ////////////////   USER ADMIN ////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+
+
+  signInUserAdmin(userSignIn:any) {
+    return this.http.post(this.urlSignInUserAdmin, userSignIn);
+  }
+  signUpUserAdmin(userSignup:any) {
+    return this.http.post(this.urlSignUpUserAdmin, userSignup);
+  }
+  getUserAdminByEmail(email:any) {
+    return this.http.get(`${this.urlUserAdmin}/email/${email}`)
+  }
+  getInfoUserAdmin() {
+    return this.http.get(`${this.urlUserAdmin}/byToken`)
+  }
+  getUsersAdminByIdEmp(id:any){
+    return this.http.get(`${this.urlUserAdmin}/company/${id}`);
+  }
+  updateUserAdmin(data:any, id:any){
+    return this.http.put(`${this.urlUserAdmin}/${id}`, data);
+  }
+  deleteUserAdmin(id:any){
+    return this.http.delete(`${this.urlUserAdmin}/${id}`);
+  }
+
+
+
+
+
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////  USER TYPE ////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+
+  createUserType(UserType:any) {
+    return this.http.post(this.urlUserType, UserType);
+  }
+  getUserTypes() {
+    return this.http.get(`${this.urlUserType}`);
+  }
+  getUserTypeById(id:any) {
+    return this.http.get(`${this.urlUserType}/${id}`);
+  }
+  updateUserType(UserType:any, id:any) {
+    return this.http.put(`${this.urlUserType}/${id}`, UserType);
+  }
+  updateUserTypeIsConfigFull(id:any) {
+    const data={
+      isConfigFull: true
+    }
+    return this.http.put(`${this.urlUserType}/${id}`, data);
+  }
+  deleteUserType(id:any) {
+    return this.http.delete(`${this.urlUserType}/${id}`);
+  }
+
 }

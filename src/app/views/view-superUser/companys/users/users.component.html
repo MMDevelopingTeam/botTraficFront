@@ -1,0 +1,169 @@
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn m-3" (click)="goBack()">
+            <i class="fa-solid fa-angle-left" style="font-size: 35px;"></i>
+        </button>
+    </div>
+    <div class="col-md-4">
+        <h1 class="text-center my-4">Usuarios administradores</h1>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#createUserAdminModal">
+            <i class="fa-solid fa-plus"></i>
+            Crear Usuario administrador
+        </button>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table" *ngIf="usersAdmin">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Usuario</th>
+                <th scope="col">Email</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngFor="let user of usersAdmin">
+                <th>{{user.user}}</th>
+                <td>{{user.email}}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="getUserAdmin(user)" data-bs-toggle="modal" data-bs-target="#viewCompanyModal">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <button class="btn btn-success mx-1" (click)="getUserAdmin(user)" data-bs-toggle="modal" data-bs-target="#editUserAdminModal">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteUserAdmin(user._id)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+
+  
+<!-- Modal view -->
+<div class="modal fade" id="viewCompanyModal" tabindex="-1" aria-labelledby="viewCompanyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewCompanyModalLabel">Usuario administrador</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body row" *ngIf="userAdmin">
+        <div class="col-md-12 mb-3">
+            <label for="formGroupExampleInput" class="form-label">Usuario</label>
+            <input [(ngModel)]="userAdmin.user" type="text" class="form-control" id="formGroupExampleInput" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput2" class="form-label">Email</label>
+            <input [(ngModel)]="userAdmin.email" type="text" class="form-control" id="formGroupExampleInput2" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput3" class="form-label">Nombre</label>
+            <input [(ngModel)]="userAdmin.name" type="text" class="form-control" id="formGroupExampleInput3" disabled>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal edit -->
+<div class="modal fade" id="editUserAdminModal" tabindex="-1" aria-labelledby="editUserAdminModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserAdminModalLabel">Editar usuario administrador</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="row" [formGroup]="userAdminEditForm">
+                <div class="col-md-12 mb-3">
+                    <label for="formGroupExampleInputEn" class="form-label">Nombre</label>
+                    <input formControlName="name" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInputEn">
+                    <div *ngIf="getValue('name')?.invalid && (getValue('name')?.touched || getValue('name')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('name')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInputEu" class="form-label">Usuario</label>
+                    <input formControlName="user" type="text" class="form-control" placeholder="Ingrese el usuario" id="formGroupExampleInputEu">
+                    <div *ngIf="getValue('user')?.invalid && (getValue('user')?.touched || getValue('user')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('user')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInputEe" class="form-label">Email</label>
+                    <input formControlName="email" type="text" class="form-control" placeholder="Ingrese el email" id="formGroupExampleInputEe">
+                    <div *ngIf="getValue('email')?.invalid && (getValue('email')?.touched || getValue('email')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('email')?.errors?.required">El campo es requerido</p>
+                        <p class="fieldErr" *ngIf="getValueCreate('email')?.errors?.email">Email invalido</p>
+                      </div>
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="UpdateUserAdmin()" [disabled]="userAdminEditForm.invalid">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal create -->
+<div class="modal fade" id="createUserAdminModal" tabindex="-1" aria-labelledby="createUserAdminModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createUserAdminModalLabel">Crear usuario administrador</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="row" [formGroup]="userAdminCreateForm">
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                    <input formControlName="name" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+                    <div *ngIf="getValueCreate('name')?.invalid && (getValueCreate('name')?.touched || getValueCreate('name')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueCreate('name')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInputU" class="form-label">Usuario</label>
+                    <input formControlName="user" type="text" class="form-control" placeholder="Ingrese el Usuario" id="formGroupExampleInputU">
+                    <div *ngIf="getValueCreate('user')?.invalid && (getValueCreate('user')?.touched || getValueCreate('user')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueCreate('user')?.errors?.required">El campo es requerido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInputE" class="form-label">Email</label>
+                    <input formControlName="email" type="email" class="form-control" placeholder="Ingrese el Email" id="formGroupExampleInputE">
+                    <div *ngIf="getValueCreate('email')?.invalid && (getValueCreate('email')?.touched || getValueCreate('email')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueCreate('email')?.errors?.required">El campo es requerido</p>
+                        <p class="fieldErr" *ngIf="getValueCreate('email')?.errors?.email">Email invalido</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInputP" class="form-label">Password</label>
+                    <input formControlName="password" type="password" class="form-control" placeholder="Ingrese el Password" id="formGroupExampleInputP">
+                    <div *ngIf="getValueCreate('password')?.invalid && (getValueCreate('password')?.touched || getValueCreate('password')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueCreate('password')?.errors?.required">El campo es requerido</p>
+                        <p class="fieldErr" *ngIf="getValueCreate('password')?.errors?.minlength">El campo es minimo de 6 caracteres</p>
+                      </div>
+                </div>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="createUserAdmin()" [disabled]="userAdminCreateForm.invalid">Crear usuario</button>
+        </div>
+      </div>
+    </div>
+</div>
