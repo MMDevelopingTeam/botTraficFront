@@ -8,7 +8,7 @@
         <h1 class="text-center my-4">Plataformas</h1>
     </div>
     <div class="col-md-4">
-        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#createpermissionModal">
+        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#createPlatformModal">
             <i class="fa-solid fa-plus"></i>
             Crear plataformas
         </button>
@@ -28,10 +28,10 @@
                 <th>{{platform.namePlatform}}</th>
                 <td>{{platform.urlPlatform}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="getPlatform(platform)" data-bs-toggle="modal" data-bs-target="#permissionModal">
+                    <button class="btn btn-primary" (click)="getPlatform(platform)" data-bs-toggle="modal" data-bs-target="#platformModal">
                         <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="getPlatform(platform)" data-bs-toggle="modal" data-bs-target="#permissionEditModal">
+                    <button class="btn btn-success mx-1" (click)="getPlatformEdit(platform)" data-bs-toggle="modal" data-bs-target="#platformEditModal">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button class="btn btn-danger" (click)="deletePlatform(platform._id)">
@@ -46,11 +46,11 @@
 </div>
 
 <!-- Modal view -->
-<div class="modal fade" id="permissionModal" tabindex="-1" aria-labelledby="permissionModalLabel" aria-hidden="true">
+<div class="modal fade" id="platformModal" tabindex="-1" aria-labelledby="platformModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="permissionModalLabel">Plataformas</h5>
+          <h5 class="modal-title" id="platformModalLabel">Plataformas</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body row" *ngIf="platform">
@@ -64,49 +64,49 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getPlatforms()">Cerrar</button>
         </div>
       </div>
     </div>
   </div>
 
 <!-- Modal edit -->
-<div class="modal fade" id="permissionEditModal" tabindex="-1" aria-labelledby="permissionEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="platformEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="permissionEditModalLabel">Editar plataforma</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="platformEditModalLabel">Editar plataforma</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="getPlatforms()"></button>
         </div>
-        <div class="modal-body" *ngIf="platform">
-            <form class="row" [formGroup]="platformEditForm">
-                <div class="col-md-6 mb-3">
-                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
-                    <input formControlName="namePlatform" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
-                    <div *ngIf="getValue('namePlatform')?.invalid && (getValue('namePlatform')?.touched || getValue('namePlatform')?.dirty)">
-                        <p class="fieldErr" *ngIf="getValue('namePlatform')?.errors?.required">El campo es requerido</p>
-                      </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="formGroupExampleInput2" class="form-label">Descripción</label>
-                    <input formControlName="urlPlatform" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
-                </div>
-            </form>
+        <div class="modal-body" *ngIf="platformEdit">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput" class="form-label">Nombre</label>
+              <input [(ngModel)]="platformEdit.namePlatform" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+              <div *ngIf="platformEdit.namePlatform === ''">
+                  <p class="fieldErr">El campo es requerido</p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+              <input [(ngModel)]="platformEdit.urlPlatform" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
+            </div>
           </div>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdatePlatform()" [disabled]="platformEditForm.invalid">Guardar cambios</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getPlatforms()">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdatePlatform()" [disabled]="platformEdit.namePlatform === ''">Guardar cambios</button>
         </div>
       </div>
     </div>
 </div>
 
 <!-- Modal create -->
-<div class="modal fade" id="createpermissionModal" tabindex="-1" aria-labelledby="createpermissionModalLabel" aria-hidden="true">
+<div class="modal fade" id="createPlatformModal" tabindex="-1" aria-labelledby="createPlatformModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createpermissionModalLabel">Crear plataforma</h5>
+          <h5 class="modal-title" id="createPlatformModalLabel">Crear plataforma</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -125,7 +125,7 @@
             </form>
           </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getPlatforms()">Cerrar</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createPlatform()" [disabled]="platformCreateForm.invalid">Crear plataforma</button>
         </div>
       </div>

@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BotService } from '../../../services/bot.service';
 import Swal from 'sweetalert2'
 import { Router } from '@angular/router';
+import { Botcontainer } from 'src/app/models/botcontainer';
+
+declare var jQuery:any;
 
 @Component({
   selector: 'app-bot-containers',
@@ -16,6 +19,18 @@ export class BotContainersComponent implements OnInit {
 
   botContainers: any
   botContainer: any
+
+  botContainerEdit: Botcontainer= {
+    ip: '',
+    typeBot: '',
+    descriptionBot: '',
+    latBot: '',
+    lonBot: '',
+    addressBot: '',
+    averageDownloadSpeed: '',
+    averageUploadSpeed: '',
+    isp: ''
+  }
 
   lengthProxys: any;
   lengthProxysFree: any;
@@ -110,6 +125,10 @@ export class BotContainersComponent implements OnInit {
     this.getAllProxys()
   }
 
+  getBotContainerEdit(botContainer:Botcontainer){
+    this.botContainerEdit=botContainer
+  }
+
   deleteBotContainer(id:any){
     Swal.fire({
       title: 'Eliminar',
@@ -139,20 +158,19 @@ export class BotContainersComponent implements OnInit {
   }
 
   UpdateBotContainer() {
-    if (this.botContainerEditForm.valid) {
-      this.botService.updateBotContainer(this.botContainerEditForm.value, this.botContainer._id).subscribe(
-        (data:any) => {
-          this.getBotContainers();
-          Swal.fire({
-            icon: 'success',
-            title: 'Contenedor de bot actualizado correctamente',
-            showConfirmButton: false,
-            timer: 2500
-          })
-        },
-        err => {}
-      )
-    }
+    this.botService.updateBotContainer(this.botContainerEdit, this.botContainerEdit._id).subscribe(
+      (data:any) => {
+        this.getBotContainers();
+        jQuery("#botContainerEditModal").modal("hide");
+        Swal.fire({
+          icon: 'success',
+          title: 'Contenedor de bot actualizado correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      },
+      err => {}
+    )
   }
 
   createBotContainer() {
@@ -180,9 +198,6 @@ export class BotContainersComponent implements OnInit {
     this.router.navigate([`/dashboard/superUser/botContainers/${id}/proxys`]);
   }
 
-  getValue(value: string) {
-    return this.botContainerEditForm.get(value)
-  }
   getValueCreate(value: string) {
     return this.botContainerCreateForm.get(value)
   }

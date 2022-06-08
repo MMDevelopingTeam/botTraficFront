@@ -11,7 +11,6 @@ import { LicensesComponent } from './licenses/licenses.component';
 import { UserTypesComponent } from './user-types/user-types.component';
 import { PermissionsComponent } from './permissions/permissions.component';
 import { UsersComponent } from './companys/users/users.component';
-import { AddCompComponent } from './companys/add-comp/add-comp.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProxysComponent } from './bot-containers/proxys/proxys.component';
@@ -27,7 +26,6 @@ import { ProxysComponent } from './bot-containers/proxys/proxys.component';
     UserTypesComponent,
     PermissionsComponent,
     UsersComponent,
-    AddCompComponent,
     StatisticsComponent,
     ProxysComponent
   ],

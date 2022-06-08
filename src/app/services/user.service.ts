@@ -122,6 +122,9 @@ export class UserService {
   deleteUserAdmin(id:any){
     return this.http.delete(`${this.urlUserAdmin}/${id}`);
   }
+  restartPass(id:any){
+    return this.http.get(`${this.urlUserAdmin}/resetPass/${id}`);
+  }
 
 
 

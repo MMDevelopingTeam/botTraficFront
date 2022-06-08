@@ -8,7 +8,7 @@
         <h1 class="text-center my-4">Proxys</h1>
     </div>
     <div class="col-md-4">
-        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#addProxyModal">
+        <button [disabled]="!ifBot" class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#addProxyModal">
             <i class="fa-solid fa-plus"></i>
             Añadir proxys
         </button>
@@ -39,6 +39,9 @@
               </tr>
             </tbody>
           </table>
+          <div *ngIf="!proxys" class="text-center">
+            <h3>No tienes proxys o no pudiero cargar</h3>
+          </div>
     </div>
     <div class="col-1 col-md-1"></div>
 </div>

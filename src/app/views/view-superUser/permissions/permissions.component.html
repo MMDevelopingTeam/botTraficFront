@@ -31,7 +31,7 @@
                     <button class="btn btn-primary" (click)="getPermission(permission)" data-bs-toggle="modal" data-bs-target="#permissionModal">
                         <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="getPermission(permission)" data-bs-toggle="modal" data-bs-target="#permissionEditModal">
+                    <button class="btn btn-success mx-1" (click)="getPermissionEdit(permission)" data-bs-toggle="modal" data-bs-target="#permissionEditModal">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button class="btn btn-danger" (click)="deletePermission(permission._id)">
@@ -64,38 +64,38 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getPermissions()">Cerrar</button>
         </div>
       </div>
     </div>
   </div>
 
 <!-- Modal edit -->
-<div class="modal fade" id="permissionEditModal" tabindex="-1" aria-labelledby="permissionEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="permissionEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="permissionEditModalLabel">Permisos</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="getPermissions()"></button>
         </div>
-        <div class="modal-body" *ngIf="permission">
-            <form class="row" [formGroup]="permissionsEditForm">
-                <div class="col-md-6 mb-3">
-                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
-                    <input formControlName="namePermission" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
-                    <div *ngIf="getValue('namePermission')?.invalid && (getValue('namePermission')?.touched || getValue('namePermission')?.dirty)">
-                        <p class="fieldErr" *ngIf="getValue('namePermission')?.errors?.required">El campo es requerido</p>
-                      </div>
+        <div class="modal-body" *ngIf="permissionEdit">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput" class="form-label">Nombre</label>
+              <input [(ngModel)]="permissionEdit.namePermission" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+              <div *ngIf="permissionEdit.namePermission === ''">
+                  <p class="fieldErr">El campo es requerido</p>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="formGroupExampleInput2" class="form-label">Descripción</label>
-                    <input formControlName="PermissionDescription" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
-                </div>
-            </form>
           </div>
+          <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+              <input [(ngModel)]="permissionEdit.PermissionDescription" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
+          </div>
+          </div>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdatePermission()" [disabled]="permissionsEditForm.invalid">Guardar cambios</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getPermissions()">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="UpdatePermission()" [disabled]="permissionEdit.namePermission === ''">Guardar cambios</button>
         </div>
       </div>
     </div>
@@ -125,7 +125,7 @@
             </form>
           </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getPermissions()">Cerrar</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createPermission()" [disabled]="permissionsCreateForm.invalid">Crear permiso</button>
         </div>
       </div>

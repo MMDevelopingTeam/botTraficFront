@@ -89,7 +89,7 @@
   
 <!-- Modal moderator-->
 <div class="modal fade" id="createmoderatorModal" tabindex="-1" aria-labelledby="createmoderatorModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="createmoderatorModalLabel">Crear monitor</h5>
@@ -97,41 +97,49 @@
       </div>
       <div class="modal-body">
         <form class="row g-3" [formGroup]="userForm">
-          <div class="col-md-6">
+          <div class="col-md-12">
               <label for="inputUser" class="form-label">Usuario</label>
               <input type="text" class="form-control" formControlName="user" placeholder="Ingrese el usuario" id="inputUser">
-          </div>
-          <div *ngIf="getValueFormUser('user')?.invalid && (getValueFormUser('user')?.touched || getValueFormUser('user')?.dirty)">
-            <p class="fieldErr" *ngIf="getValueFormUser('user')?.errors?.required">El campo es requerido</p>
+              <div *ngIf="getValueFormUser('user')?.invalid && (getValueFormUser('user')?.touched || getValueFormUser('user')?.dirty)">
+                <p class="fieldErr" *ngIf="getValueFormUser('user')?.errors?.required">El campo es requerido</p>
+              </div>
           </div>
           <div class="col-md-6">
             <label for="inputName" class="form-label">Nombre</label>
             <input type="text" class="form-control" formControlName="name" id="inputName" placeholder="Ingrese el nombre">
+            <div *ngIf="getValueFormUser('name')?.invalid && (getValueFormUser('name')?.touched || getValueFormUser('name')?.dirty)">
+              <p class="fieldErr" *ngIf="getValueFormUser('name')?.errors?.required">El campo es requerido</p>
+            </div>
           </div>
-          <div *ngIf="getValueFormUser('name')?.invalid && (getValueFormUser('name')?.touched || getValueFormUser('name')?.dirty)">
-            <p class="fieldErr" *ngIf="getValueFormUser('name')?.errors?.required">El campo es requerido</p>
-          </div>
-          <div class="col-md-12">
+          <div class="col-md-6">
             <label for="inputEmail" class="form-label">Email</label>
             <input type="text" class="form-control" formControlName="email" id="inputEmail" placeholder="Ingrese el email">
+            <div *ngIf="getValueFormUser('email')?.invalid && (getValueFormUser('email')?.touched || getValueFormUser('email')?.dirty)">
+              <p class="fieldErr" *ngIf="getValueFormUser('email')?.errors?.required">El campo es requerido</p>
+              <p class="fieldErr" *ngIf="getValueFormUser('email')?.errors?.pattern">Email no valido</p>
+            </div>
           </div>
-          <div *ngIf="getValueFormUser('email')?.invalid && (getValueFormUser('email')?.touched || getValueFormUser('email')?.dirty)">
-            <p class="fieldErr" *ngIf="getValueFormUser('email')?.errors?.required">El campo es requerido</p>
-            <p class="fieldErr" *ngIf="getValueFormUser('email')?.errors?.pattern">Email no valido</p>
-          </div>
-          <div class="col-md-12">
+          <div class="col-md-6">
             <label for="inputPassword" class="form-label">Contraseña</label>
             <input type="password" class="form-control" formControlName="password" id="inputPassword" placeholder="Ingrese la contraseña">
+            <div *ngIf="getValueFormUser('password')?.invalid && (getValueFormUser('password')?.touched || getValueFormUser('password')?.dirty)">
+              <p class="fieldErr" *ngIf="getValueFormUser('password')?.errors?.required">El campo es requerido</p>
+              <p class="fieldErr" *ngIf="getValueFormUser('password')?.errors?.minlength">El campo es minimo de 6 caracteres</p>
+            </div>
           </div>
-          <div *ngIf="getValueFormUser('password')?.invalid && (getValueFormUser('password')?.touched || getValueFormUser('password')?.dirty)">
-            <p class="fieldErr" *ngIf="getValueFormUser('password')?.errors?.required">El campo es requerido</p>
-            <p class="fieldErr" *ngIf="getValueFormUser('password')?.errors?.minlength">El campo es minimo de 6 caracteres</p>
+          <div class="col-md-6">
+            <label for="inputPasswordV" class="form-label">verificar Contraseña</label>
+            <input type="password" class="form-control" formControlName="VerifiedPassword" id="inputPasswordV" placeholder="Ingrese la contraseña">
+            <div *ngIf="getValueFormUser('VerifiedPassword')?.invalid && (getValueFormUser('VerifiedPassword')?.touched || getValueFormUser('VerifiedPassword')?.dirty)">
+              <p class="fieldErr" *ngIf="getValueFormUser('VerifiedPassword')?.errors?.required">El campo es requerido</p>
+              <p class="fieldErr" *ngIf="getValueFormUser('VerifiedPassword')?.errors?.minlength">El campo es minimo de 6 caracteres</p>
+            </div>
           </div>
       </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" [disabled]="!userForm.valid" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveFormUser()">Crear</button>
+        <button type="button" [disabled]="!userForm.valid" class="btn btn-primary" (click)="saveFormUser()">Crear</button>
       </div>
     </div>
   </div>
@@ -231,42 +239,44 @@
 </div>
 
 <!-- Modal update user-->
-<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="editUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="editUserModalLabel">Editar Monitor</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="getUsers()"></button>
       </div>
-      <div class="modal-body" *ngIf="dataUser">
-        <form class="row g-3" [formGroup]="userUdateForm">
+      <div class="modal-body" *ngIf="dataUserEdit">
+        <div class="row">
           <div class="col-md-6">
-              <label for="inputuser" class="form-label">Usuario</label>
-              <input type="text" class="form-control" formControlName="user" [ngModel]="dataUser.user" placeholder="Ingrese el usuario" id="inputuser">
+            <label for="inputuser" class="form-label">Usuario</label>
+            <input type="text" class="form-control" [(ngModel)]="dataUserEdit.user" placeholder="Ingrese el usuario" id="inputuser">
+            <div *ngIf="dataUserEdit.user === ''">
+              <p class="fieldErr mt-3">El campo es requerido</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+          <label for="inputname" class="form-label">Nombre</label>
+          <input type="text" class="form-control" [(ngModel)]="dataUserEdit.name" id="inputname" placeholder="Ingrese el nombre">
+          <div *ngIf="dataUserEdit.name === ''">
+            <p class="fieldErr mt-3" >El campo es requerido</p>
           </div>
-          <div *ngIf="getValueFormUserUpdate('user')?.invalid && (getValueFormUserUpdate('user')?.touched || getValueFormUserUpdate('user')?.dirty)">
-            <p class="fieldErr" *ngIf="getValueFormUserUpdate('user')?.errors?.required">El campo es requerido</p>
+        </div>
+        <div class="col-md-12">
+          <label for="inputemail" class="form-label">Email</label>
+          <input type="email" class="form-control" [(ngModel)]="dataUserEdit.email" id="inputemail" placeholder="Ingrese el nombre">
+          <div *ngIf="dataUserEdit.email === ''">
+            <p class="fieldErr mt-3">El campo es requerido</p>
           </div>
-          <div class="col-md-6">
-            <label for="inputname" class="form-label">Nombre</label>
-            <input type="text" class="form-control" formControlName="name" [ngModel]="dataUser.name" id="inputname" placeholder="Ingrese el nombre">
+          <div *ngIf="dataUserEdit.email !== ''">
+            <p class="fieldErr mt-3" *ngIf="esEmailValido(dataUserEdit.email) === false">Email no valido</p>
           </div>
-          <div *ngIf="getValueFormUserUpdate('name')?.invalid && (getValueFormUserUpdate('name')?.touched || getValueFormUserUpdate('name')?.dirty)">
-            <p class="fieldErr" *ngIf="getValueFormUserUpdate('name')?.errors?.required">El campo es requerido</p>
-          </div>
-          <div class="col-md-12">
-            <label for="inputemail" class="form-label">Email</label>
-            <input type="text" class="form-control" formControlName="email" [ngModel]="dataUser.email" id="inputemail" placeholder="Ingrese el nombre">
-          </div>
-          <div *ngIf="getValueFormUserUpdate('email')?.invalid && (getValueFormUserUpdate('email')?.touched || getValueFormUserUpdate('email')?.dirty)">
-            <p class="fieldErr" *ngIf="getValueFormUserUpdate('email')?.errors?.required">El campo es requerido</p>
-            <p class="fieldErr" *ngIf="getValueFormUserUpdate('email')?.errors?.pattern">Email no valido</p>
-          </div>
-      </form>
+        </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveFormUserUpdate()">Editar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getUsers()">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="saveFormUserUpdate()" [disabled]="dataUserEdit.user === '' || dataUserEdit.name === '' || dataUserEdit.email === ''">Editar</button>
       </div>
     </div>
   </div>

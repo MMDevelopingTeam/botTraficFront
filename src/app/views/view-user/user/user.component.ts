@@ -17,7 +17,7 @@ import { NotificationService } from '../../../services/notification.service';
 })
 export class UserComponent implements OnInit {
   usuario: any;
-  roles: any;
+
   dataModels: any;
   modelo: any;
 
@@ -32,6 +32,7 @@ export class UserComponent implements OnInit {
   isLoading: boolean = false;
   data$: any;
   idPlatfom: any;
+  IfValid: boolean=false;
 
   constructor(
     public userService: UserService,
@@ -58,21 +59,27 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.nav.show();
     this.getInfoUrs()
-    this.getPlatforms()
   }
 
   getInfoUrs() {
     this.userService.getInfoUser().subscribe(
       (data: any) => {
         this.usuario = data.dataUser;
-        this.roles = data.dataUser.userTypeArray;
-        this.modelsService.getModelsByIDheadQ(this.usuario.headquarters_idHeadquarter).subscribe(
-          (data:any) => {
-            // console.log(data)
-            this.dataModels=data.dataModel
-          },
-          err => console.log(err)
-        )
+        console.log(this.usuario.userTypeArray);
+        for (const iterator of this.usuario.userTypeArray) {
+          console.log(iterator);
+          if (iterator.nameUserType === 'moderator') {
+            this.modelsService.getModelsByIDheadQ(this.usuario.headquarters_idHeadquarter).subscribe(
+              (data:any) => {
+                // console.log(data)
+                this.dataModels=data.dataModel
+              },
+              err => console.log(err)
+            )
+            this.getPlatforms()
+            this.IfValid=true
+          }
+        }
       },
       (error) => console.log(error)
     );

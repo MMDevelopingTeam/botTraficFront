@@ -8,6 +8,10 @@ import { ModelsService } from '../../services/models.service';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2'
 import { PlatformsService } from 'src/app/services/platforms.service';
+import { NotificationService } from 'src/app/services/notification.service';
+import { User } from 'src/app/models/user';
+
+declare var jQuery:any;
 
 @Component({
   selector: 'app-headquarters',
@@ -26,9 +30,17 @@ export class HeadquartersComponent implements OnInit {
   modelForm: FormGroup;
   modelUpdateForm: FormGroup;
   userForm: FormGroup;
-  userUdateForm: FormGroup;
   dataModel: any;
-  dataUser: any;
+  
+  dataUserEdit: User={
+    name: '',
+    user: '',
+    email: '',
+    password: '',
+    userTypeArray: [],
+    headquarters_idHeadquarter: ''
+  };
+
   platforms: any;
 
   constructor(
@@ -36,6 +48,7 @@ export class HeadquartersComponent implements OnInit {
     private navbarService: NavbarService,
     private headquartersService: HeadquartersService,
     private platformsService: PlatformsService,
+    private NotificationService: NotificationService,
     private modelsService: ModelsService,
     private userService: UserService,
     private _location: Location,
@@ -66,15 +79,9 @@ export class HeadquartersComponent implements OnInit {
       name: ['', Validators.required],
       email: ['',[Validators.required, Validators.pattern(this.isValidEmail)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      VerifiedPassword: ['', [Validators.required, Validators.minLength(6)]],
       userTypeArray: this.fb.array([]),
       headquarters_idHeadquarter: [this.id]
-    });
-
-    this.userUdateForm = this.fb.group({
-      user: ['', Validators.required],
-      name: ['', Validators.required],
-      email: ['',[Validators.required, Validators.pattern(this.isValidEmail)]]
-      // password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
   }
@@ -136,8 +143,7 @@ export class HeadquartersComponent implements OnInit {
   }
 
   editUser(user: any){
-    this.dataUser=user
-    this.userUdateForm.clearAsyncValidators()
+    this.dataUserEdit=user
   }
 
   saveFormModelUpdate(){
@@ -164,30 +170,29 @@ export class HeadquartersComponent implements OnInit {
     }
   }
 
-  saveFormUserUpdate(){
-    if (this.userUdateForm.valid) {
-      this.userService.updateUser( this.dataUser._id, this.userUdateForm.value).subscribe(
-        (data: any) => {
-          console.log(data)
-          Swal.fire({
-            icon: 'success',
-            title: 'Monitor actualizado',
-            showConfirmButton: false,
-            timer: 2000
-          })
-          this.getUsers();
-        },
-        err => console.log(err)
-      )
-    }else{
-      console.log(this.userUdateForm.value);
-      Swal.fire({
-        icon: 'warning',
-        title: 'Llena todos los campos',
-        showConfirmButton: false,
-        timer: 2000
-      })
+  esEmailValido(email:string) {
+    let mailValido = false;
+    const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (email.match(EMAIL_REGEX)){
+      mailValido = true;
     }
+  return mailValido;
+  }
+
+  saveFormUserUpdate(){
+    this.userService.updateUser( this.dataUserEdit._id, this.dataUserEdit).subscribe(
+      (data: any) => {
+        this.getUsers();
+        jQuery("#editUserModal").modal("hide");
+        Swal.fire({
+          icon: 'success',
+          title: 'Monitor actualizado',
+          showConfirmButton: false,
+          timer: 2000
+        })
+      },
+      err => console.log(err)
+    )
   }
 
   getUsers() {
@@ -236,26 +241,27 @@ export class HeadquartersComponent implements OnInit {
   getValueFormUser(value: string) {
     return this.userForm.get(value)
   }
-  getValueFormUserUpdate(value: string) {
-    return this.userUdateForm.get(value)
-  }
+  
   saveFormUser(){
     let data=[
       this.dataUserType
     ]
     let value = this.userForm.value
     value.userTypeArray=data
-    // console.log(value)
+    if (value.password !== value.VerifiedPassword) {
+      return this.NotificationService.showErr('Las contraseñas no coinciden')
+    }
     if(this.userForm.valid) {
       this.userService.signUp(value).subscribe(
         (data:any) => {
+          this.getUsers();
+          jQuery("#createmoderatorModal").modal("hide");
           Swal.fire({
             icon: 'success',
             title: 'monitor creado correctamente',
             showConfirmButton: false,
             timer: 2500
           })
-          this.getUsers();
         }
       )
     }

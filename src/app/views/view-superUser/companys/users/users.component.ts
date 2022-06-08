@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../../services/user.service';
 import Swal from 'sweetalert2'
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { NotificationService } from '../../../../services/notification.service';
 
 declare var jQuery:any;
 
@@ -22,6 +23,7 @@ export class UsersComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
+    private NotificationService: NotificationService,
     private _location: Location,
     private fb: FormBuilder,
   ) {
@@ -39,6 +41,7 @@ export class UsersComponent implements OnInit {
       user: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      VerifiedPassword: ['', [Validators.required, Validators.minLength(6)]],
       company_idCompany: [this.idCompany]
     });
   }
@@ -61,6 +64,34 @@ export class UsersComponent implements OnInit {
 
   getUserAdmin(user: any){
     this.userAdmin=user
+  }
+
+  restartPass(id:any){
+    Swal.fire({
+      title: 'Restaurar',
+      text: "¿Estas seguro que quieres restaurar el password?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#198754',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Restaurar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userService.restartPass(id).subscribe(
+          (data:any) => {
+            this.getUsersAdmin();
+            Swal.fire({
+              icon: 'success',
+              title: 'Password restaurado correctamente',
+              showConfirmButton: false,
+              timer: 2000
+            })
+          },
+          err => {}
+        )
+      }
+    })
   }
 
   deleteUserAdmin(id:any){
@@ -93,6 +124,10 @@ export class UsersComponent implements OnInit {
 
   createUserAdmin(){
     if (this.userAdminCreateForm.valid) {
+      let value = this.userAdminCreateForm.value
+      if (value.password !== value.VerifiedPassword) {
+        return this.NotificationService.showErr('Las contraseñas no coinciden')
+      }
       this.userService.signUpUserAdmin(this.userAdminCreateForm.value).subscribe(
         (data:any) => {
           this.getUsersAdmin();

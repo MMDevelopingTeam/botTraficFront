@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PlatformsService } from '../../../services/platforms.service';
 import Swal from 'sweetalert2'
+import { Platform } from 'src/app/models/platform';
+
+declare var jQuery:any;
 
 @Component({
   selector: 'app-platforms',
@@ -13,18 +16,19 @@ export class PlatformsComponent implements OnInit {
 
   platforms: any;
   platform: any;
-  platformEditForm: FormGroup;
-  platformCreateForm: FormGroup;
+  
+  platformEdit: Platform={
+    namePlatform: '',
+    urlPlatform: ''
+  };
 
+  platformCreateForm: FormGroup;
+  
   constructor(
     private platformsService: PlatformsService,
     private _location: Location,
     private fb: FormBuilder,
   ) {
-    this.platformEditForm = this.fb.group({
-      namePlatform: ['', Validators.required],
-      urlPlatform: [''],
-    });
 
     this.platformCreateForm = this.fb.group({
       namePlatform: ['', Validators.required],
@@ -47,6 +51,9 @@ export class PlatformsComponent implements OnInit {
 
   getPlatform(platform: any){
     this.platform=platform
+  }
+  getPlatformEdit(platform: any){
+    this.platformEdit=platform
   }
 
   deletePlatform(id:any){
@@ -78,26 +85,26 @@ export class PlatformsComponent implements OnInit {
   }
 
   UpdatePlatform() {
-    if (this.platformEditForm.valid) {
-      this.platformsService.updatePlatform(this.platformEditForm.value, this.platform._id).subscribe(
-        (data:any) => {
-          this.getPlatforms();
-          Swal.fire({
-            icon: 'success',
-            title: 'Compañia actualizada correctamente',
-            showConfirmButton: false,
-            timer: 2500
-          })
-        },
-        err => {}
-      )
-    }
+    this.platformsService.updatePlatform(this.platformEdit, this.platformEdit._id).subscribe(
+      (data:any) => {
+        this.getPlatforms();
+        jQuery("#platformEditModal").modal("hide");
+        Swal.fire({
+          icon: 'success',
+          title: 'Plataforma actualizada correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      },
+      err => {}
+    )
   }
   createPlatform() {
     if (this.platformCreateForm.valid) {
       this.platformsService.createPlatform(this.platformCreateForm.value).subscribe(
         (data:any) => {
           this.getPlatforms();
+          jQuery("#createModal").modal("hide");
           Swal.fire({
             icon: 'success',
             title: 'Plataforma creada correctamente',
@@ -114,10 +121,6 @@ export class PlatformsComponent implements OnInit {
     this._location.back();
   }
 
-
-  getValue(value: string) {
-    return this.platformEditForm.get(value)
-  }
   getValueCreate(value: string) {
     return this.platformCreateForm.get(value)
   }

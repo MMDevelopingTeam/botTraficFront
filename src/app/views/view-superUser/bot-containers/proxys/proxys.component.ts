@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BotService } from '../../../../services/bot.service';
 import Swal from 'sweetalert2'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from '../../../../services/notification.service';
 
 @Component({
   selector: 'app-proxys',
@@ -15,12 +16,15 @@ export class ProxysComponent implements OnInit {
   botContainer: any;
   proxys: any;
 
+  ifBot: boolean=false;
+
   proxysForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private botService: BotService,
     private _location: Location,
+    private notificationService: NotificationService,
     private fb: FormBuilder,
   ) {
     this.route.params.subscribe(params => {
@@ -50,6 +54,15 @@ export class ProxysComponent implements OnInit {
     this.botService.getAllProxys(this.botContainer.ip).subscribe(
       (data:any) => {
         this.proxys=data.prsModels
+        this.ifBot=true
+      },
+      err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al conectar al bot',
+          showConfirmButton: false,
+          timer: 2000
+        })
       }
     )
   }

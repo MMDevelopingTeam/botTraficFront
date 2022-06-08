@@ -1,8 +1,11 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Permission } from 'src/app/models/permission';
 import { PermissionsService } from 'src/app/services/permissions.service';
 import Swal from 'sweetalert2'
+
+declare var jQuery:any;
 
 @Component({
   selector: 'app-permissions',
@@ -12,7 +15,12 @@ import Swal from 'sweetalert2'
 export class PermissionsComponent implements OnInit {
   permissions: any;
   permission: any;
-  permissionsEditForm: FormGroup;
+
+  permissionEdit: Permission= {
+    namePermission: '',
+    PermissionDescription: ''
+  };
+
   permissionsCreateForm: FormGroup;
 
   constructor(
@@ -20,11 +28,6 @@ export class PermissionsComponent implements OnInit {
     private _location: Location,
     private fb: FormBuilder,
   ) {
-    this.permissionsEditForm = this.fb.group({
-      namePermission: ['', Validators.required],
-      PermissionDescription: [''],
-    });
-
     this.permissionsCreateForm = this.fb.group({
       namePermission: ['', Validators.required],
       PermissionDescription: [''],
@@ -68,6 +71,9 @@ export class PermissionsComponent implements OnInit {
   getPermission(permission: any){
     this.permission=permission
   }
+  getPermissionEdit(permission: any){
+    this.permissionEdit=permission
+  }
 
   deletePermission(id:any){
     Swal.fire({
@@ -98,24 +104,19 @@ export class PermissionsComponent implements OnInit {
   }
 
   UpdatePermission(){
-    if (this.permissionsEditForm.valid) {
-      this.permissionsService.updatePermission(this.permissionsEditForm.value, this.permission._id).subscribe(
-        (data:any) => {
-          this.getPermissions();
-          Swal.fire({
-            icon: 'success',
-            title: 'Compañia actualizada correctamente',
-            showConfirmButton: false,
-            timer: 2500
-          })
-        },
-        err => {}
-      )
-    }
-  }
-
-  getValue(value: string) {
-    return this.permissionsEditForm.get(value)
+    this.permissionsService.updatePermission(this.permissionEdit, this.permissionEdit._id).subscribe(
+      (data:any) => {
+        this.getPermissions();
+        jQuery("#permissionEditModal").modal("hide");
+        Swal.fire({
+          icon: 'success',
+          title: 'Permiso actualizado correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      },
+      err => {}
+    )
   }
   getValueCreate(value: string) {
     return this.permissionsCreateForm.get(value)

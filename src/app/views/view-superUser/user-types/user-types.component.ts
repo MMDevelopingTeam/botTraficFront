@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserType } from 'src/app/models/userType';
 import { NotificationService } from 'src/app/services/notification.service';
 import { PermissionsService } from 'src/app/services/permissions.service';
 import { UserService } from 'src/app/services/user.service';
@@ -16,6 +17,13 @@ declare var jQuery:any;
 export class UserTypesComponent implements OnInit {
   userTypes: any;
   userType: any;
+
+  userTypeEdit: UserType= {
+    _id: '',
+    nameUserType: '',
+    descriptionUserType: '',
+    permissionsArray: []
+  };
   
   userTypeEditForm: FormGroup;
   userTypeCreateForm: FormGroup;
@@ -62,24 +70,27 @@ export class UserTypesComponent implements OnInit {
       this.arrayPermissions.push(userType.permissionsArray[index]._id)
     }
   }
+  getUserTypeEdit(userType: any) {
+    this.userTypeEdit=userType
+    for (let index = 0; index < userType.permissionsArray.length; index++) {
+      this.arrayPermissions.push(userType.permissionsArray[index]._id)
+    }
+  }
 
   UpdateUserType(){
-    if (this.userTypeEditForm.valid) {
-      let value = this.userTypeEditForm.value
-      value.permissionsArray=this.arrayPermissions
-      this.userService.updateUserType(value, this.userType._id).subscribe(
-        (data:any) => {
-          this.getUserTypes();
-          Swal.fire({
-            icon: 'success',
-            title: 'Tipo de usuario actualizado correctamente',
-            showConfirmButton: false,
-            timer: 2500
-          })
-        },
-        err => {}
-      )
-    }
+    this.userTypeEdit.permissionsArray=this.arrayPermissions
+    this.userService.updateUserType(this.userTypeEdit, this.userTypeEdit._id).subscribe(
+      (data:any) => {
+        this.getUserTypes();
+        Swal.fire({
+          icon: 'success',
+          title: 'Tipo de usuario actualizado correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      },
+      err => {}
+    )
   }
 
   createUserType(){

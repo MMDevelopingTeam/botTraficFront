@@ -5,12 +5,12 @@
         </button>
     </div>
     <div class="col-md-4">
-        <h1 class="text-center my-4">Compañias</h1>
+        <h1 class="text-center my-4">Compañías</h1>
     </div>
     <div class="col-md-4">
-        <button class="btn btn-primary m-5" style="float: right;" [routerLink]="['/dashboard/superUser/companys/add']">
+        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#createModal">
             <i class="fa-solid fa-plus"></i>
-            Crear compañia
+            Crear compañía
         </button>
     </div>
     <div class="col-md-1"></div>
@@ -36,7 +36,7 @@
                     <button class="btn btn-warning mx-1" (click)="getCompany(company)" (click)="redirect()">
                       <i class="fa-solid fa-user"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="redirectEdit(company._id)">
+                    <button class="btn btn-success mx-1" (click)="getCompanyEdit(company)" data-bs-toggle="modal" data-bs-target="#editCompanyModal">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button class="btn btn-danger" (click)="deleteCompany(company._id)">
@@ -57,11 +57,11 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="viewCompanyModalLabel">Compañia</h5>
+        <h5 class="modal-title" id="viewCompanyModalLabel">Compañía</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body row" *ngIf="company">
-        <div class="col-md-12 mb-3">
+        <div class="col-md-6 mb-3">
             <label for="formGroupExampleInput" class="form-label">Nombre</label>
             <input [(ngModel)]="company.nameCompany" name="cc" type="text" class="form-control" id="formGroupExampleInput" disabled>
         </div>
@@ -70,8 +70,12 @@
             <input [(ngModel)]="company.typeCompany" type="text" class="form-control" id="formGroupExampleInput2" disabled>
         </div>
         <div class="col-md-6 mb-3">
-            <label for="formGroupExampleInput2" class="form-label">Dirección</label>
-            <input [(ngModel)]="company.addressCompany" type="text" class="form-control" id="formGroupExampleInput2" disabled>
+            <label for="formGroupExampleInput3" class="form-label">Dirección</label>
+            <input [(ngModel)]="company.addressCompany" type="text" class="form-control" id="formGroupExampleInput3" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput3" class="form-label">Telefono</label>
+            <input [(ngModel)]="company.telephoneCompany" type="text" class="form-control" id="formGroupExampleInput3" disabled>
         </div>
         <hr>
         <div class="col-md-12 mb-3">
@@ -117,74 +121,107 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getCompanys()">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Modal edit -->
-<div class="modal fade" id="editCompanyModal" tabindex="-1" aria-labelledby="editCompanyModalLabel" aria-hidden="true">
+<div class="modal fade" id="editCompanyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editCompanyModalLabel">Editar compañia</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="editCompanyModalLabel">Editar compañía</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="getCompanys()"></button>
         </div>
-        <div class="modal-body" *ngIf="company">
-            <form class="row" [formGroup]="companyEditForm">
-                <div class="col-md-12 mb-3">
-                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
-                    <input formControlName="nameCompany" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
-                    <div *ngIf="getValue('nameCompany')?.invalid && (getValue('nameCompany')?.touched || getValue('nameCompany')?.dirty)">
-                        <p class="fieldErr" *ngIf="getValue('nameCompany')?.errors?.required">El campo es requerido</p>
-                      </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="inputState" class="form-label">Tipo</label>
-                    <select id="inputState" class="form-select" formControlName="typeCompany">
-                      <option selected></option>
-                      <option>Estudio</option>
-                      <option>Modelo</option>
-                    </select>
-                    <div *ngIf="getValue('typeCompany')?.invalid && (getValue('typeCompany')?.touched || getValue('typeCompany')?.dirty)">
-                        <p class="fieldErr" *ngIf="getValue('typeCompany')?.errors?.required">El campo es requerido</p>
-                      </div>
-                  </div>
-                <div class="col-md-6 mb-3">
-                    <label for="formGroupExampleInput2" class="form-label">Dirección</label>
-                    <input formControlName="addressCompany" type="text" class="form-control" placeholder="Ingrese la dirección" id="formGroupExampleInput2">
-                </div>
-                <hr>
-                <div class="col-md-12">
-                    <h4 class="modal-title">Licencias: {{compLicences.length}}</h4>
-                </div>
-                <div *ngIf="licences">
-                  <table class="table">
-                    <thead class="table-dark">
-                      <tr class="text-center">
-                        <th scope="col">Nombre</th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr  class="text-center" *ngFor="let licence of licences">
-                        <th>{{licence.nameLicense}}</th>
-                        <td>
-                          <button class="btn btn-primary" (click)="addLicence(licence._id)">
-                            Añadir
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-            </form>
+        <div class="modal-body" *ngIf="companyEdit">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput" class="form-label">Nombre</label>
+              <input [(ngModel)]="companyEdit.nameCompany" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
+              <div *ngIf="companyEdit.nameCompany === ''">
+                  <p class="fieldErr">El campo es requerido</p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput1" class="form-label">Tipo</label>
+              <input [(ngModel)]="companyEdit.typeCompany" type="text" class="form-control" placeholder="Ingrese el tipo" id="formGroupExampleInput1">
+              <div *ngIf="companyEdit.typeCompany === ''">
+                <p class="fieldErr">El campo es requerido</p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput2" class="form-label">Dirección</label>
+              <input [(ngModel)]="companyEdit.addressCompany" type="text" class="form-control" placeholder="Ingrese la dirección" id="formGroupExampleInput2">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput3" class="form-label">Telefono</label>
+              <input [(ngModel)]="companyEdit.telephoneCompany" type="text" class="form-control" placeholder="Ingrese el telefono" id="formGroupExampleInput3">
+            </div>
           </div>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="clearArray()" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdateCompany()" [disabled]="companyEditForm.invalid">Guardar cambios</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getCompanys()">Cerrar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdateCompany()">Guardar cambios</button>
         </div>
       </div>
     </div>
+</div>
+
+<!-- Modal create -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">Crear compañía</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="companyCreateForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                <input formControlName="nameCompany" placeholder="Ingrese el nombre" type="text" class="form-control" id="formGroupExampleInput">
+                <div *ngIf="getValueCreate('nameCompany')?.invalid && (getValueCreate('nameCompany')?.touched || getValueCreate('nameCompany')?.dirty)">
+                  <p class="fieldErr" *ngIf="getValueCreate('nameCompany')?.errors?.required">El campo es requerido</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput1" class="form-label">Tipo</label>
+              <input formControlName="typeCompany" type="text" class="form-control" placeholder="Ingrese el tipo" id="formGroupExampleInput1">
+              <div *ngIf="getValueCreate('typeCompany')?.invalid && (getValueCreate('typeCompany')?.touched || getValueCreate('typeCompany')?.dirty)">
+                <p class="fieldErr" *ngIf="getValueCreate('typeCompany')?.errors?.required">El campo es requerido</p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="formGroupExampleInput3" class="form-label">Dirección</label>
+                <input formControlName="addressCompany" placeholder="Ingrese la dirección" type="text" class="form-control" id="formGroupExampleInput3">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="formGroupExampleInput3" class="form-label">Telefono</label>
+                <input formControlName="telephoneCompany" placeholder="Ingrese el telefono" type="text" class="form-control" id="formGroupExampleInput3">
+            </div>
+            <h4>Licencias</h4>
+            <hr>
+            <div class="col-md-12 mb-3">
+              <select class="form-select" formControlName="license_idLicense" aria-label="Default select example" id="formGroupExampleInput2">
+                <option selected></option>
+                <option *ngFor="let licence of licences" [value]="licence._id">
+                  {{licence.nameLicense}}-{{licence.platform_idPlatform.namePlatform}}
+                </option>
+              </select>
+              <div *ngIf="getValueCreate('license_idLicense')?.invalid && (getValueCreate('license_idLicense')?.touched || getValueCreate('license_idLicense')?.dirty)">
+                <p class="fieldErr" *ngIf="getValueCreate('license_idLicense')?.errors?.required">El campo es requerido</p>
+              </div>
+          </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getCompanys()">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="createCompany()" [disabled]="companyCreateForm.invalid">Crear compañía</button>
+      </div>
+    </div>
+  </div>
 </div>

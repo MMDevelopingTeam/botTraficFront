@@ -20,6 +20,7 @@
               <tr class="text-center">
                 <th scope="col">Nombre</th>
                 <th scope="col">Descripción</th>
+                <th scope="col">Plataforma</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
@@ -27,11 +28,12 @@
               <tr class="text-center" *ngFor="let license of licenses">
                 <th>{{license.nameLicense}}</th>
                 <td>{{license.descriptionLicense}}</td>
+                <td>{{license.platform_idPlatform.namePlatform}}</td>
                 <td>
                     <button class="btn btn-primary" (click)="getLicense(license)" data-bs-toggle="modal" data-bs-target="#viewLicenseModal">
                         <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="getLicense(license)" data-bs-toggle="modal" data-bs-target="#editLicenseModal">
+                    <button class="btn btn-success mx-1" (click)="getLicenseEdit(license)" data-bs-toggle="modal" data-bs-target="#editLicenseModal">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button class="btn btn-danger" (click)="deleteLicense(license._id)">
@@ -58,11 +60,23 @@
       <div class="modal-body row" *ngIf="license">
         <div class="col-md-6 mb-3">
             <label for="formGroupExampleInput" class="form-label">Nombre</label>
-            <input [(ngModel)]="license.nameLicense" name="cc" type="text" class="form-control" id="formGroupExampleInput" disabled>
+            <input [(ngModel)]="license.nameLicense" type="text" class="form-control" id="formGroupExampleInput" disabled>
         </div>
         <div class="col-md-6 mb-3">
             <label for="formGroupExampleInput2" class="form-label">Descripción</label>
             <input [(ngModel)]="license.descriptionLicense" type="text" class="form-control" id="formGroupExampleInput2" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput3" class="form-label">Duración</label>
+            <input [(ngModel)]="license.monthsDuration" type="text" class="form-control" id="formGroupExampleInput3" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput4" class="form-label">Cantidad de cuentas</label>
+            <input [(ngModel)]="license.numberAccts" type="text" class="form-control" id="formGroupExampleInput4" disabled>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput5" class="form-label">Plataforma</label>
+            <input [(ngModel)]="license.platform_idPlatform.namePlatform" type="text" class="form-control" id="formGroupExampleInput5" disabled>
         </div>
       </div>
       <div class="modal-footer">
@@ -73,31 +87,45 @@
 </div>
 
 <!-- Modal edit -->
-<div class="modal fade" id="editLicenseModal" tabindex="-1" aria-labelledby="editCompanyModalLabel" aria-hidden="true">
+<div class="modal fade" id="editLicenseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="editCompanyModalLabel">Editar licencia</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="getLicenses()"></button>
         </div>
-        <div class="modal-body" *ngIf="license">
-            <form class="row" [formGroup]="licencesEditForm">
-                <div class="col-md-6 mb-3">
-                    <label for="formGroupExampleInput" class="form-label">Nombre</label>
-                    <input formControlName="nameLicense" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
-                    <div *ngIf="getValue('nameLicense')?.invalid && (getValue('nameLicense')?.touched || getValue('nameLicense')?.dirty)">
-                        <p class="fieldErr" *ngIf="getValue('nameLicense')?.errors?.required">El campo es requerido</p>
-                      </div>
+        <div class="modal-body" *ngIf="licenseEdit">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                <input [(ngModel)]="licenseEdit.nameLicense" type="text" placeholder="Ingrese el nombre" class="form-control" id="formGroupExampleInput">
+                <div *ngIf="licenseEdit.nameLicense === ''">
+                  <p class="fieldErr">El campo es requerido</p>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="formGroupExampleInput2" class="form-label">Descripción</label>
-                    <input formControlName="descriptionLicense" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput2">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="formGroupExampleInput2" class="form-label">Descripción</label>
+                <input [(ngModel)]="licenseEdit.descriptionLicense" placeholder="Ingrese la descripción" type="text" class="form-control" id="formGroupExampleInput2">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="formGroupExampleInput3" class="form-label">Duración</label>
+                <input [(ngModel)]="licenseEdit.monthsDuration" placeholder="Ingrese la duración" type="text" class="form-control" id="formGroupExampleInput3">
+                <div *ngIf="licenseEdit.monthsDuration === ''">
+                  <p class="fieldErr">El campo es requerido</p>
                 </div>
-            </form>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="formGroupExampleInput4" class="form-label">Cantidad de cuentas</label>
+                <input [(ngModel)]="licenseEdit.numberAccts" placeholder="Ingrese la antidad de cuentas" type="text" class="form-control" id="formGroupExampleInput4">
+                <div *ngIf="licenseEdit.numberAccts === ''">
+                  <p class="fieldErr">El campo es requerido</p>
+                </div>
+            </div>
           </div>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdateLicense()" [disabled]="licencesEditForm.invalid">Guardar cambios</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdateLicense()" [disabled]="licenseEdit.nameLicense === '' || licenseEdit.monthsDuration === ''|| licenseEdit.numberAccts === ''">Guardar cambios</button>
         </div>
       </div>
     </div>
@@ -118,12 +146,36 @@
                     <input formControlName="nameLicense" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
                     <div *ngIf="getValueCreate('nameLicense')?.invalid && (getValueCreate('nameLicense')?.touched || getValueCreate('nameLicense')?.dirty)">
                         <p class="fieldErr" *ngIf="getValueCreate('nameLicense')?.errors?.required">El campo es requerido</p>
-                      </div>
+                    </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput1" class="form-label">Descripción</label>
                     <input formControlName="descriptionLicense" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput1">
                 </div>
+                <div class="col-md-6 mb-3">
+                  <label for="formGroupExampleInput2" class="form-label">Duración</label>
+                  <input formControlName="monthsDuration" type="number" class="form-control" placeholder="Ingrese el duración en meses" id="formGroupExampleInput2">
+                  <div *ngIf="getValueCreate('monthsDuration')?.invalid && (getValueCreate('monthsDuration')?.touched || getValueCreate('monthsDuration')?.dirty)">
+                      <p class="fieldErr" *ngIf="getValueCreate('monthsDuration')?.errors?.required">El campo es requerido</p>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="formGroupExampleInput3" class="form-label">Cantidad de cuentas</label>
+                  <input formControlName="numberAccts" type="number" class="form-control" placeholder="Ingrese la cantidad de cuentas" id="formGroupExampleInput3">
+                  <div *ngIf="getValueCreate('numberAccts')?.invalid && (getValueCreate('numberAccts')?.touched || getValueCreate('numberAccts')?.dirty)">
+                      <p class="fieldErr" *ngIf="getValueCreate('numberAccts')?.errors?.required">El campo es requerido</p>
+                  </div>
+              </div>
+              <div class="col-md-12">
+                <label for="formGroupExampleInput4" class="form-label">Plataforma</label>
+                <select class="form-select" formControlName="platform_idPlatform" id="formGroupExampleInput4">
+                  <option selected></option>
+                  <option *ngFor="let platform of platforms" [value]="platform._id">{{platform.namePlatform}}</option>
+                </select>
+                <div *ngIf="getValueCreate('platform_idPlatform')?.invalid && (getValueCreate('platform_idPlatform')?.touched || getValueCreate('platform_idPlatform')?.dirty)">
+                  <p class="fieldErr" *ngIf="getValueCreate('platform_idPlatform')?.errors?.required">El campo es requerido</p>
+                </div>
+              </div>
             </form>
           </div>
         <div class="modal-footer">

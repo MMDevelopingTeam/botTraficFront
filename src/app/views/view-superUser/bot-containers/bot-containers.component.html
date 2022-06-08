@@ -8,7 +8,7 @@
         <h1 class="text-center my-4">Contenedor de bot</h1>
     </div>
     <div class="col-md-4">
-        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#createpermissionModal">
+        <button class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#createBotContainerModal">
             <i class="fa-solid fa-plus"></i>
             Crear contenedor de bot
         </button>
@@ -28,13 +28,13 @@
                 <th>{{botContainer.ip}}</th>
                 <td>{{botContainer.typeBot}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="getBotContainer(botContainer)" data-bs-toggle="modal" data-bs-target="#permissionModal">
+                    <button class="btn btn-primary" (click)="getBotContainer(botContainer)" data-bs-toggle="modal" data-bs-target="#botContainerModal">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                     <button class="btn btn-warning mx-1" (click)="redirect(botContainer._id)">
                         <i class="fa-solid fa-globe"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="getBotContainer(botContainer)" data-bs-toggle="modal" data-bs-target="#permissionEditModal">
+                    <button class="btn btn-success mx-1" (click)="getBotContainerEdit(botContainer)" data-bs-toggle="modal" data-bs-target="#botContainerEditModal">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button class="btn btn-danger" (click)="deleteBotContainer(botContainer._id)">
@@ -49,11 +49,11 @@
 </div>
 
 <!-- Modal view -->
-<div class="modal fade" id="permissionModal" tabindex="-1" aria-labelledby="permissionModalLabel" aria-hidden="true">
+<div class="modal fade" id="botContainerModal" tabindex="-1" aria-labelledby="botContainerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="permissionModalLabel">Contenedor de bot</h5>
+          <h5 class="modal-title" id="botContainerModalLabel">Contenedor de bot</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body row" *ngIf="botContainer">
@@ -107,80 +107,80 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getBotContainers()">Cerrar</button>
         </div>
       </div>
     </div>
 </div>
 
 <!-- Modal edit -->
-<div class="modal fade" id="permissionEditModal" tabindex="-1" aria-labelledby="permissionEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="botContainerEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="permissionEditModalLabel">Editar contenedor de bot</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="botContainerEditModalLabel">Editar contenedor de bot</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="getBotContainers()"></button>
         </div>
-        <div class="modal-body" *ngIf="botContainer">
-            <form class="row" [formGroup]="botContainerEditForm">
+        <div class="modal-body" *ngIf="botContainerEdit">
+            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput" class="form-label">IP</label>
-                    <input formControlName="ip" type="text" class="form-control" placeholder="Ingrese la IP" id="formGroupExampleInput">
-                    <div *ngIf="getValue('ip')?.invalid && (getValue('ip')?.touched || getValue('ip')?.dirty)">
-                        <p class="fieldErr" *ngIf="getValue('ip')?.errors?.required">El campo es requerido</p>
+                    <input [(ngModel)]="botContainerEdit.ip" type="text" class="form-control" placeholder="Ingrese la IP" id="formGroupExampleInput">
+                    <div *ngIf="botContainerEdit.ip === ''">
+                        <p class="fieldErr">El campo es requerido</p>
                       </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput2" class="form-label">Tipo</label>
-                    <input formControlName="typeBot" type="text" class="form-control" placeholder="Ingrese el tipo" id="formGroupExampleInput2">
-                    <div *ngIf="getValue('typeBot')?.invalid && (getValue('typeBot')?.touched || getValue('typeBot')?.dirty)">
-                        <p class="fieldErr" *ngIf="getValue('typeBot')?.errors?.required">El campo es requerido</p>
+                    <input [(ngModel)]="botContainerEdit.typeBot" type="text" class="form-control" placeholder="Ingrese el tipo" id="formGroupExampleInput2">
+                    <div *ngIf="botContainerEdit.typeBot === ''">
+                        <p class="fieldErr">El campo es requerido</p>
                       </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput3" class="form-label">Descripción</label>
-                    <input formControlName="descriptionBot" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput3">
+                    <input [(ngModel)]="botContainerEdit.descriptionBot" type="text" class="form-control" placeholder="Ingrese la descripción" id="formGroupExampleInput3">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput4" class="form-label">Latitud</label>
-                    <input formControlName="latBot" type="text" class="form-control" placeholder="Ingrese la latitud" id="formGroupExampleInput4">
+                    <input [(ngModel)]="botContainerEdit.latBot" type="text" class="form-control" placeholder="Ingrese la latitud" id="formGroupExampleInput4">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput5" class="form-label">Longitud</label>
-                    <input formControlName="lonBot" type="text" class="form-control" placeholder="Ingrese la longitud" id="formGroupExampleInput5">
+                    <input [(ngModel)]="botContainerEdit.lonBot" type="text" class="form-control" placeholder="Ingrese la longitud" id="formGroupExampleInput5">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput6" class="form-label">Dirección</label>
-                    <input formControlName="addressBot" type="text" class="form-control" placeholder="Ingrese la dirección" id="formGroupExampleInput6">
+                    <input [(ngModel)]="botContainerEdit.addressBot" type="text" class="form-control" placeholder="Ingrese la dirección" id="formGroupExampleInput6">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput7" class="form-label">Velocidad de descarga promedio</label>
-                    <input formControlName="averageDownloadSpeed" type="text" class="form-control" placeholder="Ingrese la velocidad de descarga promedio" id="formGroupExampleInput7">
+                    <input [(ngModel)]="botContainerEdit.averageDownloadSpeed" type="text" class="form-control" placeholder="Ingrese la velocidad de descarga promedio" id="formGroupExampleInput7">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput8" class="form-label">Velocidad de carga promedio</label>
-                    <input formControlName="averageUploadSpeed" type="text" class="form-control" placeholder="Ingrese la velocidad de carga promedio" id="formGroupExampleInput8">
+                    <input [(ngModel)]="botContainerEdit.averageUploadSpeed" type="text" class="form-control" placeholder="Ingrese la velocidad de carga promedio" id="formGroupExampleInput8">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="formGroupExampleInput9" class="form-label">Isp</label>
-                    <input formControlName="isp" type="text" class="form-control" placeholder="Ingrese el Isp" id="formGroupExampleInput9">
+                    <input [(ngModel)]="botContainerEdit.isp" type="text" class="form-control" placeholder="Ingrese el Isp" id="formGroupExampleInput9">
                 </div>
-            </form>
-          </div>
+            </div>    
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="UpdateBotContainer()" [disabled]="botContainerEditForm.invalid">Guardar cambios</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getBotContainers()">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="UpdateBotContainer()" [disabled]="botContainerEdit.ip === ''|| botContainerEdit.typeBot === ''">Guardar cambios</button>
         </div>
       </div>
     </div>
 </div>
 
 <!-- Modal create -->
-<div class="modal fade" id="createpermissionModal" tabindex="-1" aria-labelledby="createpermissionModalLabel" aria-hidden="true">
+<div class="modal fade" id="createBotContainerModal" tabindex="-1" aria-labelledby="createBotContainerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createpermissionModalLabel">Crear bot</h5>
+          <h5 class="modal-title" id="createBotContainerModalLabel">Crear bot</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -230,7 +230,7 @@
             </form>
           </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getBotContainers()">Cerrar</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createBotContainer()" [disabled]="botContainerCreateForm.invalid">Crear contenedor de bot</button>
         </div>
       </div>

@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { LicensesService } from '../../../services/licenses.service';
 import Swal from 'sweetalert2'
+import { PlatformsService } from '../../../services/platforms.service';
+import { License } from '../../../models/license';
 
 @Component({
   selector: 'app-licenses',
@@ -10,35 +12,53 @@ import Swal from 'sweetalert2'
   styleUrls: ['./licenses.component.scss']
 })
 export class LicensesComponent implements OnInit {
-  licencesEditForm: FormGroup;
   licencesCreateForm: FormGroup;
   licenses: any;
   license: any;
+  platforms: any;
+
+  licenseEdit: License = {
+    nameLicense: '',
+    descriptionLicense: '',
+    monthsDuration: '',
+    platform_idPlatform: '',
+    numberAccts: '',
+  };
 
   constructor(
     private licensesService: LicensesService,
+    private PlatformsService: PlatformsService,
     private _location: Location,
     private fb: FormBuilder,
   ) {
-    this.licencesEditForm = this.fb.group({
-      nameLicense: ['', Validators.required],
-      descriptionLicense: ['']
-    });
-
     this.licencesCreateForm = this.fb.group({
       nameLicense: ['', Validators.required],
       descriptionLicense: [''],
+      monthsDuration: ['', Validators.required],
+      platform_idPlatform: ['', Validators.required],
+      numberAccts: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.getLicenses();
+    this.getPlatforms();
   }
   
   getLicenses(){
     this.licensesService.geLicenses().subscribe(
       (data:any) => {
+        console.log(data.dataLicenses);
         this.licenses=data.dataLicenses
+      },
+      err => {}
+    )
+  }
+
+  getPlatforms(){
+    this.PlatformsService.getPlatforms().subscribe(
+      (data:any) => {
+        this.platforms=data.dataPlatfm
       },
       err => {}
     )
@@ -70,6 +90,10 @@ export class LicensesComponent implements OnInit {
     console.log(this.license);
   }
 
+  getLicenseEdit(license: License){
+    this.licenseEdit=license
+  }
+
   deleteLicense(id:any){
     Swal.fire({
       title: 'Eliminar',
@@ -99,26 +123,24 @@ export class LicensesComponent implements OnInit {
   }
 
   UpdateLicense(){
-    console.log(this.licencesEditForm.value);
-    if (this.licencesEditForm.valid) {
-      this.licensesService.updateLicense(this.licencesEditForm.value, this.license._id).subscribe(
-        (data:any) => {
-          this.getLicenses();
-          Swal.fire({
-            icon: 'success',
-            title: 'Licencia actualizada correctamente',
-            showConfirmButton: false,
-            timer: 2500
-          })
-        },
-        err => {}
-      )
-    }
+    console.log("this.licencesEditForm.value");
+    this.licensesService.updateLicense(this.licenseEdit, this.licenseEdit._id).subscribe(
+      (data:any) => {
+        this.getLicenses();
+        Swal.fire({
+          icon: 'success',
+          title: 'Licencia actualizada correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      },
+      err => {}
+    )
   }
 
-  getValue(value: string) {
-    return this.licencesEditForm.get(value)
-  }
+  // getValue(value: string) {
+  //   return this.licencesEditForm.get(value)
+  // }
   getValueCreate(value: string) {
     return this.licencesCreateForm.get(value)
   }

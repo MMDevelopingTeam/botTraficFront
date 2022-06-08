@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { SuperUserGuard } from 'src/app/guard/super-user.guard';
 import { BotContainersComponent } from './bot-containers/bot-containers.component';
 import { ProxysComponent } from './bot-containers/proxys/proxys.component';
-import { AddCompComponent } from './companys/add-comp/add-comp.component';
 import { CompanysComponent } from './companys/companys.component';
 import { UsersComponent } from './companys/users/users.component';
 import { LicensesComponent } from './licenses/licenses.component';
@@ -16,8 +15,6 @@ import { UserTypesComponent } from './user-types/user-types.component';
 const routes: Routes = [
   { path: 'dashboard/superUser', component: SuperUserComponent, canActivate: [SuperUserGuard] },
   { path: 'dashboard/superUser/companys', component: CompanysComponent, canActivate: [SuperUserGuard] },
-  { path: 'dashboard/superUser/companys/add', component: AddCompComponent, canActivate: [SuperUserGuard] },
-  { path: 'dashboard/superUser/companys/edit/:id', component: AddCompComponent, canActivate: [SuperUserGuard] },
   { path: 'dashboard/superUser/companys/:id/users', component: UsersComponent, canActivate: [SuperUserGuard] },
   { path: 'dashboard/superUser/botContainers', component: BotContainersComponent, canActivate: [SuperUserGuard] },
   { path: 'dashboard/superUser/botContainers/:id/proxys', component: ProxysComponent, canActivate: [SuperUserGuard] },

@@ -1,26 +1,30 @@
-<div class="block" *ngFor="let rol of roles">
-    <div *ngIf="rol.nameUserType === 'moderator'">
+<div class="block">
+    <div>
       <div class="row" *ngIf="userService.loggedIn()">
         <div class="col-md-12 text-center my-5">
-            <h1>Plataforma</h1>
+            <h1>Lanzamiento de bots</h1>
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-10 mt-5 text-center">
         
-          <div class="my-4" *ngIf="platforms">
-            <label for="exampleInputEmail1" class="form-label">Seleccione la plataforma</label>
-            <select [(ngModel)]="idPlatfom" id="exampleInputEmail1" class="form-select" aria-label="Default select example">
-              <option selected>Seleccione la plataforma</option>
-              <option  *ngFor="let platform of platforms" [value]="platform._id">{{platform.namePlatform}}</option>
-            </select>
+          <div *ngIf="IfValid">
+            <div class="my-4" *ngIf="platforms">
+              <label for="exampleInputEmail1" class="form-label">Seleccione la plataforma</label>
+              <select [(ngModel)]="idPlatfom" id="exampleInputEmail1" class="form-select" aria-label="Default select example">
+                <option selected>Seleccione la plataforma</option>
+                <option  *ngFor="let platform of platforms" [value]="platform._id">{{platform.namePlatform}}</option>
+              </select>
+            </div>
+            <div class="input-group mb-3">
+              <input [(ngModel)]="nickname" type="text" class="form-control" placeholder="Escribe el nickname de la modelo" aria-describedby="button-addon2">
+              <button class="btn btn-primary" type="button" id="button-addon2" (click)="searchModel()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Buscar
+              </button>
+            </div>
           </div>
-          <div class="input-group mb-3">
-            <input [(ngModel)]="nickname" type="text" class="form-control" placeholder="Escribe el nickname de la modelo" aria-describedby="button-addon2">
-            <button class="btn btn-primary" type="button" id="button-addon2" (click)="searchModel()">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              Buscar
-            </button>
-          </div>
+
+          <h3 style="color: rgb(150, 33, 33);" *ngIf="!IfValid">No tienes autorizacion para estas acciones</h3>
 
           <div class="card" *ngIf="!isLoading && data$">
             <div class="card-header">
@@ -36,9 +40,9 @@
             <span class="visually-hidden">Loading...</span>
           </div>
         <div class="col-md-1"></div>
+      </div>
     </div>
-    </div>
-  </div>
+</div>
 
 <!-- Modal Launch bot-->
 <div class="modal fade" id="launchBotModal" tabindex="-1" aria-labelledby="launchBotModalLabel" aria-hidden="true">

@@ -34,6 +34,9 @@
                     <button class="btn btn-success mx-1" (click)="getUserAdmin(user)" data-bs-toggle="modal" data-bs-target="#editUserAdminModal">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
+                    <button class="btn btn-warning mx-1" (click)="restartPass(user._id)">
+                      <i class="fa-solid fa-key"></i>
+                    </button>
                     <button class="btn btn-danger" (click)="deleteUserAdmin(user._id)">
                         <i class="fa-solid fa-trash"></i>
                     </button>
@@ -128,7 +131,7 @@
         </div>
         <div class="modal-body">
             <form class="row" [formGroup]="userAdminCreateForm">
-                <div class="col-md-6 mb-3">
+                <div class="col-md-12 mb-3">
                     <label for="formGroupExampleInput" class="form-label">Nombre</label>
                     <input formControlName="name" type="text" class="form-control" placeholder="Ingrese el nombre" id="formGroupExampleInput">
                     <div *ngIf="getValueCreate('name')?.invalid && (getValueCreate('name')?.touched || getValueCreate('name')?.dirty)">
@@ -151,11 +154,19 @@
                       </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="formGroupExampleInputP" class="form-label">Password</label>
+                    <label for="formGroupExampleInputP" class="form-label">Contraseña</label>
                     <input formControlName="password" type="password" class="form-control" placeholder="Ingrese el Password" id="formGroupExampleInputP">
                     <div *ngIf="getValueCreate('password')?.invalid && (getValueCreate('password')?.touched || getValueCreate('password')?.dirty)">
                         <p class="fieldErr" *ngIf="getValueCreate('password')?.errors?.required">El campo es requerido</p>
                         <p class="fieldErr" *ngIf="getValueCreate('password')?.errors?.minlength">El campo es minimo de 6 caracteres</p>
+                      </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="formGroupExampleInputPDos" class="form-label">Repetir contraseña</label>
+                    <input formControlName="VerifiedPassword" type="password" class="form-control" placeholder="Ingrese el Password" id="formGroupExampleInputPDos">
+                    <div *ngIf="getValueCreate('VerifiedPassword')?.invalid && (getValueCreate('VerifiedPassword')?.touched || getValueCreate('VerifiedPassword')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValueCreate('VerifiedPassword')?.errors?.required">El campo es requerido</p>
+                        <p class="fieldErr" *ngIf="getValueCreate('VerifiedPassword')?.errors?.minlength">El campo es minimo de 6 caracteres</p>
                       </div>
                 </div>
             </form>
