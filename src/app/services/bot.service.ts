@@ -41,7 +41,7 @@ export class BotService {
     // return this.http.post(`http://localhost:3000/api/bot`, name_model)
   }
   killBot(ip: any, name_model: any) {
-    return this.http.post(`http://${ip || 'localhost'}:3000/api/killbot`, name_model)
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/killbot`, name_model)
     // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
   }
 

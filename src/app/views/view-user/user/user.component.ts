@@ -50,7 +50,7 @@ export class UserComponent implements OnInit {
         nBots: ['', [Validators.min(10), Validators.required]]
       });
       this.killBotsForm = this.fb.group({
-        nameModel: [this.modelo],
+        nameModel: [''],
         userId: [localStorage.getItem('idUser')],
         nBots: ['', [Validators.required]]
       });
@@ -174,7 +174,7 @@ export class UserComponent implements OnInit {
 
   killBots() {
     let value = this.killBotsForm.value
-    value.nameModel=this.modeloKillbot
+    value.nameModel=this.modelo
     if (value.nBots > this.lengthkillbots) {
       Swal.fire({
         icon: 'warning',
