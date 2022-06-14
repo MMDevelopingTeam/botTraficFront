@@ -149,30 +149,21 @@ export class UserComponent implements OnInit {
     value.nameModel=this.modelo
     this.userService.getTokenBot(value).subscribe(
       (res: any) => {
-        // const info = {
-        //   token: res.token
-        // }
-        // console.log(res);
-        if (res.message === 'bot corriendo') {
-          Swal.fire({
-            icon: 'success',
-            title: 'Bots lanzados correctamente',
-            showConfirmButton: false,
-            timer: 1500
-          })
+        const info = {
+          token: res.token
         }
-        // this.botService.launchBot('localhost', info).subscribe(
-        //   (data:any) => {
-        //     console.log(data)
-        //     Swal.fire({
-        //       icon: 'success',
-        //       title: 'Bots lanzados correctamente',
-        //       showConfirmButton: false,
-        //       timer: 1500
-        //     })
-        //   },
-        //   err => {}
-        // )
+        this.botService.launchBot('localhost', info).subscribe(
+          (data:any) => {
+            console.log(data)
+            Swal.fire({
+              icon: 'success',
+              title: 'Bots lanzados correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          err => {}
+        )
       },
       err => console.log(err)
     )
@@ -192,24 +183,21 @@ export class UserComponent implements OnInit {
     }
     this.userService.getTokenkillBot(value).subscribe(
       (res: any) => {
-        // const info = {
-        //   token: res.token
-        // }
-
-
-
-        // this.botService.killBot('localhost', info).subscribe(
-        //   (data:any) => {
-        //     console.log(data)
-        //     Swal.fire({
-        //       icon: 'success',
-        //       title: 'Bots kill correctamente',
-        //       showConfirmButton: false,
-        //       timer: 1500
-        //     })
-        //   },
-        //   err => console.log(err)
-        // )
+        const info = {
+          token: res.token
+        }
+        this.botService.killBot('localhost', info).subscribe(
+          (data:any) => {
+            console.log(data)
+            Swal.fire({
+              icon: 'success',
+              title: 'Bots kill correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          err => console.log(err)
+        )
       },
       err => console.log(err)
     )
