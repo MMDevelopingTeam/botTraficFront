@@ -24,7 +24,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="text-center" *ngFor="let platform of platforms">
+              <tr class="text-center" *ngFor="let platform of platforms | paginate: {id: 'pageServ', itemsPerPage: 15, currentPage: p, totalItems: platformsLength }">
                 <th>{{platform.namePlatform}}</th>
                 <td>{{platform.urlPlatform}}</td>
                 <td>
@@ -41,6 +41,9 @@
               </tr>
             </tbody>
         </table>
+        <div class="col-md-12 text-center" style="padding: 10px;">
+          <pagination-controls id="pageServ" (pageChange)="p = $event"></pagination-controls>
+        </div>
     </div>
     <div class="col-md-1"></div>
 </div>
@@ -102,12 +105,12 @@
 </div>
 
 <!-- Modal create -->
-<div class="modal fade" id="createPlatformModal" tabindex="-1" aria-labelledby="createPlatformModalLabel" aria-hidden="true">
+<div class="modal fade" id="createPlatformModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="createPlatformModalLabel">Crear plataforma</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
         </div>
         <div class="modal-body">
             <form class="row" [formGroup]="platformCreateForm">
@@ -125,7 +128,7 @@
             </form>
           </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getPlatforms()">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getPlatforms()" (click)="resetForm()">Cerrar</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createPlatform()" [disabled]="platformCreateForm.invalid">Crear plataforma</button>
         </div>
       </div>

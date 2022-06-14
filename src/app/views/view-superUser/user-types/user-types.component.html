@@ -25,7 +25,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="text-center" *ngFor="let userType of userTypes">
+              <tr class="text-center" *ngFor="let userType of userTypes | paginate: {id: 'pageServ', itemsPerPage: 15, currentPage: p, totalItems: userTypesLength }">
                 <th>{{userType.nameUserType}}</th>
                 <td>{{userType.descriptionUserType}}</td>
                 <td>{{userType.permissionsArray.length}}</td>
@@ -43,6 +43,9 @@
               </tr>
             </tbody>
         </table>
+        <div class="col-md-12 text-center" style="padding: 10px;">
+          <pagination-controls id="pageServ" (pageChange)="p = $event"></pagination-controls>
+        </div>
     </div>
     <div class="col-md-1"></div>
 </div>
@@ -148,12 +151,12 @@
 </div>
 
 <!-- Modal create -->
-<div class="modal fade" id="createUserTypeModal" tabindex="-1" aria-labelledby="createUserTypeModalLabel" aria-hidden="true">
+<div class="modal fade" id="createUserTypeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="createUserTypeModalLabel">Crear tipo de usuario</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="clearArray()" (click)="getUserTypes()" (click)="resetForm()"></button>
         </div>
         <div class="modal-body">
             <form class="row" [formGroup]="userTypeCreateForm">
@@ -195,7 +198,7 @@
             </form>
           </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="clearArray()" data-bs-dismiss="modal" (click)="getUserTypes()">Cerrar</button>
+          <button type="button" class="btn btn-secondary" (click)="clearArray()" data-bs-dismiss="modal" (click)="resetForm()" (click)="getUserTypes()">Cerrar</button>
           <button type="button" class="btn btn-primary" (click)="createUserType()" [disabled]="userTypeCreateForm.invalid">Crear</button>
         </div>
       </div>

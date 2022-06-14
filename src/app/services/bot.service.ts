@@ -9,6 +9,7 @@ export class BotService {
 
   urlStorage = `${environment.urlLaunch}/storage`;
   urlBotContainer = `${environment.url}/botContainer`;
+  urlModels = `${environment.url}/model`;
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +22,7 @@ export class BotService {
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getproxysFree`);
   }
   getKillBotsByModel(data: any) {
-    return this.http.post(`${this.urlStorage}/getKillBotsByModel`, data);
+    return this.http.post(`${this.urlModels}/getKillBotsByModel`, data);
   }
   getAllAccts(ip: any) {
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getaccts`);

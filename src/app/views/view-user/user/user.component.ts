@@ -65,9 +65,7 @@ export class UserComponent implements OnInit {
     this.userService.getInfoUser().subscribe(
       (data: any) => {
         this.usuario = data.dataUser;
-        console.log(this.usuario.userTypeArray);
         for (const iterator of this.usuario.userTypeArray) {
-          console.log(iterator);
           if (iterator.nameUserType === 'moderator') {
             this.modelsService.getModelsByIDheadQ(this.usuario.headquarters_idHeadquarter).subscribe(
               (data:any) => {
@@ -125,8 +123,8 @@ export class UserComponent implements OnInit {
     }
     this.botService.getKillBotsByModel(data).subscribe(
       (data:any) => {
-        // console.log(data)
-        this.lengthkillbots=data.acctsModels
+        console.log(data)
+        this.lengthkillbots=data.acctsModelsLength
       },
       err => {}
     )
@@ -140,8 +138,7 @@ export class UserComponent implements OnInit {
     }
     this.botService.getKillBotsByModel(data).subscribe(
       (data:any) => {
-        console.log(data);
-        this.lengthkillbots=data.acctsModels
+        this.lengthkillbots=data.acctsModelsLength
       },
       err => {}
     )
@@ -152,21 +149,30 @@ export class UserComponent implements OnInit {
     value.nameModel=this.modelo
     this.userService.getTokenBot(value).subscribe(
       (res: any) => {
-        const info = {
-          token: res.token
+        // const info = {
+        //   token: res.token
+        // }
+        // console.log(res);
+        if (res.message === 'bot corriendo') {
+          Swal.fire({
+            icon: 'success',
+            title: 'Bots lanzados correctamente',
+            showConfirmButton: false,
+            timer: 1500
+          })
         }
-        this.botService.launchBot('localhost', info).subscribe(
-          (data:any) => {
-            console.log(data)
-            Swal.fire({
-              icon: 'success',
-              title: 'Bots lanzados correctamente',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          },
-          err => {}
-        )
+        // this.botService.launchBot('localhost', info).subscribe(
+        //   (data:any) => {
+        //     console.log(data)
+        //     Swal.fire({
+        //       icon: 'success',
+        //       title: 'Bots lanzados correctamente',
+        //       showConfirmButton: false,
+        //       timer: 1500
+        //     })
+        //   },
+        //   err => {}
+        // )
       },
       err => console.log(err)
     )
@@ -186,21 +192,24 @@ export class UserComponent implements OnInit {
     }
     this.userService.getTokenkillBot(value).subscribe(
       (res: any) => {
-        const info = {
-          token: res.token
-        }
-        this.botService.killBot('localhost', info).subscribe(
-          (data:any) => {
-            console.log(data)
-            Swal.fire({
-              icon: 'success',
-              title: 'Bots kill correctamente',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          },
-          err => console.log(err)
-        )
+        // const info = {
+        //   token: res.token
+        // }
+
+
+
+        // this.botService.killBot('localhost', info).subscribe(
+        //   (data:any) => {
+        //     console.log(data)
+        //     Swal.fire({
+        //       icon: 'success',
+        //       title: 'Bots kill correctamente',
+        //       showConfirmButton: false,
+        //       timer: 1500
+        //     })
+        //   },
+        //   err => console.log(err)
+        // )
       },
       err => console.log(err)
     )

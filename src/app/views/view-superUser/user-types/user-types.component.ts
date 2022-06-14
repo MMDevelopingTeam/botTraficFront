@@ -18,6 +18,9 @@ export class UserTypesComponent implements OnInit {
   userTypes: any;
   userType: any;
 
+  p:any;
+  userTypesLength:any;
+
   userTypeEdit: UserType= {
     _id: '',
     nameUserType: '',
@@ -59,6 +62,7 @@ export class UserTypesComponent implements OnInit {
     this.userService.getUserTypes().subscribe(
       (data:any) => {
         this.userTypes=data.dataUserT
+        this.userTypesLength=data.dataUserT.length
       },
       err => {}
     )
@@ -175,6 +179,10 @@ export class UserTypesComponent implements OnInit {
   }
   getValueCreate(value: string) {
     return this.userTypeCreateForm.get(value)
+  }
+
+  resetForm(){
+    this.userTypeCreateForm.reset()
   }
 
 }

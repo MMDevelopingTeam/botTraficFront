@@ -24,7 +24,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="text-center" *ngFor="let botContainer of botContainers">
+              <tr class="text-center" *ngFor="let botContainer of botContainers | paginate: {id: 'pageBotC', itemsPerPage: 15, currentPage: p, totalItems: BotContainersLength }">
                 <th>{{botContainer.ip}}</th>
                 <td>{{botContainer.typeBot}}</td>
                 <td>
@@ -44,6 +44,9 @@
               </tr>
             </tbody>
         </table>
+        <div class="col-md-12 text-center" style="padding: 10px;">
+            <pagination-controls id="pageBotC" (pageChange)="p = $event"></pagination-controls>
+        </div>
     </div>
     <div class="col-md-1"></div>
 </div>
@@ -176,12 +179,12 @@
 </div>
 
 <!-- Modal create -->
-<div class="modal fade" id="createBotContainerModal" tabindex="-1" aria-labelledby="createBotContainerModalLabel" aria-hidden="true">
+<div class="modal fade" id="createBotContainerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="createBotContainerModalLabel">Crear bot</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
         </div>
         <div class="modal-body">
             <form class="row" [formGroup]="botContainerCreateForm">
@@ -230,8 +233,13 @@
             </form>
           </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getBotContainers()">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createBotContainer()" [disabled]="botContainerCreateForm.invalid">Crear contenedor de bot</button>
+          <button type="button" style="max-height: 40px;" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getBotContainers()" (click)="resetForm()">Cerrar</button>
+          <button type="button" style="max-height: 40px;" class="btn btn-primary" (click)="createBotContainer()" [disabled]="botContainerCreateForm.invalid || isloading">
+            <span *ngIf="!isloading" >Crear contenedor de bot</span>
+            <div *ngIf="isloading"  class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+          </button>
         </div>
       </div>
     </div>

@@ -17,6 +17,9 @@ export class LicensesComponent implements OnInit {
   license: any;
   platforms: any;
 
+  p:any;
+  licensesLength:any;
+
   licenseEdit: License = {
     nameLicense: '',
     descriptionLicense: '',
@@ -50,6 +53,7 @@ export class LicensesComponent implements OnInit {
       (data:any) => {
         console.log(data.dataLicenses);
         this.licenses=data.dataLicenses
+        this.licensesLength=data.dataLicenses.length
       },
       err => {}
     )
@@ -73,6 +77,7 @@ export class LicensesComponent implements OnInit {
       this.licensesService.createLicense(this.licencesCreateForm.value).subscribe(
         (data:any) => {
           this.getLicenses();
+          this.resetForm();
           Swal.fire({
             icon: 'success',
             title: 'Licencia creada correctamente',
@@ -138,11 +143,12 @@ export class LicensesComponent implements OnInit {
     )
   }
 
-  // getValue(value: string) {
-  //   return this.licencesEditForm.get(value)
-  // }
   getValueCreate(value: string) {
     return this.licencesCreateForm.get(value)
+  }
+
+  resetForm(){
+    this.licencesCreateForm.reset()
   }
 
 }

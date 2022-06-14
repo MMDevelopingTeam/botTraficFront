@@ -25,7 +25,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="text-center" *ngFor="let company of companys">
+              <tr class="text-center" *ngFor="let company of companys | paginate: {id: 'pageServ', itemsPerPage: 15, currentPage: p, totalItems: companysLength }">
                 <th>{{company.nameCompany}}</th>
                 <td>{{company.typeCompany}}</td>
                 <td>{{company.registerLicensesArray.length}}</td>
@@ -46,6 +46,9 @@
               </tr>
             </tbody>
         </table>
+        <div class="col-md-12 text-center" style="padding: 10px;">
+          <pagination-controls id="pageServ" (pageChange)="p = $event"></pagination-controls>
+        </div>
     </div>
     <div class="col-md-1"></div>
 </div>
@@ -170,12 +173,12 @@
 </div>
 
 <!-- Modal create -->
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+<div class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="createModalLabel">Crear compañía</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetFormCreate()"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="companyCreateForm">
@@ -219,7 +222,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getCompanys()">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getCompanys()" (click)="resetFormCreate()">Cerrar</button>
         <button type="button" class="btn btn-primary" (click)="createCompany()" [disabled]="companyCreateForm.invalid">Crear compañía</button>
       </div>
     </div>

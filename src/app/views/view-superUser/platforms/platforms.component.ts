@@ -17,6 +17,9 @@ export class PlatformsComponent implements OnInit {
   platforms: any;
   platform: any;
   
+  p:any;
+  platformsLength:any;
+
   platformEdit: Platform={
     namePlatform: '',
     urlPlatform: ''
@@ -44,6 +47,7 @@ export class PlatformsComponent implements OnInit {
     this.platformsService.getPlatforms().subscribe(
       (data:any) => {
         this.platforms=data.dataPlatfm
+        this.platformsLength=data.dataPlatfm.length
       },
       err => {}
     )
@@ -123,5 +127,9 @@ export class PlatformsComponent implements OnInit {
 
   getValueCreate(value: string) {
     return this.platformCreateForm.get(value)
+  }
+
+  resetForm(){
+    this.platformCreateForm.reset()
   }
 }

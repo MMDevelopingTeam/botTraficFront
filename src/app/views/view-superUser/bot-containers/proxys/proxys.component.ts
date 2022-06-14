@@ -16,6 +16,9 @@ export class ProxysComponent implements OnInit {
   botContainer: any;
   proxys: any;
 
+  p:any;
+  proxysLength:any;
+
   ifBot: boolean=false;
 
   proxysForm: FormGroup;
@@ -54,6 +57,7 @@ export class ProxysComponent implements OnInit {
     this.botService.getAllProxys(this.botContainer.ip).subscribe(
       (data:any) => {
         this.proxys=data.prsModels
+        this.proxysLength=data.prsModels.length
         this.ifBot=true
       },
       err => {
@@ -71,6 +75,7 @@ export class ProxysComponent implements OnInit {
     if (this.proxysForm.valid) {
       this.botService.saveProxys(this.proxysForm.value, this.botContainer.ip).subscribe(
         (data:any) => {
+          this.resetForm();
           Swal.fire({
             icon: 'success',
             title: 'Proxys agregados correctamente',
@@ -90,6 +95,10 @@ export class ProxysComponent implements OnInit {
 
   getValue(value: string) {
     return this.proxysForm.get(value)
+  }
+
+  resetForm(){
+    this.proxysForm.reset()
   }
 
 }

@@ -7,8 +7,3 @@ export interface User {
     userTypeArray: [];
     headquarters_idHeadquarter: string;
 }
-
-
-
-
-

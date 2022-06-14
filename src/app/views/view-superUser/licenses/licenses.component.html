@@ -25,7 +25,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="text-center" *ngFor="let license of licenses">
+              <tr class="text-center" *ngFor="let license of licenses | paginate: {id: 'pageLic', itemsPerPage: 15, currentPage: p, totalItems: licensesLength }">
                 <th>{{license.nameLicense}}</th>
                 <td>{{license.descriptionLicense}}</td>
                 <td>{{license.platform_idPlatform.namePlatform}}</td>
@@ -43,6 +43,9 @@
               </tr>
             </tbody>
         </table>
+        <div class="col-md-12 text-center" style="padding: 10px;">
+          <pagination-controls id="pageLic" (pageChange)="p = $event"></pagination-controls>
+        </div>
     </div>
     <div class="col-md-1"></div>
 </div>
@@ -132,12 +135,12 @@
 </div>
 
 <!-- Modal create -->
-<div class="modal fade" id="createLicenseModal" tabindex="-1" aria-labelledby="createLicenseModalLabel" aria-hidden="true">
+<div class="modal fade" id="createLicenseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="createLicenseModalLabel">Crear licencia</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
         </div>
         <div class="modal-body">
             <form class="row" [formGroup]="licencesCreateForm">
@@ -179,7 +182,7 @@
             </form>
           </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForm()">Cerrar</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createLicense()" [disabled]="licencesCreateForm.invalid">Crear licencia</button>
         </div>
       </div>

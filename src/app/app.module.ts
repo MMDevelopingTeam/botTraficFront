@@ -34,6 +34,7 @@ import { UserModule } from './views/view-user/user.module';
 import { SuperUserModule } from './views/view-superUser/super-user.module';
 import { UserAdminModule } from './views/view-userAdmin/user-admin.module';
 import { FilterModelPipe } from './pipes/filter-model.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { FilterModelPipe } from './pipes/filter-model.pipe';
     MatIconModule,
     MatListModule,
     NgbModule,
+    NgxPaginationModule,
     FormsModule,
     ToastrModule.forRoot(),
     StoreModule.forRoot({}, {}),

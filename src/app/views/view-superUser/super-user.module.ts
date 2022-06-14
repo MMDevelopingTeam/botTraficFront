@@ -14,6 +14,7 @@ import { UsersComponent } from './companys/users/users.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProxysComponent } from './bot-containers/proxys/proxys.component';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ProxysComponent } from './bot-containers/proxys/proxys.component';
     CommonModule,
     SuperUserRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPaginationModule
   ]
 })
 export class SuperUserModule { }

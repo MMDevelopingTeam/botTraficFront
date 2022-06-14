@@ -20,6 +20,9 @@ export class CompanysComponent implements OnInit {
   company: any;
   licences: any;
 
+  p:any;
+  companysLength:any;
+
   companyCreateForm: FormGroup;
 
   companyEdit: Company = {
@@ -56,6 +59,7 @@ export class CompanysComponent implements OnInit {
     this.companyService.geCompanys().subscribe(
       (data:any) => {
         this.companys=data.dataCompany
+        this.companysLength=data.dataCompany.length
       },
       err => {}
     )
@@ -87,6 +91,7 @@ export class CompanysComponent implements OnInit {
       this.companyService.createCompany(this.companyCreateForm.value).subscribe(
         (data:any) => {
           this.getCompanys();
+          this.resetFormCreate();
           jQuery("#createModal").modal("hide");
           Swal.fire({
             icon: 'success',
@@ -150,5 +155,9 @@ export class CompanysComponent implements OnInit {
 
   redirect(){
     this.router.navigate([`/dashboard/superUser/companys/${this.company._id}/users`]);
+  }
+
+  resetFormCreate(){
+    this.companyCreateForm.reset()
   }
 }

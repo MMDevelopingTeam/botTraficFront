@@ -16,6 +16,9 @@ export class PermissionsComponent implements OnInit {
   permissions: any;
   permission: any;
 
+  p:any;
+  permissionsLength:any;
+
   permissionEdit: Permission= {
     namePermission: '',
     PermissionDescription: ''
@@ -42,6 +45,7 @@ export class PermissionsComponent implements OnInit {
     this.permissionsService.gePermissions().subscribe(
       (data:any) => {
         this.permissions=data.dataPermissions
+        this.permissionsLength=data.dataPermissions.length
       },
       err => {}
     )
@@ -120,6 +124,10 @@ export class PermissionsComponent implements OnInit {
   }
   getValueCreate(value: string) {
     return this.permissionsCreateForm.get(value)
+  }
+
+  resetForm(){
+    this.permissionsCreateForm.reset()
   }
 
 }

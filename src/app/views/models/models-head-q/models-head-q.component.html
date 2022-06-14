@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="text-center" *ngFor="let model of dataModels">
+                <tr class="text-center" *ngFor="let model of dataModels | paginate: {id: 'pageServ', itemsPerPage: 15, currentPage: p, totalItems: modelsLength }">
                     <th scope="row">{{model.nickname}}</th>
                     <td>
                         <i *ngIf="model.isAllowed" class="iconA fa-solid fa-circle-check"></i>
@@ -32,6 +32,9 @@
                 </tr>
             </tbody>
         </table>
+        <div class="col-md-12 text-center" style="padding: 10px;">
+          <pagination-controls id="pageServ" (pageChange)="p = $event"></pagination-controls>
+        </div>
         <div class="col-12 text-center mt-3" *ngIf="dataModels && dataModels.length === 0">
           <h3>Esta sede no tiene ninguna modelo.</h3>
         </div>

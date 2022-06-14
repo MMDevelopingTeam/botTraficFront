@@ -158,9 +158,9 @@
           <div class="col-md-6">
               <label for="inputNickname" class="form-label">Nickname</label>
               <input type="text" class="form-control" formControlName="nickname" placeholder="Ingrese el nickname" id="inputNickname">
-          </div>
-          <div *ngIf="getValue('nickname')?.invalid && (getValue('nickname')?.touched || getValue('nickname')?.dirty)">
-            <p class="fieldErr" *ngIf="getValue('nickname')?.errors?.required">El campo nickname es requerido</p>
+              <div *ngIf="getValue('nickname')?.invalid && (getValue('nickname')?.touched || getValue('nickname')?.dirty)">
+                <p class="fieldErr" *ngIf="getValue('nickname')?.errors?.required">El campo es requerido</p>
+              </div>
           </div>
           <div class="col-md-6">
             <label class="form-label" for="specificSizeSelect">Plataforma</label>
@@ -168,9 +168,9 @@
               <option selected></option>
               <option *ngFor="let platform of platforms" [value]="platform._id">{{platform.namePlatform}}</option>
             </select>
-          </div>
-          <div *ngIf="getValue('platforms_idPlatform')?.invalid && (getValue('platforms_idPlatform')?.touched || getValue('platforms_idPlatform')?.dirty)">
-            <p class="fieldErr" *ngIf="getValue('platforms_idPlatform')?.errors?.required">El campo plataforma es requerido</p>
+            <div *ngIf="getValue('platforms_idPlatform')?.invalid && (getValue('platforms_idPlatform')?.touched || getValue('platforms_idPlatform')?.dirty)">
+              <p class="fieldErr" *ngIf="getValue('platforms_idPlatform')?.errors?.required">El campo es requerido</p>
+            </div>
           </div>
       </form>
       </div>
@@ -195,9 +195,9 @@
           <div class="col-md-6">
               <label for="inputNickname" class="form-label">Nickname</label>
               <input type="text" class="form-control" formControlName="nickname" [ngModel]="dataModel.nickname" placeholder="Ingrese el nickname" id="inputNickname">
-          </div>
-          <div *ngIf="getValue('nickname')?.invalid && (getValue('nickname')?.touched || getValue('nickname')?.dirty)">
-            <p class="fieldErr" *ngIf="getValue('nickname')?.errors?.required">El campo nickname es requerido</p>
+              <div *ngIf="getValue('nickname')?.invalid && (getValue('nickname')?.touched || getValue('nickname')?.dirty)">
+                <p class="fieldErr" *ngIf="getValue('nickname')?.errors?.required">El campo nickname es requerido</p>
+              </div>
           </div>
           <div class="col-md-6">
             <label class="form-label" for="specificSizeSelect">Plataforma</label>
@@ -205,9 +205,9 @@
               <option selected></option>
               <option *ngFor="let platform of platforms" [value]="platform._id">{{platform.namePlatform}}</option>
             </select>
-          </div>
-          <div *ngIf="getValue('platform')?.invalid && (getValue('platform')?.touched || getValue('platform')?.dirty)">
-            <p class="fieldErr" *ngIf="getValue('platform')?.errors?.required">El campo plataforma es requerido</p>
+            <div *ngIf="getValue('platform')?.invalid && (getValue('platform')?.touched || getValue('platform')?.dirty)">
+              <p class="fieldErr" *ngIf="getValue('platform')?.errors?.required">El campo plataforma es requerido</p>
+            </div>
           </div>
           <div class="col-md-12">
             <fieldset class="row mb-3">

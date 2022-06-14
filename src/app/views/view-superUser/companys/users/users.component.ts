@@ -17,8 +17,17 @@ export class UsersComponent implements OnInit {
   idCompany: any;
   usersAdmin: any;
   userAdmin: any;
-  userAdminEditForm: FormGroup;
   userAdminCreateForm: FormGroup;
+
+  userAdminEditFull:any;
+  userAdminEdit = {
+    name: '',
+    user: '',
+    email: ''
+  }
+
+  p: any;
+  usersAdminLength: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,11 +38,6 @@ export class UsersComponent implements OnInit {
   ) {
     this.route.params.subscribe(params => {
       this.idCompany=params.id;
-    });
-    this.userAdminEditForm = this.fb.group({
-      name: ['', Validators.required],
-      user: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
     });
 
     this.userAdminCreateForm = this.fb.group({
@@ -57,6 +61,7 @@ export class UsersComponent implements OnInit {
     this.userService.getUsersAdminByIdEmp(this.idCompany).subscribe(
       (data: any) => {
         this.usersAdmin=data.dataUser
+        this.usersAdminLength=data.dataUser.length
       },
       err => {}
     )
@@ -64,6 +69,12 @@ export class UsersComponent implements OnInit {
 
   getUserAdmin(user: any){
     this.userAdmin=user
+  }
+  getUserAdminEdit(user: any){
+    this.userAdminEdit.email=user.email
+    this.userAdminEdit.user=user.user
+    this.userAdminEdit.name=user.name
+    this.userAdminEditFull=user
   }
 
   restartPass(id:any){
@@ -131,6 +142,7 @@ export class UsersComponent implements OnInit {
       this.userService.signUpUserAdmin(this.userAdminCreateForm.value).subscribe(
         (data:any) => {
           this.getUsersAdmin();
+          this.resetForm();
           jQuery("#createUserAdminModal").modal("hide");
           Swal.fire({
             icon: 'success',
@@ -145,32 +157,40 @@ export class UsersComponent implements OnInit {
   }
 
   UpdateUserAdmin(){
-    if (this.userAdminEditForm.valid) {
-      this.userService.updateUserAdmin(this.userAdminEditForm.value, this.userAdmin._id).subscribe(
-        (data:any) => {
-          this.getUsersAdmin();
-          jQuery("#editUserAdminModal").modal("hide");
-          Swal.fire({
-            icon: 'success',
-            title: 'Usuario actualizado correctamente',
-            showConfirmButton: false,
-            timer: 2500
-          })
-        },
-        err => {}
-      )
+    this.userService.updateUserAdmin(this.userAdminEdit, this.userAdminEditFull._id).subscribe(
+      (data:any) => {
+        this.getUsersAdmin();
+        jQuery("#editUserAdminModal").modal("hide");
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuario actualizado correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      },
+      err => {}
+    )
+  }
+
+  esEmailValido(email:string) {
+    let mailValido = false;
+    const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (email.match(EMAIL_REGEX)){
+      mailValido = true;
     }
+    return mailValido;
   }
 
   goBack(){
     this._location.back();
   }
 
-  getValue(value: string) {
-    return this.userAdminEditForm.get(value)
-  }
   getValueCreate(value: string) {
     return this.userAdminCreateForm.get(value)
+  }
+
+  resetForm(){
+    this.userAdminCreateForm.reset()
   }
 
 }

@@ -15,6 +15,9 @@ export class ModelsHeadQComponent implements OnInit {
   dataModels: any;
   dataModel: any;
 
+  p:any;
+  modelsLength:any;
+
   accessForm: FormGroup;
 
   constructor(
@@ -46,6 +49,7 @@ export class ModelsHeadQComponent implements OnInit {
     this.modelsService.getModelsByIDheadQ(this.id).subscribe(
       (data:any) => {
         this.dataModels=data.dataModel
+        this.modelsLength=data.dataModel.length
         console.log(this.dataModels)
       },
       err => console.log(err)

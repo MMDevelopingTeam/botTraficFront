@@ -14,11 +14,13 @@ declare var jQuery:any;
   styleUrls: ['./bot-containers.component.scss']
 })
 export class BotContainersComponent implements OnInit {
-  botContainerEditForm: FormGroup;
   botContainerCreateForm: FormGroup;
 
   botContainers: any
   botContainer: any
+
+  p:any;
+  BotContainersLength:any;
 
   botContainerEdit: Botcontainer= {
     ip: '',
@@ -31,6 +33,8 @@ export class BotContainersComponent implements OnInit {
     averageUploadSpeed: '',
     isp: ''
   }
+
+  isloading:boolean=false;
 
   lengthProxys: any;
   lengthProxysFree: any;
@@ -46,17 +50,6 @@ export class BotContainersComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
   ) {
-    this.botContainerEditForm = this.fb.group({
-      ip: ['', Validators.required],
-      typeBot: ['', Validators.required],
-      descriptionBot: [''],
-      latBot: [''],
-      lonBot: [''],
-      addressBot: [''],
-      averageDownloadSpeed: [''],
-      averageUploadSpeed: [''],
-      isp: ['']
-    });
 
     this.botContainerCreateForm = this.fb.group({
       ip: ['', Validators.required],
@@ -79,6 +72,7 @@ export class BotContainersComponent implements OnInit {
     this.botService.getBotContainers().subscribe(
       (data:any) => {
         this.botContainers=data.dataBotContainer
+        this.BotContainersLength=data.dataBotContainer.length
       },
       err => {}
     )
@@ -175,9 +169,13 @@ export class BotContainersComponent implements OnInit {
 
   createBotContainer() {
     if (this.botContainerCreateForm.valid) {
+      this.isloading=true
       this.botService.createBotContainer(this.botContainerCreateForm.value).subscribe(
         (data:any) => {
           this.getBotContainers();
+          this.isloading=false
+          this.resetForm();
+          jQuery("#createBotContainerModal").modal("hide");
           Swal.fire({
             icon: 'success',
             title: 'Contenedor de bot actualizado creada correctamente',
@@ -185,7 +183,9 @@ export class BotContainersComponent implements OnInit {
             timer: 2500
           })
         },
-        err => {}
+        err => {
+          this.isloading=false
+        }
       )
     }
   }
@@ -200,6 +200,10 @@ export class BotContainersComponent implements OnInit {
 
   getValueCreate(value: string) {
     return this.botContainerCreateForm.get(value)
+  }
+
+  resetForm(){
+    this.botContainerCreateForm.reset()
   }
 
 }
