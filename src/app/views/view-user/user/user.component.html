@@ -4,6 +4,28 @@
         <div class="col-md-12 text-center my-5">
             <h1>Lanzamiento de bots</h1>
         </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-6 mt-3 text-center">
+          <h3>Registros</h3>
+          <table class="table">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col"># de bots</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let register of registers">
+                <th scope="row">{{register.nameModel}}</th>
+                <td>{{register.nBots}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="registers">
+            <h4 *ngIf="registers.length === 0">No tienes registros</h4>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
         <div class="col-md-1"></div>
         <div class="col-md-10 mt-5 text-center">
         

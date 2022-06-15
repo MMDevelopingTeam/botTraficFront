@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment.prod';
 export class ModelsService {
 
   urlModel = `${environment.url}/model`;
+  urlRegister = `${environment.url}/tableLogLaunch`;
 
   constructor(private http: HttpClient) { }
 
@@ -34,6 +35,19 @@ export class ModelsService {
   }
   deleteModel(id:any) {
     return this.http.delete(`${this.urlModel}/${id}`);
+  }
+
+  ///////////////////////////////
+  ///////////////////////////////
+  ///////    registers      /////
+  ///////////////////////////////
+  ///////////////////////////////
+
+  getRegisters(id:any) {
+    return this.http.get(`${this.urlRegister}/user/${id}`);
+  }
+  createRegister(data:any) {
+    return this.http.post(`${this.urlRegister}`, data);
   }
 
 }

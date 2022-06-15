@@ -18,6 +18,8 @@ import { NotificationService } from '../../../services/notification.service';
 export class UserComponent implements OnInit {
   usuario: any;
 
+  registers:any;
+
   dataModels: any;
   modelo: any;
 
@@ -65,6 +67,13 @@ export class UserComponent implements OnInit {
     this.userService.getInfoUser().subscribe(
       (data: any) => {
         this.usuario = data.dataUser;
+        this.modelsService.getRegisters(this.usuario._id).subscribe(
+          (data:any) => {
+            this.registers=data.dataPlatfm
+            console.log(this.registers.length);
+          },
+          err => {}
+        )
         for (const iterator of this.usuario.userTypeArray) {
           if (iterator.nameUserType === 'moderator') {
             this.modelsService.getModelsByIDheadQ(this.usuario.headquarters_idHeadquarter).subscribe(
@@ -154,7 +163,13 @@ export class UserComponent implements OnInit {
         }
         this.botService.launchBot('localhost', info).subscribe(
           (data:any) => {
-            console.log(data)
+            this.modelsService.createRegister(value).subscribe(
+              (data:any) => {
+                console.log(data);
+                this.getInfoUrs();
+              },
+              err => {}
+            )
             Swal.fire({
               icon: 'success',
               title: 'Bots lanzados correctamente',
