@@ -20,6 +20,9 @@ export class UserComponent implements OnInit {
 
   registers:any;
 
+  p:any;
+  registersLength:any;
+
   dataModels: any;
   modelo: any;
 
@@ -60,20 +63,25 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.nav.show();
-    this.getInfoUrs()
+    this.getInfoUrs();
+    this.getRegisters();
+  }
+
+  getRegisters() {
+    this.modelsService.getRegisters(localStorage.getItem('idUser')).subscribe(
+      (data:any) => {
+        this.registers=data.dataPlatfm
+        this.registersLength=data.dataPlatfm.length
+        console.log(data);
+      },
+      err => {}
+    )
   }
 
   getInfoUrs() {
     this.userService.getInfoUser().subscribe(
       (data: any) => {
         this.usuario = data.dataUser;
-        this.modelsService.getRegisters(this.usuario._id).subscribe(
-          (data:any) => {
-            this.registers=data.dataPlatfm
-            console.log(this.registers.length);
-          },
-          err => {}
-        )
         for (const iterator of this.usuario.userTypeArray) {
           if (iterator.nameUserType === 'moderator') {
             this.modelsService.getModelsByIDheadQ(this.usuario.headquarters_idHeadquarter).subscribe(
@@ -140,6 +148,7 @@ export class UserComponent implements OnInit {
   }
 
   getModel(model:any){
+    console.log("object");
     this.modelo=model
     this.lengthkillbots=null
     const data={
@@ -147,6 +156,7 @@ export class UserComponent implements OnInit {
     }
     this.botService.getKillBotsByModel(data).subscribe(
       (data:any) => {
+        console.log(data);
         this.lengthkillbots=data.acctsModelsLength
       },
       err => {}
@@ -166,10 +176,12 @@ export class UserComponent implements OnInit {
             this.modelsService.createRegister(value).subscribe(
               (data:any) => {
                 console.log(data);
-                this.getInfoUrs();
               },
               err => {}
             )
+            setTimeout(() => {
+              this.getRegisters();
+            }, 500);
             Swal.fire({
               icon: 'success',
               title: 'Bots lanzados correctamente',
@@ -203,7 +215,21 @@ export class UserComponent implements OnInit {
         }
         this.botService.killBot('localhost', info).subscribe(
           (data:any) => {
-            console.log(data)
+            const dataV = {
+              nameModel: value.nameModel,
+              userId:value.userId,
+              nBots:value.nBots,
+              killBots: true
+            }
+            this.modelsService.createRegister(dataV).subscribe(
+              (data:any) => {
+                console.log(data);
+              },
+              err => {}
+            )
+            setTimeout(() => {
+              this.getRegisters();
+            }, 500);
             Swal.fire({
               icon: 'success',
               title: 'Bots kill correctamente',

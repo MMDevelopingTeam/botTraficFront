@@ -157,7 +157,7 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="formGroupExampleInput2" class="form-label">Duración</label>
-                  <input formControlName="monthsDuration" type="number" class="form-control" placeholder="Ingrese el duración en meses" id="formGroupExampleInput2">
+                  <input formControlName="monthsDuration" type="number" class="form-control" placeholder="Ingrese la duración en meses" id="formGroupExampleInput2">
                   <div *ngIf="getValueCreate('monthsDuration')?.invalid && (getValueCreate('monthsDuration')?.touched || getValueCreate('monthsDuration')?.dirty)">
                       <p class="fieldErr" *ngIf="getValueCreate('monthsDuration')?.errors?.required">El campo es requerido</p>
                   </div>

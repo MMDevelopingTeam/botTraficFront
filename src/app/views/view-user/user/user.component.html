@@ -15,12 +15,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let register of registers">
+              <tr *ngFor="let register of registers | paginate: {id: 'pageBotC', itemsPerPage: 5, currentPage: p, totalItems: registersLength }">
                 <th scope="row">{{register.nameModel}}</th>
                 <td>{{register.nBots}}</td>
               </tr>
             </tbody>
           </table>
+          <div *ngIf="registers && registers.length > 0" class="col-md-12 text-center" style="padding: 10px;">
+            <pagination-controls id="pageBotC" (pageChange)="p = $event"></pagination-controls>
+          </div>
           <div *ngIf="registers">
             <h4 *ngIf="registers.length === 0">No tienes registros</h4>
           </div>
