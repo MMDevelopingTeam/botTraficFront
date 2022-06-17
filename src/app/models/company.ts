@@ -7,5 +7,4 @@ export interface Company {
   logo?: string;
   isConfigFull?: boolean;
   registerLicensesArray?: [];
-  botContainerArray?: [];
 }

@@ -148,8 +148,23 @@
               </div>
             </div>
             <div class="col-md-6 mb-3">
-              <label for="formGroupExampleInput1" class="form-label">Tipo</label>
-              <input [(ngModel)]="companyEdit.typeCompany" type="text" class="form-control" placeholder="Ingrese el tipo" id="formGroupExampleInput1">
+              <fieldset>
+                <legend class="col-form-label col-sm-2 pt-0">Tipo</legend>
+                <div class="col-sm-10">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" [(ngModel)]="companyEdit.typeCompany" id="gridRadios1" value="estudio">
+                    <label class="form-check-label" for="gridRadios1">
+                      Estudio
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" [(ngModel)]="companyEdit.typeCompany" id="gridRadios2" value="modelo">
+                    <label class="form-check-label" for="gridRadios2">
+                      Modelo
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
               <div *ngIf="companyEdit.typeCompany === ''">
                 <p class="fieldErr">El campo es requerido</p>
               </div>
@@ -191,8 +206,23 @@
                 </div>
             </div>
             <div class="col-md-6 mb-3">
-              <label for="formGroupExampleInput1" class="form-label">Tipo</label>
-              <input formControlName="typeCompany" type="text" class="form-control" placeholder="Ingrese el tipo" id="formGroupExampleInput1">
+              <fieldset>
+                <legend class="col-form-label col-sm-2 pt-0">Tipo</legend>
+                <div class="col-sm-10">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" formControlName="typeCompany" id="gridRadios1" value="estudio">
+                    <label class="form-check-label" for="gridRadios1">
+                      Estudio
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" formControlName="typeCompany" id="gridRadios2" value="modelo">
+                    <label class="form-check-label" for="gridRadios2">
+                      Modelo
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
               <div *ngIf="getValueCreate('typeCompany')?.invalid && (getValueCreate('typeCompany')?.touched || getValueCreate('typeCompany')?.dirty)">
                 <p class="fieldErr" *ngIf="getValueCreate('typeCompany')?.errors?.required">El campo es requerido</p>
               </div>

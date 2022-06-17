@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavbarService } from '../../../services/navbar.service';
 import { CompanyService } from '../../../services/company.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Company } from '../../../models/company';
 
 @Component({
   selector: 'app-create-company',
@@ -11,18 +11,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class CreateCompanyComponent implements OnInit {
 
-  dataCompany:any
+  dataCompany:Company = {
+    nameCompany: "",
+    typeCompany: "",
+    addressCompany: "",
+    telephoneCompany: "",
+    logo: ""
+  }
   id:any
 
-  CompanyForm: FormGroup;
-
-  constructor(private nav: NavbarService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private companyService: CompanyService) {
-    this.CompanyForm = this.fb.group({
-      addressCompany: [''],
-      telephoneCompnay: [''],
-      typeCompany: ['', Validators.required],
-      logoCompany: [''],
-    });
+  constructor(private nav: NavbarService, private router: Router, private route: ActivatedRoute, private companyService: CompanyService) {
   }
 
   ngOnInit(): void {
@@ -42,7 +40,7 @@ export class CreateCompanyComponent implements OnInit {
   }
 
   saveForm() {
-    this.companyService.updateCompany(this.CompanyForm.value, this.id).subscribe(
+    this.companyService.updateCompany(this.dataCompany, this.id).subscribe(
       (data:any) => {
         console.log(data)
         this.router.navigate([`company/headquarter/${this.id}`]);
@@ -50,9 +48,4 @@ export class CreateCompanyComponent implements OnInit {
       err => console.log(err)
     )
   }
-
-  getValue(value: string) {
-    return this.CompanyForm.get(value)
-  }
-
 }
