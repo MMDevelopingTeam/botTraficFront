@@ -7,8 +7,10 @@ import { NavbarService } from 'src/app/services/navbar.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { PlatformsService } from '../../../services/platforms.service';
-import { finalize, map } from 'rxjs/operators';
 import { NotificationService } from '../../../services/notification.service';
+import { HeadquartersService } from '../../../services/headquarters.service';
+
+declare var jQuery:any;
 
 @Component({
   selector: 'app-user',
@@ -35,13 +37,20 @@ export class UserComponent implements OnInit {
   lengthkillbots: any;
   platforms: any;
   isLoading: boolean = false;
+  isLoadingBots: boolean = false;
   data$: any;
   idPlatfom: any;
   IfValid: boolean=false;
+  idCompany: any;
+  botContainers: any;
+  botContainer: any;
+  CompanyArrayBot: any;
+  ipBot: any;
 
   constructor(
     public userService: UserService,
     public botService: BotService,
+    public headquartersService: HeadquartersService,
     public modelsService: ModelsService,
     public platformsService: PlatformsService,
     public notificationService: NotificationService,
@@ -51,20 +60,26 @@ export class UserComponent implements OnInit {
     ) {
       this.launchBotsForm = this.fb.group({
         nameModel: [this.modelo],
-        userId: [localStorage.getItem('idUser')],
-        nBots: ['', [Validators.min(10), Validators.required]]
+        userId: [''],
+        nBots: ['', Validators.required]
       });
       this.killBotsForm = this.fb.group({
         nameModel: [''],
-        userId: [localStorage.getItem('idUser')],
+        userId: [''],
         nBots: ['', [Validators.required]]
       });
     }
 
   ngOnInit(): void {
+    this.isLoadingBots=true
+    this.gets();
     this.nav.show();
     this.getInfoUrs();
+  }
+
+  gets(){
     this.getRegisters();
+    this.getBotcontainersByIdComp();
   }
 
   getRegisters() {
@@ -72,7 +87,7 @@ export class UserComponent implements OnInit {
       (data:any) => {
         this.registers=data.dataPlatfm
         this.registersLength=data.dataPlatfm.length
-        console.log(data);
+        // console.log(data);
       },
       err => {}
     )
@@ -95,9 +110,47 @@ export class UserComponent implements OnInit {
             this.IfValid=true
           }
         }
+        this.headquartersService.getHeadquarterById(this.usuario.headquarters_idHeadquarter).subscribe(
+          (data:any) => {
+            this.idCompany=data.dataHeadquarter.company_idCompany
+          },
+          err => {}
+        )
       },
       (error) => console.log(error)
     );
+  }
+
+  getIdBotCLauch(ip:any, model:any) {
+    jQuery("#launchBotModal").modal("show");
+    this.ipBot=ip
+    this.getModel(model)
+  }
+  getIdBotCKill(ip:any, model:any) {
+    jQuery("#killBotModal").modal("show");
+    this.ipBot=ip
+    this.getModel(model)
+  }
+
+  getBotcontainersByIdComp() {
+    setTimeout(() => {
+      this.botService.getBotContainerByIdComp(this.idCompany).subscribe(
+        (data:any) => {
+          this.botContainers=data.botContainers
+          this.isLoadingBots=false
+        },
+        err => {}
+      )
+    }, 1000);
+  }
+
+  getBotContainer(botCont:any){
+    this.botContainer=botCont
+    this.botContainer.CompnaysArray.map((data:any) => {
+      if (data.id === this.idCompany) {
+        this.CompanyArrayBot=data
+      }
+    })
   }
 
   getPlatforms() {
@@ -138,7 +191,7 @@ export class UserComponent implements OnInit {
     const data = {
       nameModel: model
     }
-    this.botService.getKillBotsByModel(data).subscribe(
+    this.botService.getKillBotsByModel(this.ipBot, data).subscribe(
       (data:any) => {
         console.log(data)
         this.lengthkillbots=data.acctsModelsLength
@@ -148,15 +201,13 @@ export class UserComponent implements OnInit {
   }
 
   getModel(model:any){
-    console.log("object");
     this.modelo=model
     this.lengthkillbots=null
     const data={
       nameModel: model
     }
-    this.botService.getKillBotsByModel(data).subscribe(
+    this.botService.getKillBotsByModel(this.ipBot, data).subscribe(
       (data:any) => {
-        console.log(data);
         this.lengthkillbots=data.acctsModelsLength
       },
       err => {}
@@ -166,22 +217,38 @@ export class UserComponent implements OnInit {
   launchBots() {
     let value = this.launchBotsForm.value
     value.nameModel=this.modelo
+    value.userId=this.usuario._id
     this.userService.getTokenBot(value).subscribe(
       (res: any) => {
         const info = {
           token: res.token
         }
-        this.botService.launchBot('localhost', info).subscribe(
+        if (value.nBots > this.CompanyArrayBot.AcctsFree) {
+          this.notificationService.showErr('El numero de bots no puede se mayor al permitido en el bot container')
+        }
+        this.botService.launchBot(this.ipBot, info).subscribe(
           (data:any) => {
+            const body = {
+              companys_idCompany: this.idCompany,
+              nBots: value.nBots,
+              Launch:true
+            }
+            this.botService.updateBotConatinerArrayComp(body, this.botContainer._id).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
             this.modelsService.createRegister(value).subscribe(
               (data:any) => {
-                console.log(data);
               },
               err => {}
             )
             setTimeout(() => {
               this.getRegisters();
             }, 500);
+            this.gets();
+            this.resetFormLaunch();
+            jQuery("#launchBotModal").modal("hide");
             Swal.fire({
               icon: 'success',
               title: 'Bots lanzados correctamente',
@@ -199,6 +266,7 @@ export class UserComponent implements OnInit {
   killBots() {
     let value = this.killBotsForm.value
     value.nameModel=this.modelo
+    value.userId=this.usuario._id
     if (value.nBots > this.lengthkillbots) {
       Swal.fire({
         icon: 'warning',
@@ -213,6 +281,11 @@ export class UserComponent implements OnInit {
         const info = {
           token: res.token
         }
+
+        // if (value.nBots > this.CompanyArrayBot.AcctsFree) {
+        //   this.notificationService.showErr('El numero de bots no puede se mayor al permitido en el bot container')
+        // }
+
         this.botService.killBot('localhost', info).subscribe(
           (data:any) => {
             const dataV = {
@@ -223,13 +296,25 @@ export class UserComponent implements OnInit {
             }
             this.modelsService.createRegister(dataV).subscribe(
               (data:any) => {
-                console.log(data);
+              },
+              err => {}
+            )
+            const body = {
+              companys_idCompany: this.idCompany,
+              nBots: value.nBots,
+              Kill:true
+            }
+            this.botService.updateBotConatinerArrayComp(body, this.botContainer._id).subscribe(
+              (data:any) => {
               },
               err => {}
             )
             setTimeout(() => {
               this.getRegisters();
             }, 500);
+            this.gets();
+            this.resetFormKill();
+            jQuery("#killBotModal").modal("hide");
             Swal.fire({
               icon: 'success',
               title: 'Bots kill correctamente',
@@ -249,6 +334,13 @@ export class UserComponent implements OnInit {
   }
   getValueKillbot(value: string) {
     return this.killBotsForm.get(value)
+  }
+
+  resetFormLaunch(){
+    this.launchBotsForm.reset()
+  }
+  resetFormKill(){
+    this.killBotsForm.reset()
   }
 
 }

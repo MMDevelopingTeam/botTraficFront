@@ -5,7 +5,13 @@
             <h1>Lanzamiento de bots</h1>
         </div>
         <div class="col-md-3"></div>
-        <div class="col-md-6 mt-3 text-center">
+        <div *ngIf="isLoadingBots" class="col-md-6 mt-3 text-center">
+          <div class="spinner-border mt-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h4 class="mt-5" style="color: rgb(110, 110, 110);">Estableciendo conexión con los contenedores de bots</h4>
+        </div>
+        <div *ngIf="!isLoadingBots" class="col-md-6 mt-3 text-center">
           <h3>Registros</h3>
           <table class="table">
             <thead class="table-dark">
@@ -30,7 +36,7 @@
         </div>
         <div class="col-md-3"></div>
         <div class="col-md-1"></div>
-        <div class="col-md-10 mt-5 text-center">
+        <div *ngIf="!isLoadingBots" class="col-md-10 mt-5 text-center">
         
           <div *ngIf="IfValid">
             <div class="my-4" *ngIf="platforms">
@@ -55,9 +61,15 @@
             <div class="card-header">
               <h3>{{data$.nickname}}</h3>
             </div>
-            <div class="card-body">
-              <a data-bs-toggle="modal" (click)="getModel(data$.nickname)" data-bs-target="#launchBotModal" class="btn btn-primary m-1">Lanzar bots</a>
-              <a data-bs-toggle="modal" (click)="getModel(data$.nickname)" data-bs-target="#killBotModal" class="btn btn-danger m-1">Matar bots</a>
+            <div class="card-body text-center">
+              <a *ngFor="let botContainer of botContainers" class="btn m-1" style="background-color: rgb(255, 246, 161);">
+                <div class="row" *ngFor="let comp of botContainer.CompnaysArray">
+                  <small *ngIf="comp.id === idCompany">bot: {{botContainer.ip}}</small>
+                  <span *ngIf="comp.id === idCompany">{{comp.AcctsFree}}/{{comp.AcctsUsed}}</span>
+                </div>
+                <button class="btn btn-success m-1" (click)="getBotContainer(botContainer)" (click)="getIdBotCLauch(botContainer.ip, data$.nickname)">Lanzar bots</button>
+                <button class="btn btn-danger m-1" (click)="getBotContainer(botContainer)" (click)="getIdBotCKill(botContainer.ip, data$.nickname)">kill bots</button>
+              </a>
             </div>
           </div>
 
@@ -70,12 +82,12 @@
 </div>
 
 <!-- Modal Launch bot-->
-<div class="modal fade" id="launchBotModal" tabindex="-1" aria-labelledby="launchBotModalLabel" aria-hidden="true">
+<div class="modal fade" id="launchBotModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="launchBotModalLabel">Lanzar bots</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetFormLaunch()"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="launchBotsForm">
@@ -87,26 +99,25 @@
               <input type="number" formControlName="nBots" class="form-control" id="nBots" placeholder="Escribe el numéro de bots">
             </div>
             <div *ngIf="getValue('nBots')?.invalid && (getValue('nBots')?.touched || getValue('nBots')?.dirty)" class="mt-2">
-              <p class="fieldErr" *ngIf="getValue('nBots')?.errors?.min">El numero minimo es 10</p>
               <p class="fieldErr" *ngIf="getValue('nBots')?.errors?.required">El campo es requerido</p>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" [disabled]="launchBotsForm.invalid" class="btn btn-primary" data-bs-dismiss="modal" (click)="launchBots()">Lanzar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormLaunch()">Cerrar</button>
+          <button type="button" [disabled]="launchBotsForm.invalid" class="btn btn-primary" (click)="launchBots()">Lanzar</button>
         </div>
       </div>
     </div>
   </div>
   
   <!-- Modal kill bot-->
-  <div class="modal fade" id="killBotModal" tabindex="-1" aria-labelledby="killBotModalLabel" aria-hidden="true">
+  <div class="modal fade" id="killBotModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="killBotModalLabel">kill bots</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetFormKill()"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="killBotsForm">
@@ -123,8 +134,8 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" [disabled]="killBotsForm.invalid" class="btn btn-primary" data-bs-dismiss="modal" (click)="killBots()">Matar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormKill()">Cerrar</button>
+          <button type="button" [disabled]="killBotsForm.invalid" class="btn btn-primary" (click)="killBots()">Matar</button>
         </div>
       </div>
     </div>

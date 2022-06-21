@@ -21,8 +21,12 @@ export class BotService {
     // return this.http.get(`${this.urlStorage}/getproxysFree`);
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getproxysFree`);
   }
-  getKillBotsByModel(data: any) {
-    return this.http.post(`${this.urlModels}/getKillBotsByModel`, data);
+  getKillBotsByModel(ip: any, data: any) {
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/storage/getKillBotsByModel`, data);
+  }
+
+  getStatusBot(ip: any) {
+    return this.http.get(`http://${ip || 'localhost'}:3000/api/bot`);
   }
   getAllAccts(ip: any) {
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getaccts`);
@@ -61,8 +65,14 @@ export class BotService {
   getBotContainerById(id:any) {
     return this.http.get(`${this.urlBotContainer}/${id}`);
   }
+  getBotContainerByIdComp(id:any) {
+    return this.http.get(`${this.urlBotContainer}/byIdCompany/${id}`);
+  }
   updateBotContainer(BotContainer:any, id:any) {
     return this.http.put(`${this.urlBotContainer}/${id}`, BotContainer);
+  }
+  updateBotConatinerArrayComp(BotContainer:any, id:any) {
+    return this.http.put(`${this.urlBotContainer}/updateAccts/${id}`, BotContainer);
   }
   deleteBotContainer(id:any) {
     return this.http.delete(`${this.urlBotContainer}/${id}`);
