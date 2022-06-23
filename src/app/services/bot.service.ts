@@ -14,38 +14,64 @@ export class BotService {
   constructor(private http: HttpClient) { }
 
   getAllProxys(ip: any) {
+    if (ip === undefined) {
+      return this.http.get(`${environment.urlLaunchExpuesta}/storage/getproxys`);
+    }
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getproxys`);
-    // return this.http.get(`${this.urlStorage}/getproxys`);
   }
   getAllProxysFree(ip: any) {
     // return this.http.get(`${this.urlStorage}/getproxysFree`);
+    if (ip === undefined) {
+      return this.http.get(`${environment.urlLaunchExpuesta}/storage/getproxysFree`);
+    }
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getproxysFree`);
   }
   getKillBotsByModel(ip: any, data: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/storage/getKillBotsByModel`, data);
+    }
     return this.http.post(`http://${ip || 'localhost'}:3000/api/storage/getKillBotsByModel`, data);
   }
 
   getStatusBot(ip: any) {
+    if (ip === undefined) {
+      return this.http.get(`${environment.urlLaunchExpuesta}/bot`);
+    }
     return this.http.get(`http://${ip || 'localhost'}:3000/api/bot`);
   }
   getAllAccts(ip: any) {
+    if (ip === undefined) {
+      return this.http.get(`${environment.urlLaunchExpuesta}/storage/getaccts`);
+    }
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getaccts`);
     // return this.http.get(`${this.urlStorage}/getaccts`);
   }
   getAllAcctsFree(ip: any) {
+    if (ip === undefined) {
+      return this.http.get(`${environment.urlLaunchExpuesta}/storage/getAcctsFree`);
+    }
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getAcctsFree`);
     // return this.http.get(`${this.urlStorage}/getAcctsFree`);
   }
   saveProxys(proxys:any, ip:any){
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/storage/proxysString`, proxys);
+    }
     return this.http.post(`http://${ip || 'localhost'}:3000/api/storage/proxysString`, proxys);
   }
 
 
   launchBot(ip: any, name_model: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/bot`, name_model);
+    }
     return this.http.post(`http://${ip || 'localhost'}:3000/api/bot`, name_model)
     // return this.http.post(`http://localhost:3000/api/bot`, name_model)
   }
   killBot(ip: any, name_model: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/bot/killbot`, name_model);
+    }
     return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/killbot`, name_model)
     // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
   }
