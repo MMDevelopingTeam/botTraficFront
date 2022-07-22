@@ -80,6 +80,14 @@ export class UserService {
     return this.http.post(`${this.urlUser}/getTokenkillBot`, data);
   }
 
+  getTokenBotAny(data: any) {
+    return this.http.post(`${this.urlUser}/getTokenBotAny`, data);
+  }
+
+  getTokenkillBotAny(data: any) {
+    return this.http.post(`${this.urlUser}/getTokenkillBotAny`, data);
+  }
+
   logout(){
     localStorage.removeItem('token');
     localStorage.removeItem('tokenSuperU');

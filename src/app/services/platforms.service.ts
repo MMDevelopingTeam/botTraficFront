@@ -22,6 +22,9 @@ export class PlatformsService {
   getPlatformById(id:any) {
     return this.http.get(`${this.urlPlatforms}/${id}`);
   }
+  getPlatformByName(name:any) {
+    return this.http.get(`${this.urlPlatforms}/findByName/${name}`);
+  }
   updatePlatform(Platform:any, id:any) {
     return this.http.put(`${this.urlPlatforms}/${id}`, Platform);
   }

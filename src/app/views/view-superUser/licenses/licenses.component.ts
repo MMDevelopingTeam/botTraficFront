@@ -24,6 +24,7 @@ export class LicensesComponent implements OnInit {
     nameLicense: '',
     descriptionLicense: '',
     monthsDuration: '',
+    type: '',
     platform_idPlatform: '',
     numberAccts: '',
   };
@@ -38,6 +39,7 @@ export class LicensesComponent implements OnInit {
       nameLicense: ['', Validators.required],
       descriptionLicense: [''],
       monthsDuration: ['', Validators.required],
+      type: ['', Validators.required],
       platform_idPlatform: ['', Validators.required],
       numberAccts: ['', Validators.required],
     });
@@ -92,7 +94,6 @@ export class LicensesComponent implements OnInit {
 
   getLicense(license: any){
     this.license=license
-    console.log(this.license);
   }
 
   getLicenseEdit(license: License){

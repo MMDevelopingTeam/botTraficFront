@@ -30,6 +30,9 @@ export class ModelsService {
     }
     return this.http.post(`${this.urlModel}/platform/${id}`, data);
   }
+  getModelFull(data:any) {
+    return this.http.post(`${this.urlModel}/getModelFull`, data);
+  }
   updateModel(model:any, id:any) {
     return this.http.put(`${this.urlModel}/${id}`, model);
   }

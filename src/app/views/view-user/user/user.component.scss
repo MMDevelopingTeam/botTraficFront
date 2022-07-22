@@ -3,3 +3,12 @@
     font-size: 15px;
     margin-left: 10px;
 }
+
+.cardPlatform{
+    border-color: black;
+}
+.cardPlatform:hover{
+    background-color: black;
+    cursor: pointer;
+    color: white;
+}

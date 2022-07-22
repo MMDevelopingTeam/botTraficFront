@@ -81,6 +81,11 @@
             <label for="formGroupExampleInput5" class="form-label">Plataforma</label>
             <input [(ngModel)]="license.platform_idPlatform.namePlatform" type="text" class="form-control" id="formGroupExampleInput5" disabled>
         </div>
+        <div class="col-md-6 mb-3">
+            <label for="formGroupExampleInput5" class="form-label">tipo</label>
+            <input *ngIf="license.type === 'actsLogued'" placeholder="cuentas logueadas" type="text" class="form-control" id="formGroupExampleInput5" disabled>
+            <input *ngIf="license.type === 'actsAny'" placeholder="cuentas anonimas" type="text" class="form-control" id="formGroupExampleInput5" disabled>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -169,7 +174,7 @@
                       <p class="fieldErr" *ngIf="getValueCreate('numberAccts')?.errors?.required">El campo es requerido</p>
                   </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <label for="formGroupExampleInput4" class="form-label">Plataforma</label>
                 <select class="form-select" formControlName="platform_idPlatform" id="formGroupExampleInput4">
                   <option selected></option>
@@ -177,6 +182,17 @@
                 </select>
                 <div *ngIf="getValueCreate('platform_idPlatform')?.invalid && (getValueCreate('platform_idPlatform')?.touched || getValueCreate('platform_idPlatform')?.dirty)">
                   <p class="fieldErr" *ngIf="getValueCreate('platform_idPlatform')?.errors?.required">El campo es requerido</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="formGroupExampleInput5" class="form-label">Tipo</label>
+                <select class="form-select" formControlName="type" id="formGroupExampleInput5">
+                  <option selected></option>
+                  <option value="actsLogued">cuentas logueadas</option>
+                  <option value="actsAny">cuentas anonimas</option>
+                </select>
+                <div *ngIf="getValueCreate('type')?.invalid && (getValueCreate('type')?.touched || getValueCreate('type')?.dirty)">
+                  <p class="fieldErr" *ngIf="getValueCreate('type')?.errors?.required">El campo es requerido</p>
                 </div>
               </div>
             </form>

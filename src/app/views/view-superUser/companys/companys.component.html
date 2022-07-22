@@ -39,6 +39,9 @@
                     <button class="btn btn-success mx-1" (click)="getCompanyEdit(company)" data-bs-toggle="modal" data-bs-target="#editCompanyModal">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
+                    <button class="btn btn-info mx-1" (click)="getCompany(company)" data-bs-toggle="modal" data-bs-target="#addLicenceModal">
+                      <i class="fa-solid fa-receipt"></i>
+                    </button>
                     <button class="btn btn-danger" (click)="deleteCompany(company._id)">
                         <i class="fa-solid fa-trash"></i>
                     </button>
@@ -254,6 +257,55 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getCompanys()" (click)="resetFormCreate()">Cerrar</button>
         <button type="button" class="btn btn-primary" (click)="createCompany()" [disabled]="companyCreateForm.invalid">Crear compañía</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal  add licence-->
+<div class="modal fade" id="addLicenceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addLicenceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLicenceModalLabel">Añadir licencia</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addLicenceForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="formGroupExampleInput" class="form-label">Fecha inicial</label>
+                <input formControlName="initialDateLicense" type="date" class="form-control" id="formGroupExampleInput">
+                <div *ngIf="getValueCreate('initialDateLicense')?.invalid && (getValueCreate('initialDateLicense')?.touched || getValueCreate('initialDateLicense')?.dirty)">
+                  <p class="fieldErr" *ngIf="getValueCreate('initialDateLicense')?.errors?.required">El campo es requerido</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="formGroupExampleInput3" class="form-label">Duración</label>
+                <input formControlName="monthsDuration" placeholder="Ingrese la duración en meses" type="text" class="form-control" id="formGroupExampleInput3">
+                <div *ngIf="getValueCreate('monthsDuration')?.invalid && (getValueCreate('monthsDuration')?.touched || getValueCreate('monthsDuration')?.dirty)">
+                  <p class="fieldErr" *ngIf="getValueCreate('monthsDuration')?.errors?.required">El campo es requerido</p>
+                </div>
+            </div>
+            <h4>Licencias</h4>
+            <hr>
+            <div class="col-md-12 mb-3">
+              <select class="form-select" formControlName="licenses_idLicense" aria-label="Default select example" id="formGroupExampleInput2">
+                <option selected></option>
+                <option *ngFor="let licence of licences" [value]="licence._id">
+                  {{licence.nameLicense}}-{{licence.platform_idPlatform.namePlatform}}
+                </option>
+              </select>
+              <div *ngIf="getValueCreate('licenses_idLicense')?.invalid && (getValueCreate('licenses_idLicense')?.touched || getValueCreate('licenses_idLicense')?.dirty)">
+                <p class="fieldErr" *ngIf="getValueCreate('licenses_idLicense')?.errors?.required">El campo es requerido</p>
+              </div>
+          </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" [disabled]="addLicenceForm.invalid" (click)="addLicence()">Crear</button>
       </div>
     </div>
   </div>

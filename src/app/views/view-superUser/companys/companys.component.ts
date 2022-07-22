@@ -24,6 +24,7 @@ export class CompanysComponent implements OnInit {
   companysLength:any;
 
   companyCreateForm: FormGroup;
+  addLicenceForm: FormGroup;
 
   companyEdit: Company = {
     nameCompany: '',
@@ -47,6 +48,13 @@ export class CompanysComponent implements OnInit {
       addressCompany: [''],
       telephoneCompany: [''],
       license_idLicense: ['', Validators.required]
+    });
+
+    this.addLicenceForm = this.fb.group({
+      initialDateLicense: ['', Validators.required],
+      monthsDuration: ['', Validators.required],
+      companys_idCompany: [''],
+      licenses_idLicense: ['', Validators.required]
     });
   }
 
@@ -75,7 +83,6 @@ export class CompanysComponent implements OnInit {
 
   getCompany(company:any){
     this.company=company
-    console.log(company);
   }
 
   getCompanyEdit(company: Company){
@@ -159,5 +166,23 @@ export class CompanysComponent implements OnInit {
 
   resetFormCreate(){
     this.companyCreateForm.reset()
+  }
+
+  addLicence(){
+    let value = this.addLicenceForm.value
+    value.companys_idCompany=this.company._id
+    this.licensesService.createRegisterLicense(value).subscribe(
+      (data: any) => {
+        this.getCompanys()
+        jQuery("#addLicenceModal").modal("hide");
+        Swal.fire({
+          icon: 'success',
+          title: 'Licencia añadida correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      },
+      err => {}
+    )
   }
 }

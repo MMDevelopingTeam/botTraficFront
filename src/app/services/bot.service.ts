@@ -76,6 +76,21 @@ export class BotService {
     // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
   }
 
+  launchBotAny(ip: any, name_model: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/bot/getBotAny`, name_model);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/getBotAny`, name_model)
+    // return this.http.post(`http://localhost:3000/api/bot`, name_model)
+  }
+  killBotAny(ip: any, name_model: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/bot/killbot`, name_model);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/killbot`, name_model)
+    // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
+  }
+
   /////////////////////////////////////////////////////
   /////////////////////////////////////////////////////
   ////////          bot container        //////////////
@@ -103,5 +118,7 @@ export class BotService {
   deleteBotContainer(id:any) {
     return this.http.delete(`${this.urlBotContainer}/${id}`);
   }
-
+  getRegisterCompanyBotContainer(id:any) {
+    return this.http.get(`${this.urlBotContainer}/getRegisterCompanyBotContainer/${id}`);
+  }
 }

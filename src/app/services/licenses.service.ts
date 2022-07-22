@@ -42,4 +42,12 @@ export class LicensesService {
   createRegisterLicense(license:any) {
     return this.http.post(this.urlRegisterLicenses, license);
   }
+
+  getRegisterLicensesByIDCompanyAndPlat(id:any, idPlatfom:any) {
+    return this.http.post(`${this.urlRegisterLicenses}/compnayAndPlat/${id}`, idPlatfom);
+  }
+
+  getLicencesCompanyPlatform(data: any){
+    return this.http.post(`${this.urlRegisterLicenses}/getLicencesCompanyPlatform`, data);
+  }
 }
