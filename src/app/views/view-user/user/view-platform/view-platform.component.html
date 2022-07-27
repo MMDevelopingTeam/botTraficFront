@@ -34,19 +34,24 @@
                       -
                       <samp *ngIf="licence.licenses_idLicense.type === 'actsLogued'">Cuentas logueadas</samp>
                       <samp *ngIf="licence.licenses_idLicense.type === 'actsAny'">Cuentas anonimas</samp>
+                      <samp *ngIf="licence.licenses_idLicense.type === 'actsMixed'">Cuentas mixtas</samp>
                     </option>
                   </select>
                 </div>
                 <div class="text-center mt-4" *ngIf="dataLicences">
                   <h6>Bots disponibles de la licencia</h6>
                   <h5>{{dataLicences.AcctsFree}}/{{dataLicences.AcctsUsed}}</h5>
+                  <div class="text-center mt-4" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">
+                    <h6>Bots anonimos disponibles</h6>
+                    <h5>{{dataLicences.AcctsFree*3}}</h5>
+                  </div>
                 </div>
               </div>
               <div class="card-footer text-muted">
-                <button class="btn btn-primary m-2" [disabled]="!dataLicences" data-bs-toggle="modal" data-bs-target="#launchBotsmodal">
+                <button class="btn btn-primary m-2" [disabled]="!dataLicences" (click)="getLengthActsModel()" data-bs-toggle="modal" data-bs-target="#launchBotsmodal">
                   Lanzar bots
                 </button>
-                <button class="btn btn-primary m-2" [disabled]="!dataLicences" data-bs-toggle="modal" data-bs-target="#killbotsModal">
+                <button class="btn btn-primary m-2" [disabled]="!dataLicences" (click)="getLengthActsModel()" data-bs-toggle="modal" data-bs-target="#killbotsModal">
                   Matar bots
                 </button>
               </div>

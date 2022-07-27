@@ -85,9 +85,24 @@ export class BotService {
   }
   killBotAny(ip: any, name_model: any) {
     if (ip === undefined) {
-      return this.http.post(`${environment.urlLaunchExpuesta}/bot/killbot`, name_model);
+      return this.http.post(`${environment.urlLaunchExpuesta}/bot/killBotAny`, name_model);
     }
-    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/killbot`, name_model)
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/killBotAny`, name_model)
+    // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
+  }
+
+  launchBotMixed(ip: any, name_model: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/bot/getBotMixed`, name_model);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/getBotMixed`, name_model)
+    // return this.http.post(`http://localhost:3000/api/bot`, name_model)
+  }
+  killBotMixed(ip: any, name_model: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/bot/killBotMixed`, name_model);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/killBotMixed`, name_model)
     // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
   }
 

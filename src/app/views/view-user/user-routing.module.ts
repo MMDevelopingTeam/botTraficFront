@@ -7,6 +7,7 @@ import { ViewPlatformComponent } from './user/view-platform/view-platform.compon
 const routes: Routes = [
   { path: 'dashboard/user', component: UserComponent, canActivate: [UserGuard] },
   { path: 'dashboard/user/chaturbate', component: ViewPlatformComponent, canActivate: [UserGuard] },
+  { path: 'dashboard/user/stripchat', component: ViewPlatformComponent, canActivate: [UserGuard] },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

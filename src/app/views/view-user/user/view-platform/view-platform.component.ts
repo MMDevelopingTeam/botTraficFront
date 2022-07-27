@@ -63,12 +63,14 @@ export class ViewPlatformComponent implements OnInit {
     this.launchBotsForm = this.fb.group({
       nameModel: [''],
       userId: [''],
-      nBots: ['', Validators.required]
+      nBots: ['', Validators.required],
+      idRegisterCompBotContainer: ['']
     });
     this.killBotsForm = this.fb.group({
       nameModel: [''],
       userId: [''],
-      nBots: ['', [Validators.required]]
+      nBots: ['', [Validators.required]],
+      idRegisterCompBotContainer: ['']
     });
   }
 
@@ -126,8 +128,8 @@ export class ViewPlatformComponent implements OnInit {
   getRegisterCompBotC(id:any) {
     this.botService.getRegisterCompanyBotContainer(id).subscribe(
       (data:any) => {
-        console.log(data.data);
         this.dataLicences=data.data
+        console.log(this.dataLicences);
       }
     )
   }
@@ -169,19 +171,26 @@ export class ViewPlatformComponent implements OnInit {
     if (type === 'kill' && this.dataLicences.registerLicenses.licenses_idLicense.type === 'actsAny') {
       this.killBotsAny()
     }
+    if (type === 'launch' && this.dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed') {
+      this.launchBotsMixed()
+    }
+    if (type === 'kill' && this.dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed') {
+      this.killBotsMixed()
+    }
   }
 
   launchBots() {
     let value = this.launchBotsForm.value
     value.nameModel=this.modelo
     value.userId=this.usuario._id
+    value.idRegisterCompBotContainer=this.dataLicences._id
     // console.log(value);
     this.userService.getTokenBot(value).subscribe(
       (res: any) => {
         const info = {
           token: res.token
         }
-        if (value.nBots > this.dataLicences.AcctsFree) {
+        if (value.nBots > this.dataLicences) {
           return this.notificationService.showErr('El numero de bots no puede se mayor al permitido en el bot container')
         }
         this.botService.launchBot(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
@@ -224,6 +233,7 @@ export class ViewPlatformComponent implements OnInit {
     let value = this.killBotsForm.value
     value.nameModel=this.modelo
     value.userId=this.usuario._id
+    value.idRegisterCompBotContainer=this.dataLicences._id
     if (value.nBots > this.lengthkillbots) {
       Swal.fire({
         icon: 'warning',
@@ -287,6 +297,7 @@ export class ViewPlatformComponent implements OnInit {
     let value = this.launchBotsForm.value
     value.nameModel=this.modelo
     value.userId=this.usuario._id
+    value.idRegisterCompBotContainer=this.dataLicences._id
     // console.log(value);
     this.userService.getTokenBotAny(value).subscribe(
       (res: any) => {
@@ -331,8 +342,202 @@ export class ViewPlatformComponent implements OnInit {
       err => console.log(err)
     )
   }
-  killBotsAny() {
 
+  killBotsAny() {
+    let value = this.killBotsForm.value
+    value.nameModel=this.modelo
+    value.userId=this.usuario._id
+    value.idRegisterCompBotContainer=this.dataLicences._id
+    if (value.nBots > this.lengthkillbots) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'El numéro de killBots no puede ser mayor al numero de bots corriendo',
+        showConfirmButton: false,
+        timer: 3500
+      })
+      return;
+    }
+    this.userService.getTokenkillBot(value).subscribe(
+      (res: any) => {
+        const info = {
+          token: res.token
+        }
+        if ((value.nBots+this.dataLicences.AcctsFree) > this.dataLicences.AcctsUsed) {
+          return this.notificationService.showErr('No es posible matar mas cuentas en el bot container')
+        }
+        this.botService.killBotAny(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
+          (data:any) => {
+            const dataV = {
+              nameModel: value.nameModel,
+              userId:value.userId,
+              nBots:value.nBots,
+              killBots: true
+            }
+            this.modelsService.createRegister(dataV).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            const body = {
+              nBots: value.nBots,
+              Kill:true
+            }
+            this.botService.updateBotConatinerArrayComp(body, this.dataLicences._id).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            setTimeout(() => {
+              this.getRegisters();
+              this.getRegisterCompBotC(this.idRegisterCompBotC);
+            }, 1000);
+            this.resetFormKill();
+            jQuery("#killbotsModal").modal("hide");
+            Swal.fire({
+              icon: 'success',
+              title: 'Bots kill correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          err => console.log(err)
+        )
+      },
+      err => console.log(err)
+    )
+  }
+
+  launchBotsMixed() {
+    let value = this.launchBotsForm.value
+    value.nameModel=this.modelo
+    value.userId=this.usuario._id
+    value.idRegisterCompBotContainer=this.dataLicences._id
+    // console.log(value);
+    if (value.nBots > 10) {
+      return this.notificationService.showErr('El numero de bots debe ser mayor o igual a 10')
+    }
+    this.userService.getTokenBotMixed(value).subscribe(
+      (res: any) => {
+        const info = {
+          token: res.token
+        }
+        if (value.nBots > this.dataLicences.AcctsFree) {
+          return this.notificationService.showErr('El numero de bots no puede se mayor al permitido en el bot container')
+        }
+        this.botService.launchBotMixed(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
+          (data:any) => {
+            const body = {
+              nBots: value.nBots,
+              Launch:true
+            }
+            this.botService.updateBotConatinerArrayComp(body, this.dataLicences._id).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            this.modelsService.createRegister(value).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            setTimeout(() => {
+              this.getRegisters();
+              this.getRegisterCompBotC(this.idRegisterCompBotC);
+            }, 1000);
+            this.resetFormLaunch();
+            jQuery("#launchBotsmodal").modal("hide");
+            Swal.fire({
+              icon: 'success',
+              title: 'Bots lanzados correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          err => {}
+        )
+      },
+      err => console.log(err)
+    )
+  }
+
+  killBotsMixed() {
+    let value = this.killBotsForm.value
+    value.nameModel=this.modelo
+    value.userId=this.usuario._id
+    value.idRegisterCompBotContainer=this.dataLicences._id
+    if (value.nBots < 10) {
+      return this.notificationService.showErr('El numero de bots debe ser mayor o igual a 10')
+    }
+    if (value.nBots > this.lengthkillbots) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'El numéro de killBots no puede ser mayor al numero de bots corriendo',
+        showConfirmButton: false,
+        timer: 3500
+      })
+      return;
+    }
+    this.userService.getTokenkillBotMixed(value).subscribe(
+      (res: any) => {
+        const info = {
+          token: res.token
+        }
+        if ((value.nBots+this.dataLicences.AcctsFree) > this.dataLicences.AcctsUsed) {
+          return this.notificationService.showErr('No es posible matar mas cuentas en el bot container')
+        }
+        this.botService.killBotMixed(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
+          (data:any) => {
+            const dataV = {
+              nameModel: value.nameModel,
+              userId:value.userId,
+              nBots:value.nBots,
+              killBots: true
+            }
+            this.modelsService.createRegister(dataV).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            const body = {
+              nBots: value.nBots,
+              Kill:true
+            }
+            this.botService.updateBotConatinerArrayComp(body, this.dataLicences._id).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            setTimeout(() => {
+              this.getRegisters();
+              this.getRegisterCompBotC(this.idRegisterCompBotC);
+            }, 1000);
+            this.resetFormKill();
+            jQuery("#killbotsModal").modal("hide");
+            Swal.fire({
+              icon: 'success',
+              title: 'Bots kill correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          err => console.log(err)
+        )
+      },
+      err => console.log(err)
+    )
+  }
+
+  getLengthActsModel() {
+    const data = {
+      nameModel: this.nickname,
+      id_registerBotCompany: this.dataLicences._id
+    }
+    this.botService.getKillBotsByModel(this.dataLicences.botContainer_idBotContainer.ip, data).subscribe(
+      (data:any) => {
+        // console.log(data);
+        this.lengthkillbots=data.acctsModelsLength
+      }
+    )
   }
 
   getRegisters() {
