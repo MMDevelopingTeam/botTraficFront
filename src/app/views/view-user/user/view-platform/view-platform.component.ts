@@ -185,6 +185,9 @@ export class ViewPlatformComponent implements OnInit {
     value.userId=this.usuario._id
     value.idRegisterCompBotContainer=this.dataLicences._id
     // console.log(value);
+    if (value.nBots < 10) {
+      return this.notificationService.showErr('El numero de bots debe ser mayor o igual a 10')
+    }
     this.userService.getTokenBot(value).subscribe(
       (res: any) => {
         const info = {
@@ -299,6 +302,9 @@ export class ViewPlatformComponent implements OnInit {
     value.userId=this.usuario._id
     value.idRegisterCompBotContainer=this.dataLicences._id
     // console.log(value);
+    if (value.nBots < 10) {
+      return this.notificationService.showErr('El numero de bots debe ser mayor o igual a 10')
+    }
     this.userService.getTokenBotAny(value).subscribe(
       (res: any) => {
         const info = {
@@ -413,7 +419,7 @@ export class ViewPlatformComponent implements OnInit {
     value.userId=this.usuario._id
     value.idRegisterCompBotContainer=this.dataLicences._id
     // console.log(value);
-    if (value.nBots > 10) {
+    if (value.nBots < 10) {
       return this.notificationService.showErr('El numero de bots debe ser mayor o igual a 10')
     }
     this.userService.getTokenBotMixed(value).subscribe(
