@@ -40,10 +40,10 @@
                 </div>
                 <div class="text-center mt-4" *ngIf="dataLicences">
                   <h6>Bots disponibles de la licencia</h6>
-                  <h5>{{dataLicences.AcctsFree}}/{{dataLicences.AcctsUsed}}</h5>
+                  <h5>{{dataLicences.acctsFree}}/{{dataLicences.acctsUsed}}</h5>
                   <div class="text-center mt-4" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">
                     <h6>Bots anonimos disponibles</h6>
-                    <h5>{{dataLicences.AcctsFree*3}}</h5>
+                    <h5>{{dataLicences.acctsFree*3}}</h5>
                   </div>
                 </div>
               </div>
@@ -68,8 +68,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let register of registers | paginate: {id: 'pageBotC', itemsPerPage: 5, currentPage: p, totalItems: registersLength }">
-                <th scope="row">{{register.nameModel}}</th>
-                <td>{{register.nBots}}</td>
+                <th scope="row" *ngIf="register.nBots > 0">{{register.nameModel}}</th>
+                <td *ngIf="register.nBots > 0">{{register.nBots}}</td>
               </tr>
             </tbody>
           </table>
@@ -93,7 +93,7 @@
         <h5 class="modal-title" id="launchBotsmodalLabel">Lanzar bots</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" *ngIf="dataLicences">
         <div class="container">
           <form [formGroup]="launchBotsForm">
             <div *ngIf="lengthkillbots !== null" class="col-md-12">
@@ -107,6 +107,9 @@
               <p class="fieldErr" *ngIf="getValue('nBots')?.errors?.required">El campo es requerido</p>
             </div>
           </form>
+          <div *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'" class="text-center mt-4 p-2" style="background-color: #F3D688; border-radius: 10px;">
+            <h6>Ten en cuenta que tu licencia es mixta es decir que por cada cuenta que lances se lanzaran 3 anonimas, <br> Por ejemplo si lanzas 10 logueadas se lanzaran 30 anonimas</h6>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -117,7 +120,7 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- killbots Modal -->
 <div class="modal fade" id="killbotsModal" tabindex="-1" aria-labelledby="killbotsModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -125,7 +128,7 @@
         <h5 class="modal-title" id="killbotsModalLabel">Matar bots</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" *ngIf="dataLicences">
         <div class="container">
           <form [formGroup]="killBotsForm">
             <div *ngIf="lengthkillbots !== null" class="col-md-12">
@@ -139,6 +142,9 @@
               <p class="fieldErr" *ngIf="getValueKillbot('nBots')?.errors?.required">El campo es requerido</p>
             </div>
           </form>
+          <div *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'" class="text-center mt-4 p-2" style="background-color: #F3D688; border-radius: 10px;">
+            <h6>Ten en cuenta que tu licencia es mixta es decir que por cada cuenta que mates se mataran 3 anonimas, el número que aparece en la parte superior muesta el total de cuentas corriendo es decir la suma de las logueadas y las anonimas,<br> Por ejemplo si en la parte superior dice 40 solo tienes que matar 10 cuentas</h6>
+          </div>
         </div>
       </div>
       <div class="modal-footer">

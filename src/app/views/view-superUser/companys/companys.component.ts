@@ -52,7 +52,6 @@ export class CompanysComponent implements OnInit {
 
     this.addLicenceForm = this.fb.group({
       initialDateLicense: ['', Validators.required],
-      monthsDuration: ['', Validators.required],
       companys_idCompany: [''],
       licenses_idLicense: ['', Validators.required]
     });
@@ -167,6 +166,9 @@ export class CompanysComponent implements OnInit {
   resetFormCreate(){
     this.companyCreateForm.reset()
   }
+  resetFormAddLicence(){
+    this.addLicenceForm.reset()
+  }
 
   addLicence(){
     let value = this.addLicenceForm.value
@@ -175,6 +177,7 @@ export class CompanysComponent implements OnInit {
       (data: any) => {
         this.getCompanys()
         jQuery("#addLicenceModal").modal("hide");
+        this.resetFormAddLicence();
         Swal.fire({
           icon: 'success',
           title: 'Licencia añadida correctamente',
@@ -184,5 +187,34 @@ export class CompanysComponent implements OnInit {
       },
       err => {}
     )
+  }
+
+  disableLicence(id: any){
+    Swal.fire({
+      title: 'Desvincular licencia',
+      text: "¿Esta seguro de realizar esta acción?",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonColor: '#3085d6',
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Desvincular',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.licensesService.desactiveRegisterLicence(id).subscribe(
+          (data:any) => {
+            this.getCompanys();
+            jQuery("#addLicenceModal").modal("hide");
+            Swal.fire({
+              icon: 'success',
+              title: 'Licencia desvinculada correctamente',
+              showConfirmButton: false,
+              timer: 2500
+            })
+          }
+        )
+      }
+    })
+
   }
 }

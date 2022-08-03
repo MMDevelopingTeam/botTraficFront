@@ -72,6 +72,7 @@ export class BotContainersComponent implements OnInit {
     this.botService.getBotContainers().subscribe(
       (data:any) => {
         this.botContainers=data.dataBotContainer
+        console.log(this.botContainers);
         this.BotContainersLength=data.dataBotContainer.length
       },
       err => {}

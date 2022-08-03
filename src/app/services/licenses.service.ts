@@ -50,4 +50,8 @@ export class LicensesService {
   getLicencesCompanyPlatform(data: any){
     return this.http.post(`${this.urlRegisterLicenses}/getLicencesCompanyPlatform`, data);
   }
+
+  desactiveRegisterLicence(id:any){
+    return this.http.get(`${this.urlRegisterLicenses}/disableRegisterLicenceByID/${id}`);
+  }
 }

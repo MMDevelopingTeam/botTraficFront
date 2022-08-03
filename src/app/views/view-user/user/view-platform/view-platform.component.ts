@@ -251,7 +251,7 @@ export class ViewPlatformComponent implements OnInit {
         const info = {
           token: res.token
         }
-        if ((value.nBots+this.dataLicences.AcctsFree) > this.dataLicences.AcctsUsed) {
+        if ((value.nBots+this.dataLicences.acctsFree) > this.dataLicences.acctsUsed) {
           return this.notificationService.showErr('No es posible matar mas cuentas en el bot container')
         }
         this.botService.killBot(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
@@ -310,7 +310,7 @@ export class ViewPlatformComponent implements OnInit {
         const info = {
           token: res.token
         }
-        if (value.nBots > this.dataLicences.AcctsFree) {
+        if (value.nBots > this.dataLicences.acctsFree) {
           return this.notificationService.showErr('El numero de bots no puede se mayor al permitido en el bot container')
         }
         this.botService.launchBotAny(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
@@ -368,7 +368,7 @@ export class ViewPlatformComponent implements OnInit {
         const info = {
           token: res.token
         }
-        if ((value.nBots+this.dataLicences.AcctsFree) > this.dataLicences.AcctsUsed) {
+        if ((value.nBots+this.dataLicences.acctsFree) > this.dataLicences.acctsUsed) {
           return this.notificationService.showErr('No es posible matar mas cuentas en el bot container')
         }
         this.botService.killBotAny(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
@@ -427,7 +427,7 @@ export class ViewPlatformComponent implements OnInit {
         const info = {
           token: res.token
         }
-        if (value.nBots > this.dataLicences.AcctsFree) {
+        if (value.nBots > this.dataLicences.acctsFree) {
           return this.notificationService.showErr('El numero de bots no puede se mayor al permitido en el bot container')
         }
         this.botService.launchBotMixed(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
@@ -488,7 +488,7 @@ export class ViewPlatformComponent implements OnInit {
         const info = {
           token: res.token
         }
-        if ((value.nBots+this.dataLicences.AcctsFree) > this.dataLicences.AcctsUsed) {
+        if ((value.nBots+this.dataLicences.acctsFree) > this.dataLicences.acctsUsed) {
           return this.notificationService.showErr('No es posible matar mas cuentas en el bot container')
         }
         this.botService.killBotMixed(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(

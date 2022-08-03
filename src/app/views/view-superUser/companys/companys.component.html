@@ -105,26 +105,6 @@
             </tbody>
           </table>
         </div>
-        <hr>
-        <div class="col-md-12 mb-3">
-            <h4 class="modal-title">Contenedor de bots</h4>
-        </div>
-        <div *ngIf="company.botContainerArray">
-          <table class="table">
-            <thead class="table-dark">
-              <tr class="text-center">
-                <th scope="col">IP</th>
-                <th scope="col">Tipo</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr  class="text-center" *ngFor="let botContainer of company.botContainerArray">
-                <th>{{botContainer.ip}}</th>
-                <td>{{botContainer.typeBot}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="getCompanys()">Cerrar</button>
@@ -264,7 +244,7 @@
 
 <!-- Modal  add licence-->
 <div class="modal fade" id="addLicenceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addLicenceModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addLicenceModalLabel">Añadir licencia</h5>
@@ -281,15 +261,7 @@
                 </div>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="formGroupExampleInput3" class="form-label">Duración</label>
-                <input formControlName="monthsDuration" placeholder="Ingrese la duración en meses" type="text" class="form-control" id="formGroupExampleInput3">
-                <div *ngIf="getValueCreate('monthsDuration')?.invalid && (getValueCreate('monthsDuration')?.touched || getValueCreate('monthsDuration')?.dirty)">
-                  <p class="fieldErr" *ngIf="getValueCreate('monthsDuration')?.errors?.required">El campo es requerido</p>
-                </div>
-            </div>
-            <h4>Licencias</h4>
-            <hr>
-            <div class="col-md-12 mb-3">
+              <label for="formGroupExampleInput2" class="form-label">Licencias</label>
               <select class="form-select" formControlName="licenses_idLicense" aria-label="Default select example" id="formGroupExampleInput2">
                 <option selected></option>
                 <option *ngFor="let licence of licences" [value]="licence._id">
@@ -303,9 +275,37 @@
           </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="text-center">
         <button type="button" class="btn btn-primary" [disabled]="addLicenceForm.invalid" (click)="addLicence()">Crear</button>
+      </div>
+      <hr>
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLicenceModalLabel">Licencia activas</h5>
+      </div>
+      <div class="modal-body">
+        <table class="table" *ngIf="company">
+          <thead>
+            <tr class="text-center">
+              <th scope="col">Nombre</th>
+              <th scope="col">Cuentas</th>
+              <th scope="col">Fecha final</th>
+              <th scope="col">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="text-center" *ngFor="let item of company.registerLicensesArray">
+              <th scope="row">{{item.licenses_idLicense.nameLicense}} - {{item.licenses_idLicense.type}}</th>
+              <td>{{item.licenses_idLicense.numberAccts}}</td>
+              <td>{{item.finishedDateLicense | date: 'dd/MM/yyyy'}}</td>
+              <td>
+                <button class="btn btn-danger" (click)="disableLicence(item._id)">Desvincular</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormAddLicence()">Cerrar</button>
       </div>
     </div>
   </div>

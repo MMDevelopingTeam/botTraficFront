@@ -28,6 +28,7 @@ export class LicensesComponent implements OnInit {
     platform_idPlatform: '',
     numberAccts: '',
   };
+  licenceFullName: any;
 
   constructor(
     private licensesService: LicensesService,
@@ -94,10 +95,24 @@ export class LicensesComponent implements OnInit {
 
   getLicense(license: any){
     this.license=license
+    if (this.license.type === "actsMixed") {
+      this.licenceFullName = "Cuentas mixtas"
+    } else if (this.license.type === "actsAny") {
+      this.licenceFullName = "Cuentas anonimas"
+    } else if (this.license.type === "actsLogued") {
+      this.licenceFullName = "Cuentas logueadas"
+    }
   }
 
   getLicenseEdit(license: License){
     this.licenseEdit=license
+    if (this.licenseEdit.type === "actsMixed") {
+      this.licenceFullName = "Cuentas mixtas"
+    } else if (this.licenseEdit.type === "actsAny") {
+      this.licenceFullName = "Cuentas anonimas"
+    } else if (this.licenseEdit.type === "actsLogued") {
+      this.licenceFullName = "Cuentas logueadas"
+    }
   }
 
   deleteLicense(id:any){

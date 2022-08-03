@@ -60,7 +60,7 @@
         <h5 class="modal-title" id="viewCompanyModalLabel">licencia</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body row" *ngIf="license">
+      <div class="modal-body row" *ngIf="license && licenceFullName">
         <div class="col-md-6 mb-3">
             <label for="formGroupExampleInput" class="form-label">Nombre</label>
             <input [(ngModel)]="license.nameLicense" type="text" class="form-control" id="formGroupExampleInput" disabled>
@@ -82,10 +82,9 @@
             <input [(ngModel)]="license.platform_idPlatform.namePlatform" type="text" class="form-control" id="formGroupExampleInput5" disabled>
         </div>
         <div class="col-md-6 mb-3">
-            <label for="formGroupExampleInput5" class="form-label">tipo</label>
-            <input *ngIf="license.type === 'actsLogued'" placeholder="cuentas logueadas" type="text" class="form-control" id="formGroupExampleInput5" disabled>
-            <input *ngIf="license.type === 'actsAny'" placeholder="cuentas anonimas" type="text" class="form-control" id="formGroupExampleInput5" disabled>
-        </div>
+          <label for="formGroupExampleInput5" class="form-label">Tipo</label>
+          <input [(ngModel)]="licenceFullName" type="text" class="form-control" id="formGroupExampleInput5" disabled>
+      </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -102,7 +101,7 @@
           <h5 class="modal-title" id="editCompanyModalLabel">Editar licencia</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="getLicenses()"></button>
         </div>
-        <div class="modal-body" *ngIf="licenseEdit">
+        <div class="modal-body" *ngIf="licenseEdit && licenceFullName">
           <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="formGroupExampleInput" class="form-label">Nombre</label>
@@ -128,6 +127,10 @@
                 <div *ngIf="licenseEdit.numberAccts === ''">
                   <p class="fieldErr">El campo es requerido</p>
                 </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="formGroupExampleInput5" class="form-label">Tipo</label>
+                <input [(ngModel)]="licenceFullName" placeholder="Ingrese la antidad de cuentas" type="text" class="form-control" id="formGroupExampleInput5" disabled>
             </div>
           </div>
         </div>
@@ -195,6 +198,11 @@
                 <div *ngIf="getValueCreate('type')?.invalid && (getValueCreate('type')?.touched || getValueCreate('type')?.dirty)">
                   <p class="fieldErr" *ngIf="getValueCreate('type')?.errors?.required">El campo es requerido</p>
                 </div>
+              </div>
+              <div *ngIf="licencesCreateForm.value.type === 'actsMixed'" class="col-md-12 mt-3 text-center">
+                <hr>
+                <h4>La relación de cuentas es <span style="font-weight: 700;">1:3</span></h4>
+                <h4><small style="color: brown;">ejemplo</small><br>10 <span>Cuentas logueadas</span> : 30 <span>Cuentas anonimas</span></h4>
               </div>
             </form>
           </div>
