@@ -5,5 +5,5 @@ export interface License {
     monthsDuration: string;
     type: string;
     platform_idPlatform: string;
-    numberAccts: string;
+    numberAccts?: string;
 }

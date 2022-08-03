@@ -123,10 +123,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="formGroupExampleInput4" class="form-label">Cantidad de cuentas</label>
-                <input [(ngModel)]="licenseEdit.numberAccts" placeholder="Ingrese la antidad de cuentas" type="text" class="form-control" id="formGroupExampleInput4">
-                <div *ngIf="licenseEdit.numberAccts === ''">
-                  <p class="fieldErr">El campo es requerido</p>
-                </div>
+                <input [(ngModel)]="licenseEdit.numberAccts" placeholder="Ingrese la antidad de cuentas" type="text" class="form-control" id="formGroupExampleInput4" disabled>
             </div>
             <div class="col-md-12 mb-3">
                 <label for="formGroupExampleInput5" class="form-label">Tipo</label>
