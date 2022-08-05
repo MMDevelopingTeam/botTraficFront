@@ -30,20 +30,8 @@
                 <td>{{company.typeCompany}}</td>
                 <td>{{company.registerLicensesArray.length}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="getCompany(company)" data-bs-toggle="modal" data-bs-target="#viewCompanyModal">
+                    <button class="btn btn-primary" (click)="getCompany(company)" data-bs-toggle="modal" data-bs-target="#viewCompanyModal" matTooltip="Ver y editar información de la empresa">
                         <i class="fa-solid fa-eye"></i>
-                    </button>
-                    <button class="btn btn-warning mx-1" (click)="getCompany(company)" (click)="redirect()">
-                      <i class="fa-solid fa-user"></i>
-                    </button>
-                    <button class="btn btn-success mx-1" (click)="getCompanyEdit(company)" data-bs-toggle="modal" data-bs-target="#editCompanyModal">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    <button class="btn btn-info mx-1" (click)="getCompany(company)" data-bs-toggle="modal" data-bs-target="#addLicenceModal">
-                      <i class="fa-solid fa-receipt"></i>
-                    </button>
-                    <button class="btn btn-danger" (click)="deleteCompany(company._id)">
-                        <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>
               </tr>
@@ -97,13 +85,53 @@
               </tr>
             </thead>
             <tbody>
-              <tr  class="text-center" *ngFor="let licence of company.registerLicensesArray">
+              <tr  class="text-center" *ngFor="let licence of company.registerLicensesArray | paginate: {id: 'pageServ', itemsPerPage: 5, currentPage: pLicences, totalItems: company.registerLicensesArray.length }">
                 <th>{{licence.licenses_idLicense.nameLicense}}</th>
                 <td>{{licence.initialDateLicense | date: 'short'}}</td>
                 <td>{{licence.finishedDateLicense | date: 'short'}}</td>
               </tr>
             </tbody>
           </table>
+          <div class="col-md-12 text-center">
+            <pagination-controls id="pageServ" (pageChange)="pLicences = $event"></pagination-controls>
+          </div>
+        </div>
+        <hr>
+        <h4 class="modal-title">Acciones</h4>
+        <div class="col-md-12 row mt-3">
+          <div class="col-12 col-md-1"></div>
+
+          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+            <label class="col-md-12" for="admins" style="font-weight: 500;">Administradores</label>
+            <button class="btn btn-warning m-1 btn-Act" (click)="getCompany(company)" (click)="redirect()" data-bs-toggle="modal" data-bs-target="#viewCompanyModal" id="admins">
+              <i class="fa-solid fa-user" style="font-size: 20px;"></i>
+            </button>
+          </div>
+          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+            <label class="col-md-12" for="edit" style="font-weight: 500;">Editar</label>
+            <button class="btn btn-success m-1 btn-Act" (click)="getCompanyEdit(company)" data-bs-toggle="modal" data-bs-target="#editCompanyModal" id="edit">
+              <i class="fa-solid fa-pen-to-square" style="font-size: 20px;"></i>
+            </button>
+          </div>
+          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+            <label class="col-md-12" for="licences" style="font-weight: 500;">Licencias</label>
+            <button class="btn btn-info m-1 btn-Act" (click)="getCompany(company)" data-bs-toggle="modal" data-bs-target="#addLicenceModal" id="licences">
+              <i class="fa-solid fa-receipt" style="font-size: 20px;"></i>
+            </button>
+          </div>
+          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+            <label class="col-md-12" for="models" style="font-weight: 500;">Modelos</label>
+            <button class="btn btn-primary m-1 btn-Act" (click)="redirectModels()" data-bs-toggle="modal" data-bs-target="#viewCompanyModal" id="models">
+              <i class="fa-solid fa-people-group" style="font-size: 20px;"></i>
+            </button>
+          </div>
+          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+            <label class="col-md-12" for="delete" style="font-weight: 500;">Eliminar</label>
+            <button class="btn btn-danger m-1 btn-Act" (click)="deleteCompany(company._id)" id="delete">
+              <i class="fa-solid fa-trash" style="font-size: 20px;"></i>
+          </button>
+          </div>
+          <div class="col-12 col-md-1"></div>
         </div>
       </div>
       <div class="modal-footer">

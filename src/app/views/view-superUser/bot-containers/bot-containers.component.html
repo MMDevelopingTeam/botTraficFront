@@ -28,16 +28,16 @@
                 <th>{{botContainer.ip}}</th>
                 <td>{{botContainer.typeBot}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="getBotContainer(botContainer)" data-bs-toggle="modal" data-bs-target="#botContainerModal">
+                    <button class="btn btn-primary" (click)="getBotContainer(botContainer)" data-bs-toggle="modal" data-bs-target="#botContainerModal" matTooltip="Ver la información del contenedor de bot">
                         <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-warning mx-1" (click)="redirect(botContainer._id)">
+                    <button class="btn btn-warning mx-1" (click)="redirect(botContainer._id)" matTooltip="Ver los proxys del contenedor de bot">
                         <i class="fa-solid fa-globe"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="getBotContainerEdit(botContainer)" data-bs-toggle="modal" data-bs-target="#botContainerEditModal">
+                    <button class="btn btn-success mx-1" (click)="getBotContainerEdit(botContainer)" data-bs-toggle="modal" data-bs-target="#botContainerEditModal" matTooltip="Editar contenedor de bot">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button class="btn btn-danger" (click)="deleteBotContainer(botContainer._id)">
+                    <button class="btn btn-danger" (click)="deleteBotContainer(botContainer._id)" matTooltip="Eliminar contenedor de bot">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>

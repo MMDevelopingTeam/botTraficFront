@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BotService } from 'src/app/services/bot.service';
-import { HeadquartersService } from 'src/app/services/headquarters.service';
 import { LicensesService } from 'src/app/services/licenses.service';
 import { ModelsService } from 'src/app/services/models.service';
 import { NavbarService } from 'src/app/services/navbar.service';
@@ -56,7 +55,6 @@ export class ViewPlatformComponent implements OnInit {
     public userService: UserService,
     private _location: Location,
     public licensesService: LicensesService,
-    public headquartersService: HeadquartersService,
     public platformsService: PlatformsService,
     public modelsService: ModelsService,
   ) {
@@ -93,13 +91,6 @@ export class ViewPlatformComponent implements OnInit {
     this.userService.getInfoUser().subscribe(
       (data: any) => {
         this.usuario = data.dataUser;
-        this.headquartersService.getHeadquarterById(this.usuario.headquarters_idHeadquarter).subscribe(
-          (data:any) => {
-            this.idCompany=data.dataHeadquarter.company_idCompany
-            this.getlicences();
-          },
-          err => {}
-        )
       },
       (error) => console.log(error)
     );
@@ -107,7 +98,7 @@ export class ViewPlatformComponent implements OnInit {
 
   getlicences() {
     const data = {
-      companys_idCompany: this.idCompany,
+      companys_idCompany: this.usuario.company_idCompany,
       platforms_idPlatform: this.idPlatform
     }
     this.licensesService.getLicencesCompanyPlatform(data).subscribe(
@@ -144,7 +135,7 @@ export class ViewPlatformComponent implements OnInit {
     let data = {
       nickname: this.nickname,
       platforms_idPlatform: this.idPlatform, 
-      headquarters_idHeadquarter: this.usuario.headquarters_idHeadquarter
+      company_idCompany: this.usuario.company_idCompany
     }
     this.modelsService.getModelFull(data).subscribe(
       (data:any) => {
@@ -153,6 +144,7 @@ export class ViewPlatformComponent implements OnInit {
         this.modelo=data.dataModel.nickname
         this.notificationService.showSuccess('Modelo encotrada')
         this.isLoading=false
+        this.getlicences()
       },
       err => this.isLoading=false
     )

@@ -30,13 +30,13 @@
                 <td>{{license.descriptionLicense}}</td>
                 <td>{{license.platform_idPlatform.namePlatform}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="getLicense(license)" data-bs-toggle="modal" data-bs-target="#viewLicenseModal">
+                    <button class="btn btn-primary" (click)="getLicense(license)" data-bs-toggle="modal" data-bs-target="#viewLicenseModal" matTooltip="Ver la información de la licencia">
                         <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="getLicenseEdit(license)" data-bs-toggle="modal" data-bs-target="#editLicenseModal">
+                    <button class="btn btn-success mx-1" (click)="getLicenseEdit(license)" data-bs-toggle="modal" data-bs-target="#editLicenseModal" matTooltip="Editar licencia">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button class="btn btn-danger" (click)="deleteLicense(license._id)">
+                    <button class="btn btn-danger" (click)="deleteLicense(license._id)" matTooltip="Eliminar licencia">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>

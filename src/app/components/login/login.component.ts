@@ -42,18 +42,6 @@ export class LoginComponent implements OnInit {
       const value = this.loginForm.value;
       this.userService.signIn(value).subscribe(
         (res:any) => {
-          if (res.user.headquarters_idHeadquarter) {
-            localStorage.setItem('token', res.token);
-            localStorage.setItem('idUser', res.user._id);
-          }
-          if (res.user.company_idCompany) {
-            localStorage.setItem('token', res.token);
-            localStorage.setItem('idUserAdmin', res.user._id);
-          }
-          if (res.user.ipFrom) {
-            localStorage.setItem('tokenSuperU', res.token);
-            localStorage.setItem('idSuperUser', res.user._id);
-          }
           Swal.fire({
             icon: 'success',
             title: "Login exitoso",
@@ -66,18 +54,23 @@ export class LoginComponent implements OnInit {
                 if (data.dataCompany.isConfigFull === false) {
                   this.router.navigate([`company/${res.user.company_idCompany}`]);
                 }
-                console.log(data);
               },
               err => {}
             )
           }
-          if (res.user.headquarters_idHeadquarter) {
+          if (res.user.userTypeArray && res.user.company_idCompany) {
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('idUser', res.user._id);
             this.router.navigate(['/dashboard/user']);
           }
-          if (res.user.company_idCompany) {
+          if (res.user.company_idCompany && res.user.userType) {
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('idUserAdmin', res.user._id);
             this.router.navigate(['/dashboard/userAdmin']);
           }
           if (res.user.ipFrom) {
+            localStorage.setItem('tokenSuperU', res.token);
+            localStorage.setItem('idSuperUser', res.user._id);
             this.router.navigate(['/dashboard/superUser']);
           }
         },

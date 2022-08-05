@@ -26,7 +26,6 @@ export class LicensesComponent implements OnInit {
     monthsDuration: '',
     type: '',
     platform_idPlatform: '',
-    numberAccts: '',
   };
   licenceFullName: any;
 

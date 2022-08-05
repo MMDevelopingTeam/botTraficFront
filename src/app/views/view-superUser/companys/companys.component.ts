@@ -21,12 +21,14 @@ export class CompanysComponent implements OnInit {
   licences: any;
 
   p:any;
+  pLicences:any;
   companysLength:any;
 
   companyCreateForm: FormGroup;
   addLicenceForm: FormGroup;
 
   companyEdit: Company = {
+    _id: '',
     nameCompany: '',
     typeCompany: '',
     addressCompany: '',
@@ -85,7 +87,11 @@ export class CompanysComponent implements OnInit {
   }
 
   getCompanyEdit(company: Company){
-    this.companyEdit=company
+    this.companyEdit._id=company._id
+    this.companyEdit.nameCompany=company.nameCompany
+    this.companyEdit.typeCompany=company.typeCompany
+    this.companyEdit.addressCompany=company.addressCompany
+    this.companyEdit.telephoneCompany=company.telephoneCompany
   }
 
   goBack(){
@@ -162,6 +168,9 @@ export class CompanysComponent implements OnInit {
   redirect(){
     this.router.navigate([`/dashboard/superUser/companys/${this.company._id}/users`]);
   }
+  redirectModels(){
+    this.router.navigate([`/dashboard/superUser/companys/${this.company._id}/models`]);
+  }
 
   resetFormCreate(){
     this.companyCreateForm.reset()
@@ -217,4 +226,5 @@ export class CompanysComponent implements OnInit {
     })
 
   }
+
 }

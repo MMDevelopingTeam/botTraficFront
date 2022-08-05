@@ -28,13 +28,13 @@
                 <th>{{permission.namePermission}}</th>
                 <td>{{permission.PermissionDescription}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="getPermission(permission)" data-bs-toggle="modal" data-bs-target="#permissionModal">
+                    <button class="btn btn-primary" (click)="getPermission(permission)" data-bs-toggle="modal" data-bs-target="#permissionModal" matTooltip="Ver la información del permiso">
                         <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="getPermissionEdit(permission)" data-bs-toggle="modal" data-bs-target="#permissionEditModal">
+                    <button class="btn btn-success mx-1" (click)="getPermissionEdit(permission)" data-bs-toggle="modal" data-bs-target="#permissionEditModal" matTooltip="Editar permiso">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button class="btn btn-danger" (click)="deletePermission(permission._id)">
+                    <button class="btn btn-danger" (click)="deletePermission(permission._id)" matTooltip="Eliminar permiso">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>

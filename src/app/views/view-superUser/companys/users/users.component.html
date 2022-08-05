@@ -28,16 +28,16 @@
                 <th>{{user.user}}</th>
                 <td>{{user.email}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="getUserAdmin(user)" data-bs-toggle="modal" data-bs-target="#viewCompanyModal">
+                    <button class="btn btn-primary" (click)="getUserAdmin(user)" data-bs-toggle="modal" data-bs-target="#viewCompanyModal" matTooltip="Ver la información del usuario">
                         <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="getUserAdminEdit(user)" data-bs-toggle="modal" data-bs-target="#editUserAdminModal">
+                    <button class="btn btn-success mx-1" (click)="getUserAdminEdit(user)" data-bs-toggle="modal" data-bs-target="#editUserAdminModal" matTooltip="Editar el usuario administrador">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button class="btn btn-warning mx-1" (click)="restartPass(user._id)">
+                    <button class="btn btn-warning mx-1" (click)="restartPass(user._id)" matTooltip="Restablecer la contraseña">
                       <i class="fa-solid fa-key"></i>
                     </button>
-                    <button class="btn btn-danger" (click)="deleteUserAdmin(user._id)">
+                    <button class="btn btn-danger" (click)="deleteUserAdmin(user._id)" matTooltip="Eliminar usuario administrador">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>

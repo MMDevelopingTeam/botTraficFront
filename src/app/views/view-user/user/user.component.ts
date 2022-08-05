@@ -8,7 +8,6 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 import { PlatformsService } from '../../../services/platforms.service';
 import { NotificationService } from '../../../services/notification.service';
-import { HeadquartersService } from '../../../services/headquarters.service';
 import { LicensesService } from 'src/app/services/licenses.service';
 import { Location } from '@angular/common';
 
@@ -57,7 +56,6 @@ export class UserComponent implements OnInit {
   constructor(
     public userService: UserService,
     public botService: BotService,
-    public headquartersService: HeadquartersService,
     public modelsService: ModelsService,
     public platformsService: PlatformsService,
     public licensesService: LicensesService,
@@ -95,12 +93,6 @@ export class UserComponent implements OnInit {
             this.IfValid=true
           }
         }
-        this.headquartersService.getHeadquarterById(this.usuario.headquarters_idHeadquarter).subscribe(
-          (data:any) => {
-            this.idCompany=data.dataHeadquarter.company_idCompany
-          },
-          err => {}
-        )
       },
       (error) => console.log(error)
     );

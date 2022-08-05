@@ -5,5 +5,5 @@ export interface User {
     email: string;
     password: string;
     userTypeArray: [];
-    headquarters_idHeadquarter: string;
+    company_idCompany: string;
 }

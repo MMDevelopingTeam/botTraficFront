@@ -38,7 +38,7 @@ export class UserAdminComponent implements OnInit {
   }
   
   getSedes() {
-    this.router.navigate([`headquarters/${this.usuario.company_idCompany}`]);
+    this.router.navigate([`users`]);
   }
   
   getModels() {

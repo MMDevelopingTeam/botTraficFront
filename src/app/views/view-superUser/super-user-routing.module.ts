@@ -4,6 +4,7 @@ import { SuperUserGuard } from 'src/app/guard/super-user.guard';
 import { BotContainersComponent } from './bot-containers/bot-containers.component';
 import { ProxysComponent } from './bot-containers/proxys/proxys.component';
 import { CompanysComponent } from './companys/companys.component';
+import { ModelsComponent } from './companys/models/models.component';
 import { UsersComponent } from './companys/users/users.component';
 import { LicensesComponent } from './licenses/licenses.component';
 import { PermissionsComponent } from './permissions/permissions.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'dashboard/superUser', component: SuperUserComponent, canActivate: [SuperUserGuard] },
   { path: 'dashboard/superUser/companys', component: CompanysComponent, canActivate: [SuperUserGuard] },
   { path: 'dashboard/superUser/companys/:id/users', component: UsersComponent, canActivate: [SuperUserGuard] },
+  { path: 'dashboard/superUser/companys/:id/models', component: ModelsComponent, canActivate: [SuperUserGuard] },
   { path: 'dashboard/superUser/botContainers', component: BotContainersComponent, canActivate: [SuperUserGuard] },
   { path: 'dashboard/superUser/botContainers/:id/proxys', component: ProxysComponent, canActivate: [SuperUserGuard] },
   { path: 'dashboard/superUser/platforms', component: PlatformsComponent, canActivate: [SuperUserGuard] },

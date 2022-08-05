@@ -37,7 +37,7 @@ export class UserService {
   }
 
   getUsers(id:string) {
-    return this.http.get(`${this.urlUser}/headquarterId/${id}`)
+    return this.http.get(`${this.urlUser}/companyId/${id}`)
   }
 
   deleteUser(id:string) {

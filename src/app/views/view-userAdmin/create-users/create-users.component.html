@@ -1,26 +1,20 @@
-<div class="row" *ngIf="dataHeadquarter">
-    <div class="col-md-1 text-center my-5">
+<div class="row">
+    <div class="col-md-12 px-5 py-3">
         <button class="btn" (click)="goBack()">
             <i class="iconReturn fa-solid fa-circle-chevron-left"></i>
         </button>
     </div>
-    <div class="col-md-11 title text-center my-5">
-        <h1>Sede {{dataHeadquarter.nameHeadquarter}}</h1>
+    <div class="col-md-12 title text-center">
+        <h1>Crea los monitores</h1>
     </div>
-    <!-- <div class="col-md-12 text-center">
-        <h2>Monitores</h2>
-    </div> -->
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
         <div style="float: right;" class="my-5">
             <button class="btn" data-bs-toggle="modal" data-bs-target="#createmoderatorModal">
                 <i class="iconReturn fa-solid fa-plus"></i>
             </button>
-            <!-- <button class="btn">
-                <i class="iconReturn fa-solid fa-trash-can"></i>
-            </button> -->
         </div>
-        <h2 class="text-center my-5">Monitores</h2>
+        <h2 class="text-center m-5">Monitores</h2>
         <div class="my-5">
             <table class="table" *ngIf="dataUsers">
                 <thead class="table-dark">
@@ -30,7 +24,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="text-center" *ngFor="let user of dataUsers">
+                  <tr class="text-center" *ngFor="let user of dataUsers | paginate: {id: 'pageBotC', itemsPerPage: 10, currentPage: p, totalItems: usersLength }">
                     <th scope="row">{{user.user}}</th>
                     <td>
                         <div>
@@ -46,44 +40,17 @@
                 </tbody>
             </table>
             <h3 *ngIf="dataUsers && dataUsers.length === 0" class="text-center">No tienes monitores</h3>
+            <div class="col-md-12 text-center" style="padding: 10px;">
+                <pagination-controls id="pageBotC" (pageChange)="p = $event"></pagination-controls>
+            </div>
         </div>
-        <div style="float: right;" class="my-5">
-            <button class="btn" data-bs-toggle="modal" data-bs-target="#createModelModal">
-                <i class="iconReturn fa-solid fa-plus"></i>
-            </button>
-            <!-- <button class="btn">
-                <i class="iconReturn fa-solid fa-trash-can"></i>
-            </button> -->
-        </div>
-        <h2 class="text-center my-5">Modelos</h2>
-        <div class="my-5">
-            <table class="table" *ngIf="dataModels">
-                <thead class="table-dark">
-                  <tr class="text-center">
-                    <th scope="col">NickName</th>
-                    <th scope="col">Opciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="text-center" *ngFor="let model of dataModels">
-                    <th scope="row">{{model.nickname}}</th>
-                    <td>
-                        <div>
-                            <button class="btn" (click)="editModel(model)" data-bs-toggle="modal" data-bs-target="#editModelModal">
-                                <i class="fa-solid fa-user-pen iconTrash"></i>
-                            </button>
-                            <button class="btn" (click)="deleteModel(model._id)">
-                                <i class="fa-solid fa-trash-can iconTrash" style="color: brown;"></i>
-                            </button>
-                        </div>
-                    </td>
-                  </tr>
-                </tbody>
-            </table>
-            <h3 *ngIf="dataModels && dataModels.length === 0" class="text-center">No tienes modelos</h3>
-        </div>
+        <div class="col-12 text-center" *ngIf="dataUsers && url != 'users'">
+          <button type="submit" [disabled]="dataUsers.length === 0" (click)="continue()" class="btn btn-acss">
+              <i class="fa-solid fa-angle-right icon-R"></i>
+          </button>
+      </div>
     </div>
-    <div class="col-md-1"></div>
+    <div class="col-md-2"></div>
 </div>
 
   
@@ -140,99 +107,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         <button type="button" [disabled]="!userForm.valid" class="btn btn-primary" (click)="saveFormUser()">Crear</button>
-      </div>
-    </div>
-  </div>
-</div>
-  
-<!-- Modal  model-->
-<div class="modal fade" id="createModelModal" tabindex="-1" aria-labelledby="createModelModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createModelModalLabel">Crear modelo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form class="row g-3" [formGroup]="modelForm">
-          <div class="col-md-6">
-              <label for="inputNickname" class="form-label">Nickname</label>
-              <input type="text" class="form-control" formControlName="nickname" placeholder="Ingrese el nickname" id="inputNickname">
-              <div *ngIf="getValue('nickname')?.invalid && (getValue('nickname')?.touched || getValue('nickname')?.dirty)">
-                <p class="fieldErr" *ngIf="getValue('nickname')?.errors?.required">El campo es requerido</p>
-              </div>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label" for="specificSizeSelect">Plataforma</label>
-            <select formControlName="platforms_idPlatform" class="form-select" id="specificSizeSelect" *ngIf="platforms">
-              <option selected></option>
-              <option *ngFor="let platform of platforms" [value]="platform._id">{{platform.namePlatform}}</option>
-            </select>
-            <div *ngIf="getValue('platforms_idPlatform')?.invalid && (getValue('platforms_idPlatform')?.touched || getValue('platforms_idPlatform')?.dirty)">
-              <p class="fieldErr" *ngIf="getValue('platforms_idPlatform')?.errors?.required">El campo es requerido</p>
-            </div>
-          </div>
-      </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!modelForm.valid" (click)="saveFormModel()">Crear</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal update model-->
-<div class="modal fade" id="editModelModal" tabindex="-1" aria-labelledby="editModelModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModelModalLabel">Editar modelo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" *ngIf="dataModel">
-        <form class="row g-3" [formGroup]="modelUpdateForm">
-          <div class="col-md-6">
-              <label for="inputNickname" class="form-label">Nickname</label>
-              <input type="text" class="form-control" formControlName="nickname" [ngModel]="dataModel.nickname" placeholder="Ingrese el nickname" id="inputNickname">
-              <div *ngIf="getValue('nickname')?.invalid && (getValue('nickname')?.touched || getValue('nickname')?.dirty)">
-                <p class="fieldErr" *ngIf="getValue('nickname')?.errors?.required">El campo nickname es requerido</p>
-              </div>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label" for="specificSizeSelect">Plataforma</label>
-            <select formControlName="platforms_idPlatform" class="form-select" id="specificSizeSelect" *ngIf="platforms">
-              <option selected></option>
-              <option *ngFor="let platform of platforms" [value]="platform._id">{{platform.namePlatform}}</option>
-            </select>
-            <div *ngIf="getValue('platform')?.invalid && (getValue('platform')?.touched || getValue('platform')?.dirty)">
-              <p class="fieldErr" *ngIf="getValue('platform')?.errors?.required">El campo plataforma es requerido</p>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <fieldset class="row mb-3">
-              <legend class="col-form-label col-sm-2 pt-0">Acceso</legend>
-              <div class="col-sm-10">
-                <div class="form-check">
-                  <input class="form-check-input" formControlName="isAllowed" type="radio" id="gridRadios1" checked value="true">
-                  <label class="form-check-label" for="gridRadios1">
-                    Permitir modelo
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" formControlName="isAllowed" type="radio" id="gridRadios2" value="false">
-                  <label class="form-check-label" for="gridRadios2">
-                    No permitir modelo
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-      </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveFormModelUpdate()">Editar</button>
       </div>
     </div>
   </div>

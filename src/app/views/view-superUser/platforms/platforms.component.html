@@ -28,13 +28,13 @@
                 <th>{{platform.namePlatform}}</th>
                 <td>{{platform.urlPlatform}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="getPlatform(platform)" data-bs-toggle="modal" data-bs-target="#platformModal">
+                    <button class="btn btn-primary" (click)="getPlatform(platform)" data-bs-toggle="modal" data-bs-target="#platformModal" matTooltip="Ver la información de la plataforma">
                         <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-success mx-1" (click)="getPlatformEdit(platform)" data-bs-toggle="modal" data-bs-target="#platformEditModal">
+                    <button class="btn btn-success mx-1" (click)="getPlatformEdit(platform)" data-bs-toggle="modal" data-bs-target="#platformEditModal" matTooltip="Editar plataforma">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button class="btn btn-danger" (click)="deletePlatform(platform._id)">
+                    <button class="btn btn-danger" (click)="deletePlatform(platform._id)" matTooltip="Eliminar plataforma">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>

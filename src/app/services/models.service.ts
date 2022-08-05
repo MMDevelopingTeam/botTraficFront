@@ -21,8 +21,8 @@ export class ModelsService {
   getModelById(id:any) {
     return this.http.get(`${this.urlModel}/${id}`);
   }
-  getModelsByIDheadQ(id:any) {
-    return this.http.get(`${this.urlModel}/byHeadquarter/${id}`);
+  getModelsByIDCompany(id:any) {
+    return this.http.get(`${this.urlModel}/byCompany/${id}`);
   }
   getModelByIDPlatform(model:any, id:any) {
     const data={

@@ -15,6 +15,8 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProxysComponent } from './bot-containers/proxys/proxys.component';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { ModelsComponent } from './companys/models/models.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
     PermissionsComponent,
     UsersComponent,
     StatisticsComponent,
-    ProxysComponent
+    ProxysComponent,
+    ModelsComponent
   ],
   imports: [
     NgbModule,
@@ -36,7 +39,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
     SuperUserRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatTooltipModule
   ]
 })
 export class SuperUserModule { }

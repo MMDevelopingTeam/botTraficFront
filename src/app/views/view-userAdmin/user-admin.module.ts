@@ -3,15 +3,26 @@ import { CommonModule } from '@angular/common';
 
 import { UserAdminRoutingModule } from './user-admin-routing.module';
 import { UserAdminComponent } from './user-admin/user-admin.component';
+import { CreateUsersComponent } from './create-users/create-users.component';
+import { CompanyUserAdminComponent } from './company-user-admin/company-user-admin.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { ModelsComponent } from './models/models.component';
 
 
 @NgModule({
   declarations: [
-    UserAdminComponent
+    UserAdminComponent,
+    CreateUsersComponent,
+    CompanyUserAdminComponent,
+    ModelsComponent
   ],
   imports: [
     CommonModule,
-    UserAdminRoutingModule
+    ReactiveFormsModule,
+    FormsModule,
+    UserAdminRoutingModule,
+    NgxPaginationModule
   ]
 })
 export class UserAdminModule { }
