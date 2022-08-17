@@ -95,7 +95,7 @@ export class UserComponent implements OnInit {
             this.IfValid=true
           }
         }
-        this.licensesService.expirationLicencesByCompany(this.usuario.company_idCompany).subscribe(
+        this.licensesService.expirationLicencesByCompany(this.usuario.company_idCompany._id).subscribe(
           (data:any) => {}
         )
       },
