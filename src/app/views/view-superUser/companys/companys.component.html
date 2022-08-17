@@ -99,39 +99,45 @@
         <hr>
         <h4 class="modal-title">Acciones</h4>
         <div class="col-md-12 row mt-3">
-          <div class="col-12 col-md-1"></div>
+          <!-- <div class="col-12 col-md-1"></div> -->
 
-          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+          <div class="col-6 col-sm-6 col-md-4 col-lg-2 text-center">
             <label class="col-md-12" for="admins" style="font-weight: 500;">Administradores</label>
             <button class="btn btn-warning m-1 btn-Act" (click)="getCompany(company)" (click)="redirect()" data-bs-toggle="modal" data-bs-target="#viewCompanyModal" id="admins">
               <i class="fa-solid fa-user" style="font-size: 20px;"></i>
             </button>
           </div>
-          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+          <div class="col-6 col-sm-6 col-md-4 col-lg-2 text-center">
             <label class="col-md-12" for="edit" style="font-weight: 500;">Editar</label>
             <button class="btn btn-success m-1 btn-Act" (click)="getCompanyEdit(company)" data-bs-toggle="modal" data-bs-target="#editCompanyModal" id="edit">
               <i class="fa-solid fa-pen-to-square" style="font-size: 20px;"></i>
             </button>
           </div>
-          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+          <div class="col-6 col-sm-6 col-md-4 col-lg-2 text-center">
+            <label class="col-md-12" for="devices" style="font-weight: 500;">Dispositivos</label>
+            <button class="btn btn-primary m-1 btn-Act" (click)="redirectAllowedDevices()" data-bs-toggle="modal" data-bs-target="#viewCompanyModal" id="devices">
+              <i class="fa-solid fa-laptop-medical" style="font-size: 20px;"></i>
+            </button>
+          </div>
+          <div class="col-6 col-sm-6 col-md-4 col-lg-2 text-center">
             <label class="col-md-12" for="licences" style="font-weight: 500;">Licencias</label>
             <button class="btn btn-info m-1 btn-Act" (click)="getCompany(company)" data-bs-toggle="modal" data-bs-target="#addLicenceModal" id="licences">
               <i class="fa-solid fa-receipt" style="font-size: 20px;"></i>
             </button>
           </div>
-          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+          <div class="col-6 col-sm-6 col-md-4 col-lg-2 text-center">
             <label class="col-md-12" for="models" style="font-weight: 500;">Modelos</label>
             <button class="btn btn-primary m-1 btn-Act" (click)="redirectModels()" data-bs-toggle="modal" data-bs-target="#viewCompanyModal" id="models">
               <i class="fa-solid fa-people-group" style="font-size: 20px;"></i>
             </button>
           </div>
-          <div class="col-4 col-sm-3 col-md-4 col-lg-2 text-center">
+          <div class="col-6 col-sm-6 col-md-4 col-lg-2 text-center">
             <label class="col-md-12" for="delete" style="font-weight: 500;">Eliminar</label>
             <button class="btn btn-danger m-1 btn-Act" (click)="deleteCompany(company._id)" id="delete">
               <i class="fa-solid fa-trash" style="font-size: 20px;"></i>
           </button>
           </div>
-          <div class="col-12 col-md-1"></div>
+          <!-- <div class="col-12 col-md-1"></div> -->
         </div>
       </div>
       <div class="modal-footer">

@@ -17,6 +17,7 @@ import { ProxysComponent } from './bot-containers/proxys/proxys.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { ModelsComponent } from './companys/models/models.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { AllowedDevicesComponent } from './companys/allowed-devices/allowed-devices.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     UsersComponent,
     StatisticsComponent,
     ProxysComponent,
-    ModelsComponent
+    ModelsComponent,
+    AllowedDevicesComponent
   ],
   imports: [
     NgbModule,

@@ -63,7 +63,7 @@ export class UserComponent implements OnInit {
     private router: Router,
     public nav: NavbarService,
     private _location: Location,
-    private fb: FormBuilder,
+    private fb: FormBuilder
     ) {
       this.launchBotsForm = this.fb.group({
         nameModel: [''],
@@ -75,6 +75,7 @@ export class UserComponent implements OnInit {
         userId: [''],
         nBots: ['', [Validators.required]]
       });
+
     }
 
   ngOnInit(): void {
@@ -82,6 +83,7 @@ export class UserComponent implements OnInit {
     this.nav.show();
     this.getInfoUrs();
   }
+
 
   getInfoUrs() {
     this.userService.getInfoUser().subscribe(
@@ -93,6 +95,9 @@ export class UserComponent implements OnInit {
             this.IfValid=true
           }
         }
+        this.licensesService.expirationLicencesByCompany(this.usuario.company_idCompany).subscribe(
+          (data:any) => {}
+        )
       },
       (error) => console.log(error)
     );

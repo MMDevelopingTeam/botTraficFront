@@ -54,4 +54,7 @@ export class LicensesService {
   desactiveRegisterLicence(id:any){
     return this.http.get(`${this.urlRegisterLicenses}/disableRegisterLicenceByID/${id}`);
   }
+  expirationLicencesByCompany(id:any){
+    return this.http.get(`${this.urlRegisterLicenses}/expirationLicencesByCompany/${id}`);
+  }
 }

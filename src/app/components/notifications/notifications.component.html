@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-md-12 my-5 text-center">
+        <h2>Notificaciones</h2>
+    </div>
+    <div class="col-md-12 my-5">
+        <div *ngIf="nav.Allnotifications">
+            <div *ngFor="let notification of nav.Allnotifications | paginate: {id: 'pageLic', itemsPerPage: 10, currentPage: p, totalItems: nav.Allnotifications.length }">
+                <div class="container" *ngIf="notification.state === false" style="background-color: rgb(189, 192, 192);">
+                    <h5 id="floatingInputGrid" *ngIf="notification.from">{{notification.from.company_idCompany.nameCompany}}</h5>
+                    <label for="floatingInputGrid" style="font-size: 20px;">{{notification.description}}, de <span *ngIf="notification.fromUser"><small style="font-weight: 800; font-size: 23px;">{{notification.fromUser.user}}</small></span><span *ngIf="notification.from"><small style="font-weight: 800; font-size: 23px;">{{notification.from.user}}</small></span></label>
+                    <button class="btn btn-primary" style="float: right;" data-bs-toggle="modal" data-bs-target="#viewNotify" (click)="getNotification(notification)">ver mas</button>
+                    <small class="m-2" style="float: right;">{{notification.date | date: 'dd/MM/yyyy'}}</small>
+                    <hr>
+                </div>
+                <div class="container" *ngIf="notification.state === true">
+                    <h5 id="floatingInputGrid" *ngIf="notification.from">{{notification.from.company_idCompany.nameCompany}}</h5>
+                    <label for="floatingInputGrid" style="font-size: 20px;">{{notification.description}}, de <span *ngIf="notification.fromUser"><small style="font-weight: 800; font-size: 23px;">{{notification.fromUser.user}}</small></span><span *ngIf="notification.from"><small style="font-weight: 800; font-size: 23px;">{{notification.from.user}}</small></span></label>
+                    <button class="btn btn-primary" style="float: right;" data-bs-toggle="modal" data-bs-target="#viewNotify" (click)="getNotification(notification)">ver mas</button>
+                    <small class="m-2" style="float: right;">{{notification.date | date: 'dd/MM/yyyy'}}</small>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-md-12 text-center" style="padding: 10px;">
+                <pagination-controls id="pageLic" (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+  
+<!-- Modal -->
+<div class="modal fade" id="viewNotify" tabindex="-1" aria-labelledby="viewNotifyLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewNotifyLabel">Notificación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="notification && payload.description === 'Acceso a un dispositivo nuevo'">
+            <div class="row">
+                <div class="col-md-6" *ngIf="notification.from">
+                    <label for="formGroupExampleInput2" class="form-label">Compañia</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput2" [placeholder]="notification.from.company_idCompany.nameCompany" disabled>
+                </div>
+                <div class="col-md-6" *ngIf="notification.from">
+                    <label for="formGroupExampleInput" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput" [placeholder]="notification.from.user" disabled>
+                </div>
+                <div class="col-md-12" *ngIf="notification.fromUser">
+                    <label for="formGroupExampleInput" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput" [placeholder]="notification.fromUser.user" disabled>
+                </div>
+                <div class="col-md-12 text-center my-2">
+                    <p *ngIf="notification.from">
+                        El usuario <span>{{notification.from.user}}</span> de la compañia <span>{{notification.from.company_idCompany.nameCompany}}</span> esta pidiendo acceso desde la ip {{payload.sourceIP}}, quieres dar acceso a este usuario
+                    </p>
+                    <p *ngIf="notification.fromUser">
+                        El usuario <span>{{notification.fromUser.user}}</span> esta pidiendo acceso desde la ip {{payload.sourceIP}}, quieres dar acceso a este usuario
+                    </p>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="notification && payload.description === 'Acceso a un dispositivo nuevo'" class="btn btn-success" (click)="AllowAccess()">Permitir</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

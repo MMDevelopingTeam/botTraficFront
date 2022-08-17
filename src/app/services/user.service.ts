@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.prod';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { SocketWebService } from './socket-web.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class UserService {
   urlUserAdmin = `${environment.url}/userAdmin`;
   urlUserType = `${environment.url}/userType`;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private sockets: SocketWebService) { }
 
   signIn(userSignIn:any) {
     return this.http.post(this.urlSignIn, userSignIn);
@@ -31,6 +32,13 @@ export class UserService {
     return this.http.get(`${this.urlUser}/email/${email}`)
   }
 
+  getUserByUser(user:any) {
+    return this.http.post(`${this.urlUser}/getUser`, user)
+  }
+
+  getUserByUserAndUserA(user:any) {
+    return this.http.post(`${this.urlUser}/getUserAndUserA`, user)
+  }
 
   getInfoUser() {
     return this.http.get(`${this.urlUser}/byToken`)
@@ -101,6 +109,13 @@ export class UserService {
     localStorage.removeItem('tokenSuperU');
     localStorage.removeItem('idUser');
     localStorage.removeItem('idUserAdmin');
+    localStorage.removeItem('idSuperUser');
+    localStorage.removeItem('id');
+    const payload = {
+      userId: 'sin-id'
+    }
+    this.sockets.configUser(payload)
+    
     this.router.navigate(['/'])
   }
 

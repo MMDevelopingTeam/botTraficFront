@@ -16,6 +16,8 @@ export class SuperUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.nav.show();
+    this.nav.getAllNotifications();
+    this.nav.getNotifications();
   }
 
   getCompanys() {

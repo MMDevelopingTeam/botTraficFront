@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class CompanyService {
 
   urlCompany = `${environment.url}/company`;
+  urlAllowedDevices = `${environment.url}/allowedDevices`;
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -33,4 +34,44 @@ export class CompanyService {
   deleteCompany(id:any) {
     return this.http.delete(`${this.urlCompany}/${id}`);
   }
+
+  /////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////
+  /////////////////          allowedDevices           /////////////////////
+  /////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////
+
+  createAllowedDevice(device:any) {
+    return this.http.post(this.urlAllowedDevices, device);
+  }
+  createAllowedDeviceUserAdmin(device:any) {
+    return this.http.post(`${this.urlAllowedDevices}/createAllowedDevicesUserAdmin`, device);
+  }
+  AllowAccess(device:any) {
+    return this.http.post(`${this.urlAllowedDevices}/AllowAccess`, device);
+  }
+  AllowAccessUSerA(device:any) {
+    return this.http.post(`${this.urlAllowedDevices}/AllowAccessUSerA`, device);
+  }
+  geAllowedDevices() {
+    return this.http.get(this.urlAllowedDevices);
+  }
+  getAllowedDeviceById(id:any) {
+    return this.http.get(`${this.urlAllowedDevices}/${id}`);
+  }
+  getAllowedDeviceByIp(ip:any) {
+    return this.http.get(`${this.urlAllowedDevices}/ByIp/${ip}`);
+  }
+  getAllowedDevicesByIdUser(ip:any) {
+    return this.http.get(`${this.urlAllowedDevices}/ByIdUser/${ip}`);
+  }
+  updateAllowedDevice(device:any, id:any) {
+    return this.http.put(`${this.urlAllowedDevices}/${id}`, device);
+  }
+  deleteAllowedDevice(id:any) {
+    return this.http.delete(`${this.urlAllowedDevices}/${id}`);
+  }
 }
+

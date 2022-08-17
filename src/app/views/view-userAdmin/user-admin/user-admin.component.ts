@@ -3,6 +3,7 @@ import { ModelsService } from 'src/app/services/models.service';
 import { UserService } from '../../../services/user.service';
 import { Router } from '@angular/router';
 import { NavbarService } from 'src/app/services/navbar.service';
+import { LicensesService } from 'src/app/services/licenses.service';
 
 @Component({
   selector: 'app-user-admin',
@@ -11,10 +12,12 @@ import { NavbarService } from 'src/app/services/navbar.service';
 })
 export class UserAdminComponent implements OnInit {
   usuario: any;
+  idComp: any;
 
   constructor(    
     public userService: UserService,
     public modelsService: ModelsService,
+    public licensesService: LicensesService,
     private router: Router,
     public nav: NavbarService,
     ) { }
@@ -29,11 +32,13 @@ export class UserAdminComponent implements OnInit {
         this.userService.getInfoUserAdmin().subscribe(
           (data: any) => {
             this.usuario = data.dataUser;
-            // console.log(this.usuario);
+            this.idComp=this.usuario.company_idCompany._id
+            this.licensesService.expirationLicencesByCompany(this.idComp).subscribe(
+              (data:any) => {}
+            )
           },
           (error) => console.log(error)
           );
-        return this.usuario;
     }
   }
   
@@ -42,7 +47,11 @@ export class UserAdminComponent implements OnInit {
   }
   
   getModels() {
-    this.router.navigate([`models/${this.usuario.company_idCompany}`]);
+    this.router.navigate([`models/${this.idComp}`]);
+  }
+
+  getDevices() {
+    this.router.navigate([`devices/${this.idComp}`]);
   }
 
 }

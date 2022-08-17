@@ -8,6 +8,7 @@ import { CompanyUserAdminComponent } from './company-user-admin/company-user-adm
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { ModelsComponent } from './models/models.component';
+import { AllowedDevicesComponent } from './allowed-devices/allowed-devices.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ModelsComponent } from './models/models.component';
     UserAdminComponent,
     CreateUsersComponent,
     CompanyUserAdminComponent,
-    ModelsComponent
+    ModelsComponent,
+    AllowedDevicesComponent
   ],
   imports: [
     CommonModule,

@@ -171,6 +171,9 @@ export class CompanysComponent implements OnInit {
   redirectModels(){
     this.router.navigate([`/dashboard/superUser/companys/${this.company._id}/models`]);
   }
+  redirectAllowedDevices(){
+    this.router.navigate([`/dashboard/superUser/companys/${this.company._id}/allowedDevices`]);
+  }
 
   resetFormCreate(){
     this.companyCreateForm.reset()

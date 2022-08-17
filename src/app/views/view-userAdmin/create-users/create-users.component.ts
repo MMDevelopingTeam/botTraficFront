@@ -91,7 +91,7 @@ export class CreateUsersComponent implements OnInit {
   }
 
   getUsers() {
-    this.userService.getUsers(this.usuario.company_idCompany).subscribe(
+    this.userService.getUsers(this.usuario.company_idCompany._id).subscribe(
       (data:any) => {
         this.dataUsers=data.dataUsers
         this.usersLength=data.dataUsers.length

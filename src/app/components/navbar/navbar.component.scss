@@ -8,3 +8,17 @@
         border: solid 1px rgb(0, 44, 167);
     }
 }
+
+.icon-notify{
+    color: white;
+    position: relative;
+}
+
+.icon-notify-new{
+    color: rgb(255, 255, 255);
+    position: absolute;
+    background-color: red;
+    border-radius: 10px;
+    font-size: 15px;
+    width: 18px;
+}

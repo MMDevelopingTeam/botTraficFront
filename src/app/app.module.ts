@@ -17,6 +17,7 @@ import { MatListModule } from '@angular/material/list';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { RolesDirective } from './directive/roles.directive';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 // ngBoostrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -29,7 +30,16 @@ import { SuperUserModule } from './views/view-superUser/super-user.module';
 import { UserAdminModule } from './views/view-userAdmin/user-admin.module';
 import { FilterModelPipe } from './pipes/filter-model.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { environment } from 'src/environments/environment.prod';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
+const config: SocketIoConfig = { 
+  url: environment.urlSockets, 
+  options: {
+    withCredentials: true,
+    autoConnect: true
+  } 
+};
 
 
 @NgModule({
@@ -40,7 +50,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NavbarComponent,
     PageNotFoundComponent,
     RolesDirective,
-    FilterModelPipe
+    FilterModelPipe,
+    NotificationsComponent
   ],
   imports: [
     UserModule,
@@ -67,6 +78,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ToastrModule.forRoot(),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ name: 'TEST' }),
+    SocketIoModule.forRoot(config)
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
