@@ -128,6 +128,7 @@ export class CreateUsersComponent implements OnInit {
     ]
     let value = this.userForm.value
     value.userTypeArray=data
+    value.company_idCompany=this.usuario.company_idCompany._id
     if (value.password !== value.VerifiedPassword) {
       return this.NotificationService.showErr('Las contraseñas no coinciden')
     }
