@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
 import { BotService } from '../../../services/bot.service';
 
 @Component({
@@ -18,9 +19,11 @@ export class StatisticsComponent implements OnInit {
   constructor(
     private _location: Location,
     private BotService: BotService,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
+    this.userService.tokenValidSuperU()
     this.getAllAccts()
     this.getAllProxys()
   }

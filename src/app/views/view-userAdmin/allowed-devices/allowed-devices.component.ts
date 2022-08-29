@@ -44,13 +44,14 @@ export class AllowedDevicesComponent implements OnInit {
     });
 
     this.deviceForm = this.fb.group({
-      sourceIP: ['', Validators.required],
+      mac: ['', Validators.required],
       company_idCompany: [''],
       User_idUser: ['']
     });
   }
 
   ngOnInit(): void {
+    this.userService.tokenValid();
     this.url=this.router.url.split('/')[1]
     this.route.params.subscribe(params => {
       this.id=params.id;

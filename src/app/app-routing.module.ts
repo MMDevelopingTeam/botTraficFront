@@ -4,8 +4,8 @@ import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './views/home/home.component';
 import { NoReturnRouteGuard } from './guard/no-return-route.guard';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { SuperUserComponent } from './views/view-superUser/super-user/super-user.component';
 import { AuthGuard } from './guard/auth.guard';
+import { PageValidateComponent } from './components/page-validate/page-validate.component';
 
 
 
@@ -13,7 +13,7 @@ const routes: Routes = [
   
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent, canActivate: [NoReturnRouteGuard]},
-  { path: 'dashboardSuperU', component: SuperUserComponent, canActivate: [AuthGuard]},
+  { path: 'login/:token', component: PageValidateComponent, canActivate: [NoReturnRouteGuard]},
   { path: '**', component: PageNotFoundComponent}
 ];
 

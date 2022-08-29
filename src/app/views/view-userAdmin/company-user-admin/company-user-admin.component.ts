@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Company } from 'src/app/models/company';
 import { CompanyService } from 'src/app/services/company.service';
 import { NavbarService } from 'src/app/services/navbar.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-company-user-admin',
@@ -24,10 +25,12 @@ export class CompanyUserAdminComponent implements OnInit {
     private nav: NavbarService,
     private router: Router,
     private route: ActivatedRoute, 
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
+    this.userService.tokenValid();
     this.route.params.subscribe(params => {
       this.id=params.id;
       this.companyService.getCompanyById(params.id).subscribe(

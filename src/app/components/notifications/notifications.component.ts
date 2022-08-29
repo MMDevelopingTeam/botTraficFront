@@ -35,7 +35,7 @@ export class NotificationsComponent implements OnInit {
   AllowAccess(){
     console.log(this.payload);
     const data = {
-      sourceIP: this.payload.sourceIP,
+      mac: this.payload.mac,
       User_idUser: "",
       company_idCompany: ""
     }

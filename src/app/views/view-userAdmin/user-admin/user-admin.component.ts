@@ -23,6 +23,7 @@ export class UserAdminComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.userService.tokenValid();
     this.nav.show();
     this.getInfoUrs();
   }

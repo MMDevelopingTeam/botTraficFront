@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                   <tr class="text-center" *ngFor="let device of company.devicesArray | paginate: {id: 'pageBotC', itemsPerPage: 15, currentPage: p, totalItems: company.devicesArray.length }">
-                    <th *ngIf="device.User_idUser" scope="row">{{device.sourceIP}}</th>
+                    <th *ngIf="device.User_idUser" scope="row">{{device.mac}}</th>
                     <td *ngIf="device.User_idUser">{{device.User_idUser.user}}</td>
                     <td *ngIf="device.User_idUser">
                         <div>
@@ -79,9 +79,9 @@
         <form class="row g-3" [formGroup]="deviceForm">
             <div class="col-md-12">
                 <label for="inputIP" class="form-label">IP del usuario</label>
-                <input type="text" class="form-control" formControlName="sourceIP" placeholder="Ingrese el IP" id="inputIP">
-                <div *ngIf="getValueFormDevice('sourceIP')?.invalid && (getValueFormDevice('sourceIP')?.touched || getValueFormDevice('sourceIP')?.dirty)">
-                  <p class="fieldErr" *ngIf="getValueFormDevice('sourceIP')?.errors?.required">El campo es requerido</p>
+                <input type="text" class="form-control" formControlName="mac" placeholder="Ingrese el IP" id="inputIP">
+                <div *ngIf="getValueFormDevice('mac')?.invalid && (getValueFormDevice('mac')?.touched || getValueFormDevice('mac')?.dirty)">
+                  <p class="fieldErr" *ngIf="getValueFormDevice('mac')?.errors?.required">El campo es requerido</p>
                 </div>
             </div>
         </form>

@@ -43,7 +43,7 @@ export class AllowedDevicesComponent implements OnInit {
     });
 
     this.deviceForm = this.fb.group({
-      sourceIP: ['', Validators.required],
+      mac: ['', Validators.required],
       company_idCompany: [''],
       User_idUser: [''],
     });

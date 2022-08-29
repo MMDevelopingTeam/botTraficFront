@@ -52,10 +52,10 @@
                 </div>
                 <div class="col-md-12 text-center my-2">
                     <p *ngIf="notification.from">
-                        El usuario <span>{{notification.from.user}}</span> de la compañia <span>{{notification.from.company_idCompany.nameCompany}}</span> esta pidiendo acceso desde la ip {{payload.sourceIP}}, quieres dar acceso a este usuario
+                        El usuario <span>{{notification.from.user}}</span> de la compañia <span>{{notification.from.company_idCompany.nameCompany}}</span> esta pidiendo acceso desde la ip {{payload.mac}}, quieres dar acceso a este usuario
                     </p>
                     <p *ngIf="notification.fromUser">
-                        El usuario <span>{{notification.fromUser.user}}</span> esta pidiendo acceso desde la ip {{payload.sourceIP}}, quieres dar acceso a este usuario
+                        El usuario <span>{{notification.fromUser.user}}</span> esta pidiendo acceso desde la ip {{payload.mac}}, quieres dar acceso a este usuario
                     </p>
                 </div>
             </div>

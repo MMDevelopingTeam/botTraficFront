@@ -75,6 +75,14 @@ export class ViewPlatformComponent implements OnInit {
   urlPlatform: any;
 
   ngOnInit(): void {
+    this.userService.verifyToken(localStorage.getItem('token')).subscribe(
+      (data: any) => {
+        if (data.success === false) {
+          this.userService.logout();
+          this.router.navigate([`/`]);
+        }
+      }
+    )
     this.nav.show();
     let urlInit = this.router.url.split('/')
     this.urlPlatform=urlInit.pop()

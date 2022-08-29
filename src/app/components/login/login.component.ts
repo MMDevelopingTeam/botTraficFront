@@ -41,12 +41,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.nav.hide();
-    this.getIpService.getIPAddress().subscribe(
-      (data:any) => {
-        this.ip_address=data.ip_address
-        console.log(this.ip_address);
-      }
-    )
+    // this.getIpService.getIPAddress().subscribe(
+    //   (data:any) => {
+    //     this.ip_address=data.ip_address
+    //   }
+    // )
   }
 
   saveLogin(event: Event) {
@@ -55,7 +54,6 @@ export class LoginComponent implements OnInit {
       const value = this.loginForm.value;
       this.userService.signIn(value).subscribe(
         (res:any) => {
-          console.log(res);
           if (res.user.ipFrom) { 
             const payload = {
               userId: res.user._id
@@ -72,46 +70,89 @@ export class LoginComponent implements OnInit {
             })
             this.router.navigate(['/dashboard/superUser']);
             return
-          }
-          this.companyService.getAllowedDevicesByIdUser(res.user._id).subscribe(
-            (data:any) => {
-              console.log(data)
-              if (data.dataA.sourceIP === this.ip_address) {
-                Swal.fire({
-                  icon: 'success',
-                  title: "Login exitoso",
-                  showConfirmButton: false,
-                  timer: 1500
-                })
-                if (res.user.company_idCompany) {
-                  this.companyService.getCompanyById(res.user.company_idCompany._id).subscribe(
-                    (data:any) => {
-                      if (data.dataCompany.isConfigFull === false) {
-                        this.router.navigate([`company/${res.user.company_idCompany._id}`]);
+          }else{
+            Swal.fire({
+              icon: 'warning',
+              title: "Inicie sesión desde la aplicación",
+              showConfirmButton: false,
+              timer: 1500
+            })
+            return;
+            this.companyService.getAllowedDevicesByIdUser(res.user._id).subscribe(
+              (data:any) => {
+                console.log(data)
+                if (data.dataA.mac === this.ip_address) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: "Login exitoso",
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                  if (res.user.company_idCompany) {
+                    this.companyService.getCompanyById(res.user.company_idCompany._id).subscribe(
+                      (data:any) => {
+                        if (data.dataCompany.isConfigFull === false) {
+                          this.router.navigate([`company/${res.user.company_idCompany._id}`]);
+                        }
+                      },
+                      err => {
                       }
-                    },
-                    err => {
+                    )
+                  }
+                  if (res.user.userTypeArray && res.user.company_idCompany) {
+                    localStorage.setItem('token', res.token);
+                    localStorage.setItem('idUser', res.user._id);
+                    this.router.navigate(['/dashboard/user']);
+                  }
+                  if (res.user.company_idCompany && res.user.userType) {
+                    localStorage.setItem('token', res.token);
+                    localStorage.setItem('idUserAdmin', res.user._id);
+                    const payload = {
+                      userId: res.user._id
                     }
-                  )
-                }
-                if (res.user.userTypeArray && res.user.company_idCompany) {
-                  localStorage.setItem('token', res.token);
-                  localStorage.setItem('idUser', res.user._id);
-                  this.router.navigate(['/dashboard/user']);
-                }
-                if (res.user.company_idCompany && res.user.userType) {
-                  localStorage.setItem('token', res.token);
-                  localStorage.setItem('idUserAdmin', res.user._id);
+                    this.socket.guardarIDUser(res.user._id)
+                    this.socket.configUser(payload)
+                    this.router.navigate(['/dashboard/userAdmin']);
+                  }
+                }else{
                   const payload = {
+                    mac: this.ip_address,
+                    description: "Acceso a un dispositivo nuevo"
+                  }
+                  const payloadConfig = {
                     userId: res.user._id
                   }
                   this.socket.guardarIDUser(res.user._id)
-                  this.socket.configUser(payload)
-                  this.router.navigate(['/dashboard/userAdmin']);
+                  this.socket.configUser(payloadConfig)
+                  if (res.user.company_idCompany && res.user.userType) {
+                    this.nav.sendNotificationSuperUser(localStorage.getItem('id'), payload).subscribe(
+                      (data:any) => {
+                        Swal.fire({
+                          icon: 'warning',
+                          title: "Tu dispositivo no es valido",
+                          text: "Hemos enviado una notificación al administrador para solucionar este problema.",
+                          showConfirmButton: true
+                        })
+                      }
+                    )
+                  }
+                  if (res.user.userTypeArray && res.user.company_idCompany) {
+                    this.nav.sendNotificationUserAdmin(localStorage.getItem('id'), payload).subscribe(
+                      (data:any) => {
+                        Swal.fire({
+                          icon: 'warning',
+                          title: "Tu dispositivo no es valido",
+                          text: "Hemos enviado una notificación al administrador para solucionar este problema.",
+                          showConfirmButton: true
+                        })
+                      }
+                    )
+                  }
                 }
-              }else{
+              },
+              err => {
                 const payload = {
-                  sourceIP: this.ip_address,
+                  mac: this.ip_address,
                   description: "Acceso a un dispositivo nuevo"
                 }
                 const payloadConfig = {
@@ -144,43 +185,8 @@ export class LoginComponent implements OnInit {
                   )
                 }
               }
-            },
-            err => {
-              const payload = {
-                sourceIP: this.ip_address,
-                description: "Acceso a un dispositivo nuevo"
-              }
-              const payloadConfig = {
-                userId: res.user._id
-              }
-              this.socket.guardarIDUser(res.user._id)
-              this.socket.configUser(payloadConfig)
-              if (res.user.company_idCompany && res.user.userType) {
-                this.nav.sendNotificationSuperUser(localStorage.getItem('id'), payload).subscribe(
-                  (data:any) => {
-                    Swal.fire({
-                      icon: 'warning',
-                      title: "Tu dispositivo no es valido",
-                      text: "Hemos enviado una notificación al administrador para solucionar este problema.",
-                      showConfirmButton: true
-                    })
-                  }
-                )
-              }
-              if (res.user.userTypeArray && res.user.company_idCompany) {
-                this.nav.sendNotificationUserAdmin(localStorage.getItem('id'), payload).subscribe(
-                  (data:any) => {
-                    Swal.fire({
-                      icon: 'warning',
-                      title: "Tu dispositivo no es valido",
-                      text: "Hemos enviado una notificación al administrador para solucionar este problema.",
-                      showConfirmButton: true
-                    })
-                  }
-                )
-              }
-            }
-          )
+            )
+          }
 
         },
         err => {}

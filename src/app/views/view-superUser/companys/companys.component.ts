@@ -7,6 +7,7 @@ import { LicensesService } from '../../../services/licenses.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Router } from '@angular/router';
 import { Company } from 'src/app/models/company';
+import { UserService } from 'src/app/services/user.service';
 
 declare var jQuery:any;
 
@@ -42,6 +43,7 @@ export class CompanysComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     private fb: FormBuilder,
+    private userService: UserService,
   ) {
 
     this.companyCreateForm = this.fb.group({
@@ -60,6 +62,7 @@ export class CompanysComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.tokenValidSuperU()
     this.getCompanys()
     this.getLicences()
   }

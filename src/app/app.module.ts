@@ -32,6 +32,7 @@ import { FilterModelPipe } from './pipes/filter-model.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { environment } from 'src/environments/environment.prod';
 import { NotificationsComponent } from './components/notifications/notifications.component';
+import { PageValidateComponent } from './components/page-validate/page-validate.component';
 
 const config: SocketIoConfig = { 
   url: environment.urlSockets, 
@@ -51,7 +52,8 @@ const config: SocketIoConfig = {
     PageNotFoundComponent,
     RolesDirective,
     FilterModelPipe,
-    NotificationsComponent
+    NotificationsComponent,
+    PageValidateComponent
   ],
   imports: [
     UserModule,

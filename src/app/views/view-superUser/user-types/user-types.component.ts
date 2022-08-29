@@ -54,6 +54,7 @@ export class UserTypesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.tokenValidSuperU()
     this.getUserTypes();
     this.getPermissions();
   }

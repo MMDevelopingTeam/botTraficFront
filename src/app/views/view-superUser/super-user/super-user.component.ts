@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavbarService } from 'src/app/services/navbar.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-super-user',
@@ -11,10 +12,12 @@ export class SuperUserComponent implements OnInit {
 
   constructor(
     public nav: NavbarService,
+    public userService: UserService,
     private router: Router
     ) { }
 
   ngOnInit(): void {
+    this.userService.tokenValidSuperU()
     this.nav.show();
     this.nav.getAllNotifications();
     this.nav.getNotifications();

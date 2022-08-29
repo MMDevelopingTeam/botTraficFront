@@ -5,6 +5,7 @@ import { BotService } from '../../../services/bot.service';
 import Swal from 'sweetalert2'
 import { Router } from '@angular/router';
 import { Botcontainer } from 'src/app/models/botcontainer';
+import { UserService } from 'src/app/services/user.service';
 
 declare var jQuery:any;
 
@@ -49,6 +50,7 @@ export class BotContainersComponent implements OnInit {
     private _location: Location,
     private router: Router,
     private fb: FormBuilder,
+    private userService: UserService,
   ) {
 
     this.botContainerCreateForm = this.fb.group({
@@ -65,6 +67,7 @@ export class BotContainersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.tokenValidSuperU()
     this.getBotContainers()
   }
 

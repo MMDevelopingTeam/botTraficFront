@@ -79,6 +79,14 @@ export class UserComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.userService.verifyToken(localStorage.getItem('token')).subscribe(
+      (data: any) => {
+        if (data.success === false) {
+          this.userService.logout();
+          this.router.navigate([`/`]);
+        }
+      }
+    )
     this.isLoadingBots=true
     this.nav.show();
     this.getInfoUrs();

@@ -47,6 +47,7 @@ export class ModelsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.userService.tokenValid();
     this.url=this.router.url.split('/')[1]
     this.route.params.subscribe(params => {
       this.id=params.id;

@@ -5,6 +5,7 @@ import { LicensesService } from '../../../services/licenses.service';
 import Swal from 'sweetalert2'
 import { PlatformsService } from '../../../services/platforms.service';
 import { License } from '../../../models/license';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-licenses',
@@ -34,6 +35,7 @@ export class LicensesComponent implements OnInit {
     private PlatformsService: PlatformsService,
     private _location: Location,
     private fb: FormBuilder,
+    private userService: UserService,
   ) {
     this.licencesCreateForm = this.fb.group({
       nameLicense: ['', Validators.required],
@@ -46,6 +48,7 @@ export class LicensesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.tokenValidSuperU()
     this.getLicenses();
     this.getPlatforms();
   }

@@ -71,6 +71,10 @@ export class UserService {
     return this.http.get(`${this.urlUser}/getTypeUserByToken`)
   }
 
+  TypeUserByToken(data: any) {
+    return this.http.post(`${this.urlUser}/TypeUserByToken`, data)
+  }
+
   getToken() {
     if (localStorage.getItem('tokenSuperU') && localStorage.getItem('idSuperUser')) {
       return localStorage.getItem('tokenSuperU');
@@ -122,6 +126,44 @@ export class UserService {
 
 
 
+
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  ////////////////     token    ////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+
+  verifyToken(data: any) {
+    return this.http.post(`${this.urlUser}/verifyToken`, {token: data});
+  }
+
+  refreshToken(data: any) {
+    return this.http.post(`${this.urlUser}/refreshToken`, data);
+  }
+
+  tokenValid() {
+    this.verifyToken(localStorage.getItem('token')).subscribe(
+      (data: any) => {
+        if (data.success === false) {
+          this.logout();
+          this.router.navigate([`/`]);
+        }
+      }
+    )
+  }
+  tokenValidSuperU() {
+    this.verifyToken(localStorage.getItem('tokenSuperU')).subscribe(
+      (data: any) => {
+        console.log(data);
+        if (data.success === false) {
+          this.logout();
+          this.router.navigate([`/`]);
+        }
+      }
+    )
+  }
 
   //////////////////////////////////////////////
   //////////////////////////////////////////////

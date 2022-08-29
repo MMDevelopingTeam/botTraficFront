@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Permission } from 'src/app/models/permission';
 import { PermissionsService } from 'src/app/services/permissions.service';
+import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2'
 
 declare var jQuery:any;
@@ -30,6 +31,7 @@ export class PermissionsComponent implements OnInit {
     private permissionsService: PermissionsService,
     private _location: Location,
     private fb: FormBuilder,
+    private userService: UserService,
   ) {
     this.permissionsCreateForm = this.fb.group({
       namePermission: ['', Validators.required],
@@ -38,6 +40,7 @@ export class PermissionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.tokenValidSuperU()
     this.getPermissions();
   }
 

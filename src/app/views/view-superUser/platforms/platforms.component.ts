@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PlatformsService } from '../../../services/platforms.service';
 import Swal from 'sweetalert2'
 import { Platform } from 'src/app/models/platform';
+import { UserService } from 'src/app/services/user.service';
 
 declare var jQuery:any;
 
@@ -31,6 +32,7 @@ export class PlatformsComponent implements OnInit {
     private platformsService: PlatformsService,
     private _location: Location,
     private fb: FormBuilder,
+    private userService: UserService,
   ) {
 
     this.platformCreateForm = this.fb.group({
@@ -40,6 +42,7 @@ export class PlatformsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.tokenValidSuperU()
     this.getPlatforms();
   }
 
