@@ -19,7 +19,9 @@ export class ModelsComponent implements OnInit {
 
   modelEditForm = {
     nickname: '',
-    platforms_idPlatform: ''
+    platforms_idPlatform: '',
+    isAllowed: Boolean,
+    isActive: Boolean
   };
 
   modelsLength: any;
@@ -47,7 +49,7 @@ export class ModelsComponent implements OnInit {
     this.modelCreateForm = this.fb.group({
       nickname: ['', Validators.required],
       platforms_idPlatform: ['', Validators.required],
-      company_idCompany: [this.idCompany],
+      company_idCompany: [''],
     });
 
   }
@@ -80,13 +82,17 @@ export class ModelsComponent implements OnInit {
 
   getModelEdit(model: any){
     this.modelEditForm.nickname = model.nickname
-    this.idModel = model._id
     this.modelEditForm.platforms_idPlatform = model.platforms_idPlatform._id
+    this.modelEditForm.isAllowed = model.isAllowed
+    this.modelEditForm.isActive = model.isActive
+    this.idModel = model._id
   }
 
   modelCreate() {
     if (this.modelCreateForm.valid) {
-      this.modelsService.createModel(this.modelCreateForm.value).subscribe(
+      let value = this.modelCreateForm.value;
+      value.company_idCompany=this.idCompany;
+      this.modelsService.createModel(value).subscribe(
         (data:any) => {
           this.getModels();
           jQuery("#createModal").modal("hide");

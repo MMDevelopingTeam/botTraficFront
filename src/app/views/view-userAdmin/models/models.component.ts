@@ -25,10 +25,7 @@ export class ModelsComponent implements OnInit {
   p: any;
 
   modelEditForm = {
-    nickname: '',
-    isAllowed: Boolean,
-    isActive: Boolean,
-    platforms_idPlatform: ''
+    isActive: Boolean
   };
   
   platforms: any;
@@ -71,10 +68,7 @@ export class ModelsComponent implements OnInit {
   }
 
   getModelEdit(model: any){
-    this.modelEditForm.nickname = model.nickname
-    this.modelEditForm.isAllowed = model.isAllowed
     this.modelEditForm.isActive = model.isActive
-    this.modelEditForm.platforms_idPlatform = model.platforms_idPlatform._id
     this.idModel = model._id
   }
 

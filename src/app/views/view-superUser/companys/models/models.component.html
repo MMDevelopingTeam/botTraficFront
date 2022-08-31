@@ -19,6 +19,8 @@
             <thead class="table-dark">
               <tr class="text-center">
                 <th scope="col">Nickname</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Online</th>
                 <th scope="col">plataforma</th>
                 <th scope="col">Acciones</th>
               </tr>
@@ -26,6 +28,14 @@
             <tbody>
               <tr class="text-center" *ngFor="let model of models | paginate: {id: 'pageServ', itemsPerPage: 15, currentPage: p, totalItems: modelsLength }">
                 <th>{{model.nickname}}</th>
+                <th scope="row">
+                  <i *ngIf="model.isAllowed === true" class="fa-solid fa-circle-check" style="font-size: 20px; color: green;"></i>
+                  <i *ngIf="model.isAllowed === false" class="fa-solid fa-circle-xmark" style="font-size: 20px; color: red;"></i>
+                </th>
+                <th scope="row">
+                    <i *ngIf="model.isActive === true" class="fa-solid fa-circle-check" style="font-size: 20px; color: green;"></i>
+                    <i *ngIf="model.isActive === false" class="fa-solid fa-circle-xmark" style="font-size: 20px; color: red;"></i>
+                </th>
                 <td>{{model.platforms_idPlatform.namePlatform}}</td>
                 <td>
                     <button class="btn btn-primary" (click)="getModel(model)" data-bs-toggle="modal" data-bs-target="#platformModal" matTooltip="Ver la información de la modelo">
@@ -108,7 +118,27 @@
               </select>
               <div *ngIf="modelEditForm.platforms_idPlatform === ''">
                 <p class="fieldErr">El campo es requerido</p>
+              </div>
             </div>
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput4" class="form-label">Estado</label>
+              <select class="form-select" [(ngModel)]="modelEditForm.isAllowed" id="formGroupExampleInput4">
+                <option value="true">Activa</option>
+                <option value="false">Inactiva</option>
+              </select>
+              <div *ngIf="modelEditForm.isAllowed === undefined">
+                <p class="fieldErr">El campo es requerido</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="formGroupExampleInput4" class="form-label">Estado en la plataforma</label>
+              <select class="form-select" [(ngModel)]="modelEditForm.isActive" id="formGroupExampleInput4">
+                <option value="true">Online</option>
+                <option value="false">Offline</option>
+              </select>
+              <div *ngIf="modelEditForm.isActive === undefined">
+                <p class="fieldErr">El campo es requerido</p>
+                </div>
             </div>
           </div>
         </div>
