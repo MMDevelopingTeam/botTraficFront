@@ -19,6 +19,13 @@ export class BotService {
     }
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getproxys`);
   }
+  getLatenciaProxys(ip: any) {
+    if (ip === undefined) {
+      return this.http.get(`${environment.urlLaunchExpuesta}/storage/msProxys`);
+    }
+    return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/msProxys`);
+  }
+
   getAllProxysFree(ip: any) {
     // return this.http.get(`${this.urlStorage}/getproxysFree`);
     if (ip === undefined) {

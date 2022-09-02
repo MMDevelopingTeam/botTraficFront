@@ -22,6 +22,7 @@ export class ProxysComponent implements OnInit {
   ifBot: boolean=false;
 
   proxysForm: FormGroup;
+  loadingMs: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,7 +59,32 @@ export class ProxysComponent implements OnInit {
       (data:any) => {
         this.proxys=data.prsModels
         this.proxysLength=data.prsModels.length
+        console.log(this.proxysLength);
         this.ifBot=true
+      },
+      err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al conectar al bot',
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+    )
+  }
+
+  latencia(){
+    this.loadingMs = true;
+    this.botService.getLatenciaProxys(this.botContainer.ip).subscribe(
+      (data:any) => {
+        this.getProxys();
+        Swal.fire({
+          icon: 'success',
+          title: 'Latencias actualizadas correctamente',
+          showConfirmButton: false,
+          timer: 2000
+        })
+        this.loadingMs = false;
       },
       err => {
         Swal.fire({

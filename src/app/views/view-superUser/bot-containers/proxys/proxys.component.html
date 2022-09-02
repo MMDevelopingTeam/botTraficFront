@@ -1,16 +1,26 @@
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-4 col-sm-4 col-md-4">
         <button class="btn m-3" (click)="goBack()">
             <i class="fa-solid fa-angle-left" style="font-size: 35px;"></i>
         </button>
     </div>
-    <div class="col-md-4">
+    <div class="col-4 col-sm-4 col-md-4">
         <h1 class="text-center my-4">Proxys</h1>
     </div>
-    <div class="col-md-4">
-        <button [disabled]="!ifBot" class="btn btn-primary m-5" style="float: right;" data-bs-toggle="modal" data-bs-target="#addProxyModal">
+    <div class="col-4 col-sm-4 col-md-4"></div>
+    <div class="col-md-12 text-center">
+        <button [disabled]="!ifBot" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#addProxyModal">
             <i class="fa-solid fa-plus"></i>
             Añadir proxys
+        </button>
+        <button [disabled]="proxysLength <= 0 || loadingMs" (click)="latencia()" style="max-height: 40px; min-width: 160px;" class="btn btn-success m-3">
+          <div *ngIf="!loadingMs">
+              <i class="fa-solid fa-wifi"></i>
+              Medir latencias
+          </div>
+          <div *ngIf="loadingMs" class="spinner-border" style="width: 25px; height: 25px;" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </button>
     </div>
     <div class="col-1 col-md-1"></div>
@@ -22,6 +32,7 @@
                 <th scope="col">Num Usuarios</th>
                 <th scope="col">Disponibilidad</th>
                 <th scope="col">Estado</th>
+                <th scope="col">Latencia</th>
               </tr>
             </thead>
             <tbody>
@@ -36,6 +47,7 @@
                     <i *ngIf="!proxy.isDown" class="fa-solid fa-circle-check" style="color: green;"></i>
                     <i *ngIf="proxy.isDown" class="fa-solid fa-circle-xmark" style="color: red;"></i>
                 </td>
+                <td>{{proxy.ms}} <span style="font-weight: 700;">ms</span></td>
               </tr>
             </tbody>
           </table>
