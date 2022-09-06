@@ -38,7 +38,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="text-center mt-4" *ngIf="dataLicences">
+                <div class="text-center mt-4" *ngIf="dataLicences && licenceSelect !== 'Selecciona un tipo'">
                   <h6>Bots disponibles de la licencia</h6>
                   <h5>{{dataLicences.acctsFree}}/{{dataLicences.acctsUsed}}</h5>
                   <div class="text-center mt-4" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">
@@ -48,10 +48,10 @@
                 </div>
               </div>
               <div class="card-footer text-muted">
-                <button class="btn btn-primary m-2" [disabled]="!dataLicences" (click)="getLengthActsModel()" data-bs-toggle="modal" data-bs-target="#launchBotsmodal">
+                <button class="btn btn-primary m-2" [disabled]="!dataLicences || licenceSelect === 'Selecciona un tipo'" (click)="getLengthActsModel()" data-bs-toggle="modal" data-bs-target="#launchBotsmodal">
                   Lanzar bots
                 </button>
-                <button class="btn btn-primary m-2" [disabled]="!dataLicences" (click)="getLengthActsModel()" data-bs-toggle="modal" data-bs-target="#killbotsModal">
+                <button class="btn btn-primary m-2" [disabled]="!dataLicences || licenceSelect === 'Selecciona un tipo'" (click)="getLengthActsModel()" data-bs-toggle="modal" data-bs-target="#killbotsModal">
                   Matar bots
                 </button>
               </div>
