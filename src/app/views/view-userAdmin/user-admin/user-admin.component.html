@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <div *ngIf="usuario">
       <div class="row">
         <div class="col-md-12 text-center my-5">
@@ -25,6 +25,53 @@
             </div>
           </div>
         </div>
+        <div class="col-md-6" (click)="getDevices()">
+          <div class="card text-white m-3">
+            <div class="card-img-overlay">
+              <h5 class="card-title text-center my-5">Estadisticas</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+<div class="row" *ngIf="usuario">
+  <div class="col-md-12 text-center my-5">
+    <h1>bienvenido {{usuario.name}}</h1>
+  </div>
+  <div class="col-1 col-md-1"></div>
+  <div class="col-10 col-md-10">
+    <div class="row row-cols-1 row-cols-md-4">
+      <div class="col-sm-6 my-2" (click)="getSedes()">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"> <i class="fa-solid fa-user-plus mx-2"></i> Crear usuarios</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 my-2" (click)="getModels()">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"> <i class="fa-solid fa-person-dress mx-2"></i> Modelos</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 my-2" (click)="getDevices()">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"> <i class="fa-solid fa-desktop mx-2"></i> dispositivos admitidos</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 my-2" (click)="getStats()">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"> <i class="fa-solid fa-table-list mx-2"></i> Estadisticas</h5>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  <div class="col-1 col-md-1"></div>
+</div>

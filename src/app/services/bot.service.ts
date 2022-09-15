@@ -143,4 +143,44 @@ export class BotService {
   getRegisterCompanyBotContainer(id:any) {
     return this.http.get(`${this.urlBotContainer}/getRegisterCompanyBotContainer/${id}`);
   }
+
+  /////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
+  ////////          estadisticas         //////////////
+  /////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
+
+  getStadistics() {
+    return this.http.get(`${environment.url}/stadistics`);
+  }
+  getAllComp() {
+    return this.http.get(`${environment.url}/stadistics/getAllComp`);
+  }
+  getAllLicences() {
+    return this.http.get(`${environment.url}/stadistics/getAllLicences`);
+  }
+  getAllModels() {
+    return this.http.get(`${environment.url}/stadistics/getAllModels`);
+  }
+  getAllplatforms() {
+    return this.http.get(`${environment.url}/stadistics/getAllplatforms`);
+  }
+  getAllusers() {
+    return this.http.get(`${environment.url}/stadistics/getAllusers`);
+  }
+  getAllusersAdmin() {
+    return this.http.get(`${environment.url}/stadistics/getAllusersAdmin`);
+  }
+  getAccessLogs() {
+    return this.http.get(`${environment.url}/user/getAccesslogs`);
+  }
+  getAccessLogsAdmin() {
+    return this.http.get(`${environment.url}/userAdmin/getAccesslogs`);
+  }
+  getAccesslogsFalse() {
+    return this.http.get(`${environment.url}/user/getAccesslogsFalse`);
+  }
+  getAccesslogsFalseAdmin() {
+    return this.http.get(`${environment.url}/userAdmin/getAccesslogsFalse`);
+  }
 }

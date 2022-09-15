@@ -1,0 +1,64 @@
+.btnLabel{
+    width: 125px; 
+    height: 125px; 
+    border-radius: 100px; 
+    border: 10px solid; 
+    background-color: transparent; 
+    font-size: 40px; 
+    font-weight: 600;
+}
+#nBots{
+    border-color: green;
+    color: green;
+    cursor: default;
+}
+#nActts{
+    border-color: brown;
+    color: brown;
+    cursor: default;
+}
+#nActtsFree{
+    border-color: rgb(85, 31, 31);
+    color: rgb(85, 31, 31);
+    cursor: default;
+}
+#nProxy{
+    border-color: rgb(255, 217, 0);
+    color: rgb(255, 217, 0);
+    cursor: default;
+}
+#nProxyFree{
+    border-color: rgb(151, 134, 36);
+    color: rgb(151, 134, 36);
+    cursor: default;
+}
+#nProxyCards{
+    width: 75px; 
+    height: 75px; 
+    border-radius: 40px; 
+    border: 5px solid; 
+    background-color: transparent; 
+    font-size: 25px; 
+    font-weight: 600;
+    border-color: rgb(255, 217, 0);
+    color: rgb(255, 217, 0);
+}
+#nActtsCards{
+    width: 75px; 
+    height: 75px; 
+    border-radius: 40px; 
+    border: 5px solid; 
+    background-color: transparent; 
+    font-size: 25px; 
+    font-weight: 600;
+    border-color: brown;
+    color: brown;
+}
+.styleCard{
+    border-radius: 20px;
+    cursor: pointer;
+}
+.btnTable{
+    border-radius: 0%;
+    margin-bottom: 5px;
+}

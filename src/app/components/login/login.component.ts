@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.pattern(this.isValidEmail)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      address: ['']
     });
   }
 
@@ -45,6 +46,7 @@ export class LoginComponent implements OnInit {
     this.getIpService.getIPAddress().subscribe(
       (data:any) => {
         this.ip_address=data.ip_address
+        console.log(this.ip_address);
       }
     )
   }
@@ -53,6 +55,7 @@ export class LoginComponent implements OnInit {
     event.preventDefault();
     if (this.loginForm.valid) {
       const value = this.loginForm.value;
+      value.address=this.ip_address;
       this.userService.signIn(value).subscribe(
         (res:any) => {
           if (environment.LOGIN_APP === true) {

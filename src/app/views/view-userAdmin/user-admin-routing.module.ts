@@ -6,6 +6,7 @@ import { ModelsComponent } from '../view-userAdmin/models/models.component';
 import { AllowedDevicesComponent } from './allowed-devices/allowed-devices.component';
 import { CompanyUserAdminComponent } from './company-user-admin/company-user-admin.component';
 import { CreateUsersComponent } from './create-users/create-users.component';
+import { StatsComponent } from './stats/stats.component';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'company/users/:id', component: CreateUsersComponent, canActivate: [UserAdminGuard]},
   {path: 'users', component: CreateUsersComponent, canActivate: [UserAdminGuard]},
   {path: 'models/:id', component: ModelsComponent, canActivate: [UserAdminGuard]},
-  {path: 'devices/:id', component: AllowedDevicesComponent, canActivate: [UserAdminGuard]}
+  {path: 'devices/:id', component: AllowedDevicesComponent, canActivate: [UserAdminGuard]},
+  {path: 'stats/:id', component: StatsComponent, canActivate: [UserAdminGuard]}
 ];
 
 @NgModule({

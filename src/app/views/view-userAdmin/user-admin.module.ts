@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { ModelsComponent } from './models/models.component';
 import { AllowedDevicesComponent } from './allowed-devices/allowed-devices.component';
+import { StatsComponent } from './stats/stats.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { AllowedDevicesComponent } from './allowed-devices/allowed-devices.compo
     CreateUsersComponent,
     CompanyUserAdminComponent,
     ModelsComponent,
-    AllowedDevicesComponent
+    AllowedDevicesComponent,
+    StatsComponent
   ],
   imports: [
     CommonModule,

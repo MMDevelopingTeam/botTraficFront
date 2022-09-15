@@ -55,4 +55,8 @@ export class UserAdminComponent implements OnInit {
     this.router.navigate([`devices/${this.idComp}`]);
   }
 
+  getStats() {
+    this.router.navigate([`stats/${this.idComp}`]);
+  }
+
 }
