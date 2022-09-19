@@ -97,7 +97,7 @@
         <div class="container">
           <form [formGroup]="launchBotsForm">
             <div *ngIf="lengthkillbots !== null" class="col-md-12">
-              <span>Numero de bots corriendole a la modelo:</span><h3>{{lengthkillbots}}</h3>
+              <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">Numero total de bots mixtos corriendole a la modelo:</span><span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type !== 'actsMixed'">Numero de bots corriendole a la modelo:</span><h3>{{lengthkillbots}}</h3>
             </div>
             <div class="col-md-12">
               <label for="nBots" class="form-label">Numéro de bots</label>
@@ -107,6 +107,26 @@
               <p class="fieldErr" *ngIf="getValue('nBots')?.errors?.required">El campo es requerido</p>
             </div>
           </form>
+          <div class="row text-center mt-3" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">
+            <div class="col-md-12">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">bots logueados</th>
+                    <th scope="col">bots anonimos</th>
+                    <th scope="col">bots a lanzar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">{{launchBotsForm.value.nBots}}</th>
+                    <td>{{launchBotsForm.value.nBots*3}}</td>
+                    <td>{{(launchBotsForm.value.nBots*3)+launchBotsForm.value.nBots}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <div *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'" class="text-center mt-4 p-2" style="background-color: #F3D688; border-radius: 10px;">
             <h6>Ten en cuenta que tu licencia es mixta es decir que por cada cuenta que lances se lanzaran 3 anonimas, <br> Por ejemplo si lanzas 10 logueadas se lanzaran 30 anonimas</h6>
           </div>
@@ -132,7 +152,7 @@
         <div class="container">
           <form [formGroup]="killBotsForm">
             <div *ngIf="lengthkillbots !== null" class="col-md-12">
-              <span>Numero de bots corriendole a la modelo:</span><h3>{{lengthkillbots}}</h3>
+              <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">Numero total de bots mixtos corriendole a la modelo:</span><span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type !== 'actsMixed'">Numero de bots corriendole a la modelo:</span><h3>{{lengthkillbots}}</h3>
             </div>
             <div class="col-md-12">
               <label for="nBots" class="form-label">Numéro de killBots</label>
@@ -142,6 +162,26 @@
               <p class="fieldErr" *ngIf="getValueKillbot('nBots')?.errors?.required">El campo es requerido</p>
             </div>
           </form>
+          <div class="row text-center mt-3" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">
+            <div class="col-md-12">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">bots logueados</th>
+                    <th scope="col">bots anonimos</th>
+                    <th scope="col">bots a lanzar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">{{killBotsForm.value.nBots}}</th>
+                    <td>{{killBotsForm.value.nBots*3}}</td>
+                    <td>{{(killBotsForm.value.nBots*3)+killBotsForm.value.nBots}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <div *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'" class="text-center mt-4 p-2" style="background-color: #F3D688; border-radius: 10px;">
             <h6>Ten en cuenta que tu licencia es mixta es decir que por cada cuenta que mates se mataran 3 anonimas, el número que aparece en la parte superior muesta el total de cuentas corriendo es decir la suma de las logueadas y las anonimas,<br> Por ejemplo si en la parte superior dice 40 solo tienes que matar 10 cuentas</h6>
           </div>

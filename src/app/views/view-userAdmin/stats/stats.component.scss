@@ -1,0 +1,27 @@
+.btnLabel{
+    width: 125px; 
+    height: 125px; 
+    border-radius: 100px; 
+    border: 10px solid; 
+    background-color: transparent; 
+    font-size: 40px; 
+    font-weight: 600;
+}
+#nLicences{
+    border-color: green;
+    color: green;
+    cursor: default;
+}
+#nUsers{
+    border-color: brown;
+    color: brown;
+    cursor: default;
+}
+#nUsersAdmins{
+    border-color: rgb(85, 31, 31);
+    color: rgb(85, 31, 31);
+    cursor: default;
+}
+#labelNan{
+    color: rgb(146, 155, 163);
+}

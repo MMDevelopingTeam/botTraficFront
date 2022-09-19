@@ -6,5 +6,5 @@ export const environment = {
   urlExpuesta: 'http://localhost:3020/api',
   urlLaunchExpuesta: 'http://localhost:3000/api',
   API_KEY: '53c2bdb3539e491fa00d12be2f489d20',
-  LOGIN_APP: true
+  LOGIN_APP: false
 };

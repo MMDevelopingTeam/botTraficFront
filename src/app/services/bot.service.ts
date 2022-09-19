@@ -183,4 +183,7 @@ export class BotService {
   getAccesslogsFalseAdmin() {
     return this.http.get(`${environment.url}/userAdmin/getAccesslogsFalse`);
   }
+  getAllStatsAdmin(id: string) {
+    return this.http.get(`${environment.url}/stadistics/getAllStatsAdmin/${id}`);
+  }
 }
