@@ -37,8 +37,11 @@
                     <button class="btn btn-success mx-1" (click)="getBotContainerEdit(botContainer)" data-bs-toggle="modal" data-bs-target="#botContainerEditModal" matTooltip="Editar contenedor de bot">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button class="btn btn-danger" (click)="deleteBotContainer(botContainer._id)" matTooltip="Eliminar contenedor de bot">
+                    <button class="btn btn-danger mx-1" (click)="deleteBotContainer(botContainer._id)" matTooltip="Eliminar contenedor de bot">
                         <i class="fa-solid fa-trash"></i>
+                    </button>
+                    <button class="btn btn-dark" (click)="getIpBotCreateActs(botContainer.ip)" data-bs-toggle="modal" data-bs-target="#addActsBot" matTooltip="Crear cuentas de bot">
+                        <i class="fa-solid fa-user-plus"></i>
                     </button>
                 </td>
               </tr>
@@ -243,4 +246,47 @@
         </div>
       </div>
     </div>
+</div>
+  
+<!-- Modal -->
+<div class="modal fade" id="addActsBot" tabindex="-1" aria-labelledby="addActsBotLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addActsBotLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row" [formGroup]="CreateActsForm">
+            <div class="col-md-12">
+                <label for="formActsInput" class="form-label">Número de iteraciones</label>
+                <input formControlName="nInt" type="number" class="form-control" placeholder="Ingrese el número de iteraciones" id="formActsInput">
+                <div *ngIf="getValueCreateActs('nInt')?.invalid && (getValueCreateActs('nInt')?.touched || getValueCreateActs('nInt')?.dirty)">
+                    <p class="fieldErr" *ngIf="getValueCreateActs('nInt')?.errors?.required">El campo es requerido</p>
+                </div>
+            </div>
+        </form>
+        <div class="text-center mt-3">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"># de iteraciones</th>
+                    <th scope="col">Equivalente en cuentas a crear</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>20</td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="createActsBot()" [disabled]="CreateActsForm.invalid">Crear cuentas</button>
+      </div>
+    </div>
+  </div>
 </div>

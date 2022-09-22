@@ -16,6 +16,7 @@ declare var jQuery:any;
 })
 export class BotContainersComponent implements OnInit {
   botContainerCreateForm: FormGroup;
+  CreateActsForm: FormGroup;
 
   botContainers: any
   botContainer: any
@@ -34,6 +35,8 @@ export class BotContainersComponent implements OnInit {
     averageUploadSpeed: '',
     isp: ''
   }
+
+  ipBot: any;
 
   isloading:boolean=false;
 
@@ -64,6 +67,10 @@ export class BotContainersComponent implements OnInit {
       averageUploadSpeed: [''],
       isp: ['']
     });
+
+    this.CreateActsForm = this.fb.group({
+      nInt: ['', [Validators.required, Validators.min(1)]],
+    });
   }
 
   ngOnInit(): void {
@@ -80,6 +87,27 @@ export class BotContainersComponent implements OnInit {
       },
       err => {}
     )
+  }
+
+  getIpBotCreateActs(ip: string){
+    this.ipBot=ip
+  }
+
+  createActsBot(){
+    if (this.CreateActsForm.valid) {
+      this.botService.createActs(this.ipBot, this.CreateActsForm.value).subscribe(
+        (data: any) => {
+          console.log(data);
+        }
+      )
+      jQuery("#addActsBot").modal("hide");
+      Swal.fire({
+        icon: 'success',
+        title: 'El proceso de creación de cuentas inicio correctamente',
+        showConfirmButton: false,
+        timer: 2500
+      })
+    }
   }
 
   getAllAccts(){
@@ -208,6 +236,13 @@ export class BotContainersComponent implements OnInit {
 
   resetForm(){
     this.botContainerCreateForm.reset()
+  }
+  getValueCreateActs(value: string) {
+    return this.CreateActsForm.get(value)
+  }
+
+  resetCreateActsForm(){
+    this.CreateActsForm.reset()
   }
 
 }

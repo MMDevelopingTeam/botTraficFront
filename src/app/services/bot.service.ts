@@ -112,6 +112,12 @@ export class BotService {
     return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/killBotMixed`, name_model)
     // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
   }
+  createActs(ip: any, body: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/accounts/accoutsbot`, body);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/accounts/accoutsbot`, body)
+  }
 
   /////////////////////////////////////////////////////
   /////////////////////////////////////////////////////
