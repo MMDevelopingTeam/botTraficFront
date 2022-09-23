@@ -134,6 +134,9 @@ export class BotService {
   getBotContainerById(id:any) {
     return this.http.get(`${this.urlBotContainer}/${id}`);
   }
+  getBotContainerByIp(ip:any) {
+    return this.http.get(`${this.urlBotContainer}/ByIp/${ip}`);
+  }
   getBotContainerByIdComp(id:any) {
     return this.http.get(`${this.urlBotContainer}/byIdCompany/${id}`);
   }

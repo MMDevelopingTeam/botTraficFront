@@ -5,18 +5,22 @@
     <div class="col-md-12 my-5">
         <div *ngIf="nav.Allnotifications">
             <div *ngFor="let notification of nav.Allnotifications | paginate: {id: 'pageLic', itemsPerPage: 10, currentPage: p, totalItems: nav.Allnotifications.length }">
-                <div class="container" *ngIf="notification.state === false" style="background-color: rgb(189, 192, 192);">
+                <div class="container p-2 my-2" *ngIf="notification.state === false" style="background-color: rgb(189, 192, 192);">
                     <h5 id="floatingInputGrid" *ngIf="notification.from">{{notification.from.company_idCompany.nameCompany}}</h5>
-                    <label for="floatingInputGrid" style="font-size: 20px;">{{notification.description}}, de <span *ngIf="notification.fromUser"><small style="font-weight: 800; font-size: 23px;">{{notification.fromUser.user}}</small></span><span *ngIf="notification.from"><small style="font-weight: 800; font-size: 23px;">{{notification.from.user}}</small></span></label>
-                    <button class="btn btn-primary" style="float: right;" data-bs-toggle="modal" data-bs-target="#viewNotify" (click)="getNotification(notification)">ver mas</button>
-                    <small class="m-2" style="float: right;">{{notification.date | date: 'dd/MM/yyyy'}}</small>
+                    <label *ngIf="notification.from" for="floatingInputGrid" style="font-size: 20px;">{{notification.description}}, de <span *ngIf="notification.fromUser"><small style="font-weight: 800; font-size: 23px;">{{notification.fromUser.user}}</small></span><span *ngIf="notification.from"><small style="font-weight: 800; font-size: 23px;">{{notification.from.user}}</small></span></label>
+                    <label *ngIf="!notification.from" for="floatingInputGrid" style="font-size: 20px;">{{notification.description}}</label>
+                    <button *ngIf="notification.from"class="btn btn-primary" style="float: right;" data-bs-toggle="modal" data-bs-target="#viewNotify" (click)="getNotification(notification)">ver mas</button>
+                    <button *ngIf="!notification.from" class="btn btn-primary" style="float: right;"  data-bs-toggle="modal" data-bs-target="#viewNotify" (click)="getNotification(notification)">ver mas</button>
+                    <small class="m-2" style="float: right;">{{notification.date | date: 'dd/MM/yyyy hh:mm a'}}</small>
                     <hr>
                 </div>
-                <div class="container" *ngIf="notification.state === true">
+                <div class="container p-2 my-2" *ngIf="notification.state === true">
                     <h5 id="floatingInputGrid" *ngIf="notification.from">{{notification.from.company_idCompany.nameCompany}}</h5>
-                    <label for="floatingInputGrid" style="font-size: 20px;">{{notification.description}}, de <span *ngIf="notification.fromUser"><small style="font-weight: 800; font-size: 23px;">{{notification.fromUser.user}}</small></span><span *ngIf="notification.from"><small style="font-weight: 800; font-size: 23px;">{{notification.from.user}}</small></span></label>
-                    <button class="btn btn-primary" style="float: right;" data-bs-toggle="modal" data-bs-target="#viewNotify" (click)="getNotification(notification)">ver mas</button>
-                    <small class="m-2" style="float: right;">{{notification.date | date: 'dd/MM/yyyy'}}</small>
+                    <label *ngIf="notification.from" for="floatingInputGrid" style="font-size: 20px;">{{notification.description}}, de <span *ngIf="notification.fromUser"><small style="font-weight: 800; font-size: 23px;">{{notification.fromUser.user}}</small></span><span *ngIf="notification.from"><small style="font-weight: 800; font-size: 23px;">{{notification.from.user}}</small></span></label>
+                    <label *ngIf="!notification.from" for="floatingInputGrid" style="font-size: 20px;">{{notification.description}}</label>
+                    <button *ngIf="notification.from"class="btn btn-primary" style="float: right;" data-bs-toggle="modal" data-bs-target="#viewNotify" (click)="getNotification(notification)">ver mas</button>
+                    <button *ngIf="!notification.from" class="btn btn-primary" style="float: right;"  data-bs-toggle="modal" data-bs-target="#viewNotify" (click)="getNotification(notification)">ver mas</button>
+                    <small class="m-2" style="float: right;">{{notification.date | date: 'dd/MM/yyyy hh:mm a'}}</small>
                     <hr>
                 </div>
             </div>
@@ -35,8 +39,8 @@
         <h5 class="modal-title" id="viewNotifyLabel">Notificación</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <div *ngIf="notification && payload.description === 'Acceso a un dispositivo nuevo'">
+      <div *ngIf="notification" class="modal-body">
+        <div *ngIf="payload.description === 'Acceso a un dispositivo nuevo'">
             <div class="row">
                 <div class="col-md-6" *ngIf="notification.from">
                     <label for="formGroupExampleInput2" class="form-label">Compañia</label>
@@ -60,9 +64,31 @@
                 </div>
             </div>
         </div>
+        <div *ngIf="!notification.from && payload">
+            <table class="table text-center">
+                <thead>
+                  <tr>
+                    <th scope="col">Proxy</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">ms</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of payload.proxys">
+                    <td>{{item.proxy}}</td>
+                    <td>
+                        <i *ngIf="!item.isDown" class="fa-solid fa-circle-check" style="color: green;"></i>
+                        <i *ngIf="item.isDown" class="fa-solid fa-circle-xmark" style="color: red;"></i>
+                    </td>
+                    <td>{{item.ms}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
       </div>
-      <div class="modal-footer">
-        <button *ngIf="notification && payload.description === 'Acceso a un dispositivo nuevo'" class="btn btn-success" (click)="AllowAccess()">Permitir</button>
+      <div *ngIf="notification" class="modal-footer">
+        <button *ngIf="payload.description === 'Acceso a un dispositivo nuevo'" class="btn btn-success" (click)="AllowAccess()">Permitir</button>
+        <button *ngIf="!notification.from && payload" type="button" class="btn btn-primary" (click)="getDataBot()">Ver proxys</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BotService } from 'src/app/services/bot.service';
 import { CompanyService } from 'src/app/services/company.service';
 import { NavbarService } from 'src/app/services/navbar.service';
 import { SocketWebService } from 'src/app/services/socket-web.service';
@@ -18,12 +19,15 @@ export class NotificationsComponent implements OnInit {
 
   notification: any;
   payload: any;
+  ipBot: any;
+  dataBot: any;
 
   constructor(
     // public userService: UserService,
     public nav: NavbarService,
     public socketWebService: SocketWebService,
     public companyService: CompanyService,
+    public botService: BotService,
     private router: Router,
     private socket: SocketWebService
   ) {}
@@ -72,6 +76,9 @@ export class NotificationsComponent implements OnInit {
 
   getNotification(notif: any){
     this.notification=notif
+    if (this.notification.from === null) {
+      this.ipBot=this.notification.description.split(" ").pop()
+    }
     const data = {
       state: true
     }
@@ -80,6 +87,16 @@ export class NotificationsComponent implements OnInit {
       (data: any) => {
         this.nav.getAllNotifications();
         this.nav.getNotifications();
+      }
+    )
+  }
+
+  getDataBot(){
+    this.botService.getBotContainerByIp(this.ipBot).subscribe(
+      (data: any) => {
+        this.dataBot=data.dataBotContainer
+        jQuery("#viewNotify").modal("hide");
+        this.router.navigate([`/dashboard/superUser/botContainers/${this.dataBot._id}/proxys`]);
       }
     )
   }
