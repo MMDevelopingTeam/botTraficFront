@@ -16,6 +16,8 @@ declare var jQuery:any;
 export class NotificationsComponent implements OnInit {
   
   p: any;
+  pActs: any;
+  pProxys: any;
 
   notification: any;
   payload: any;
@@ -76,6 +78,7 @@ export class NotificationsComponent implements OnInit {
 
   getNotification(notif: any){
     this.notification=notif
+    console.log(this.notification);
     if (this.notification.from === null) {
       this.ipBot=this.notification.description.split(" ").pop()
     }
@@ -83,6 +86,8 @@ export class NotificationsComponent implements OnInit {
       state: true
     }
     this.payload=JSON.parse(this.notification.payload)
+    console.log(this.payload);
+    console.log(this.ipBot);
     this.nav.updateNotificationById(this.notification._id, data).subscribe(
       (data: any) => {
         this.nav.getAllNotifications();
@@ -100,5 +105,22 @@ export class NotificationsComponent implements OnInit {
       }
     )
   }
+
+  deleteActs(){
+    const body = {
+      payload: this.payload.cuentas
+    }
+    this.botService.deleteActsSuperU(this.ipBot, body).subscribe(
+      (data: any) => {
+        jQuery("#viewNotify").modal("hide");
+        Swal.fire({
+          icon: 'success',
+          title: 'Cuentas eliminadas correctamente',
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+    )
+  }  
 
 }

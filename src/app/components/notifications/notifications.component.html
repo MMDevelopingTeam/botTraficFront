@@ -64,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="!notification.from && payload">
+        <div *ngIf="!notification.from && payload.description !== 'Acceso a un dispositivo nuevo' && payload.note !== 'cuentas bloqueadas o baneadas'">
             <table class="table text-center">
                 <thead>
                   <tr>
@@ -74,7 +74,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of payload.proxys">
+                  <tr *ngFor="let item of payload.proxys | paginate: {id: 'pageProxys', itemsPerPage: 20, currentPage: pProxys, totalItems: payload.proxys.length }">
                     <td>{{item.proxy}}</td>
                     <td>
                         <i *ngIf="!item.isDown" class="fa-solid fa-circle-check" style="color: green;"></i>
@@ -84,11 +84,37 @@
                   </tr>
                 </tbody>
               </table>
+              <div class="col-md-12 text-center" style="padding: 10px;">
+                <pagination-controls id="pageProxys" (pageChange)="pProxys = $event"></pagination-controls>
+              </div>  
+        </div>
+        <div *ngIf="!notification.from && payload.note === 'cuentas bloqueadas o baneadas'">
+          <div class="text-center">
+            <label>Las siguientes cuentas estan teniendo problemas para hacer el login reviselas o eliminelas</label>
           </div>
+          <table class="table text-center">
+              <thead>
+                <tr>
+                  <th scope="col">Username</th>
+                  <th scope="col">Password</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of payload.cuentas | paginate: {id: 'pageActs', itemsPerPage: 20, currentPage: pActs, totalItems: payload.cuentas.length }">
+                  <td>{{item.username}}</td>
+                  <td>{{item.password}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="col-md-12 text-center" style="padding: 10px;">
+              <pagination-controls id="pageActs" (pageChange)="pActs = $event"></pagination-controls>
+            </div>  
+      </div>
       </div>
       <div *ngIf="notification" class="modal-footer">
         <button *ngIf="payload.description === 'Acceso a un dispositivo nuevo'" class="btn btn-success" (click)="AllowAccess()">Permitir</button>
-        <button *ngIf="!notification.from && payload" type="button" class="btn btn-primary" (click)="getDataBot()">Ver proxys</button>
+        <button *ngIf="!notification.from && payload.description !== 'Acceso a un dispositivo nuevo' && payload.note !== 'cuentas bloqueadas o baneadas'" type="button" class="btn btn-primary" (click)="getDataBot()">Ver proxys</button>
+        <button *ngIf="!notification.from && payload.note === 'cuentas bloqueadas o baneadas'" type="button" class="btn btn-danger" (click)="deleteActs()">Eliminar cuentas</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>

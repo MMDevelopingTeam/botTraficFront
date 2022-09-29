@@ -118,6 +118,12 @@ export class BotService {
     }
     return this.http.post(`http://${ip || 'localhost'}:3000/api/accounts/accoutsbot`, body)
   }
+  deleteActsSuperU(ip: any, body: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/accounts/deleteActsSuperUser`, body);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/accounts/deleteActsSuperUser`, body)
+  }
 
   /////////////////////////////////////////////////////
   /////////////////////////////////////////////////////

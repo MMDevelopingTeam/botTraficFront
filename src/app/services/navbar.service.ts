@@ -45,7 +45,7 @@ export class NavbarService {
       this.http.get(`${this.urlSockets}/AllNotifications/${localStorage.getItem('id')}`).subscribe(
         (data: any) => {
           this.Allnotifications=data.dataN
-          //  console.log(this.Allnotifications);
+           console.log(this.Allnotifications);
           // this.socket.new_notify=true
         }
       )
