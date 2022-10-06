@@ -47,37 +47,37 @@
       <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
         <div class="row text-center">
           <button type="button" (click)="dataModal('Compañias')" data-bs-toggle="modal" data-bs-target="#dataModal" class="btnTable col-12 col-sm-6 col-md-4 btn btn-outline-dark">
-            <div>
+            <div *ngIf="dataComp">
               <h3 id="dataC">{{dataComp.length}}</h3>
               <label for="dataC">Compañias</label>
             </div>
           </button>
           <button type="button" (click)="dataModal('Licencias')" data-bs-toggle="modal" data-bs-target="#dataModal" class="btnTable col-12 col-sm-6 col-md-4 btn btn-outline-dark">
-            <div>
+            <div *ngIf="datalicences">
               <h3 id="dataC">{{datalicences.length}}</h3>
               <label for="dataC">Licencias</label>
             </div>
           </button>
           <button type="button" (click)="dataModal('Plataformas')" data-bs-toggle="modal" data-bs-target="#dataModal" class="btnTable col-12 col-sm-6 col-md-4 btn btn-outline-dark">
-            <div>
+            <div *ngIf="dataPlatforms">
               <h3 id="dataC">{{dataPlatforms.length}}</h3>
               <label for="dataC">Plataformas</label>
             </div>
           </button>
           <button type="button" (click)="dataModal('Modelos')" data-bs-toggle="modal" data-bs-target="#dataModal" class="btnTable col-12 col-sm-6 col-md-4 btn btn-outline-dark">
-            <div>
+            <div *ngIf="dataModels">
               <h3 id="dataC">{{dataModels.length}}</h3>
               <label for="dataC">Modelos</label>
             </div>
           </button>
           <button type="button" (click)="dataModal('Usuarios')" data-bs-toggle="modal" data-bs-target="#dataModal" class="btnTable col-12 col-sm-6 col-md-4 btn btn-outline-dark">
-            <div>
+            <div *ngIf="dataU">
               <h3 id="dataC">{{dataU.length}}</h3>
               <label for="dataC">Usuarios</label>
             </div>
           </button>
           <button type="button" (click)="dataModal('Usuarios administradores')" data-bs-toggle="modal" data-bs-target="#dataModal" class="btnTable col-12 col-sm-6 col-md-4 btn btn-outline-dark">
-            <div>
+            <div *ngIf="dataUa">
               <h3 id="dataC">{{dataUa.length}}</h3>
               <label for="dataC">Usuarios<br>administradores</label>
             </div>
@@ -86,7 +86,7 @@
       </div>
       <div class="row">
         <h2 class="my-4">Ultimos accesos</h2>
-        <div class="col-md-6 col-12 mt-3">
+        <div *ngIf="dataAccessLog" class="col-md-6 col-12 mt-3">
           <h4>Usuario</h4>
           <table class="table">
               <thead class="table-success">
@@ -108,10 +108,10 @@
             <pagination-controls id="pageLic" (pageChange)="pD = $event"></pagination-controls>
           </div>
         </div>
-        <div class="col-md-6 col-12 mt-3">
+        <div *ngIf="dataAccessLogAdmin" class="col-md-6 col-12 mt-3">
           <h4>Usuarios administradores</h4>
           <table class="table">
-              <thead class="table-success">
+            <thead class="table-success">
               <tr>
                 <th scope="col">Fecha</th>
                 <th scope="col">Usuario</th>
@@ -133,10 +133,10 @@
       </div>
       <div class="row">
         <h2 class="my-4">Accesos invalidos</h2>
-        <div class="col-md-6 col-12 mt-3">
+        <div *ngIf="dataAccessLogFalse" class="col-md-6 col-12 mt-3">
           <h4>Usuario</h4>
           <table class="table">
-              <thead class="table-danger">
+            <thead class="table-danger">
               <tr>
                 <th scope="col">Fecha</th>
                 <th scope="col">Usuario</th>
@@ -155,7 +155,7 @@
             <pagination-controls id="pageLic" (pageChange)="pT = $event"></pagination-controls>
           </div>
         </div>
-        <div class="col-md-6 col-12 mt-3">
+        <div *ngIf="dataAccessLogAdminFalse" class="col-md-6 col-12 mt-3">
           <h4>Usuarios administradores</h4>
           <table class="table">
               <thead class="table-danger">

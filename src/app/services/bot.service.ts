@@ -66,6 +66,12 @@ export class BotService {
     }
     return this.http.post(`http://${ip || 'localhost'}:3000/api/storage/proxysString`, proxys);
   }
+  createIdPackProxy(proxys:any, ip:any){
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/storage/createIdPackProxy`, proxys);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/storage/createIdPackProxy`, proxys);
+  }
 
 
   launchBot(ip: any, name_model: any) {
@@ -157,6 +163,9 @@ export class BotService {
   }
   getRegisterCompanyBotContainer(id:any) {
     return this.http.get(`${this.urlBotContainer}/getRegisterCompanyBotContainer/${id}`);
+  }
+  validIdPackProxy(id:any) {
+    return this.http.get(`${this.urlBotContainer}/validIdPackProxy/${id}`);
   }
 
   /////////////////////////////////////////////////////

@@ -36,6 +36,8 @@ export class ProxysComponent implements OnInit {
     });
 
     this.proxysForm = this.fb.group({
+      platformProxys: ['', Validators.required],
+      idPackageProxys: ['', Validators.required],
       proxysStrings: ['', Validators.required]
     });
   }
@@ -59,7 +61,7 @@ export class ProxysComponent implements OnInit {
       (data:any) => {
         this.proxys=data.prsModels
         this.proxysLength=data.prsModels.length
-        console.log(this.proxysLength);
+        // console.log(this.proxys);
         this.ifBot=true
       },
       err => {
@@ -99,18 +101,39 @@ export class ProxysComponent implements OnInit {
 
   saveProxys(){
     if (this.proxysForm.valid) {
-      this.botService.saveProxys(this.proxysForm.value, this.botContainer.ip).subscribe(
-        (data:any) => {
-          this.resetForm();
-          Swal.fire({
-            icon: 'success',
-            title: 'Proxys agregados correctamente',
-            showConfirmButton: false,
-            timer: 2500
-          })
-          this.getProxys()
-        },
-        err => {}
+      const data = {
+        id: this.proxysForm.value.idPackageProxys,
+        platform: this.proxysForm.value.platformProxys,
+      }
+      this.botService.validIdPackProxy(this.proxysForm.value.idPackageProxys).subscribe(
+        (dataUno:any) => {
+          this.botService.createIdPackProxy(data, this.botContainer.ip).subscribe(
+            (dataDos:any) => {
+              this.botService.saveProxys(this.proxysForm.value, this.botContainer.ip).subscribe(
+                (dataTres:any) => {
+                  this.resetForm();
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Proxys agregados correctamente',
+                    showConfirmButton: false,
+                    timer: 2500
+                  })
+                  this.getProxys()
+                },
+                err => {}
+              )
+            },
+            err => {
+              console.log(err);
+              Swal.fire({
+                icon: 'error',
+                title: 'El paquete ya existe en el bot container',
+                showConfirmButton: false,
+                timer: 2500
+              })
+            }
+          )
+        }
       )
     }
   }

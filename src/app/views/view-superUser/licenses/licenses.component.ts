@@ -56,7 +56,7 @@ export class LicensesComponent implements OnInit {
   getLicenses(){
     this.licensesService.geLicenses().subscribe(
       (data:any) => {
-        console.log(data.dataLicenses);
+        // console.log(data.dataLicenses);
         this.licenses=data.dataLicenses
         this.licensesLength=data.dataLicenses.length
       },

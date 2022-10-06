@@ -156,7 +156,7 @@ export class UserService {
   tokenValidSuperU() {
     this.verifyToken(localStorage.getItem('tokenSuperU')).subscribe(
       (data: any) => {
-        console.log(data);
+        // console.log(data);
         if (data.success === false) {
           this.logout();
           this.router.navigate([`/`]);

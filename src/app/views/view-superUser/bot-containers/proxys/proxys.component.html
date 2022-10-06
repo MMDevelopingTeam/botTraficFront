@@ -30,6 +30,7 @@
               <tr class="text-center">
                 <th scope="col">Proxy</th>
                 <th scope="col">Num Usuarios</th>
+                <th scope="col">Id paquete</th>
                 <th scope="col">Disponibilidad</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Latencia</th>
@@ -39,6 +40,7 @@
               <tr class="text-center" *ngFor="let proxy of proxys | paginate: {id: 'pageBotC', itemsPerPage: 15, currentPage: p, totalItems: proxysLength }">
                 <th>{{proxy.proxy}}</th>
                 <td>{{proxy.Nusers}}</td>
+                <td>{{proxy.idPackage.id}}</td>
                 <td>
                     <i *ngIf="!proxy.isFull" class="fa-solid fa-circle-check" style="color: green;"></i>
                     <i *ngIf="proxy.isFull" class="fa-solid fa-circle-xmark" style="color: red;"></i>
@@ -75,10 +77,24 @@
       <div class="modal-body">
         <div class="row">
             <div class="col-12 col-md-12">
-                <form [formGroup]="proxysForm">
-                    <div>
+                <form class="row" [formGroup]="proxysForm">
+                    <div class="col-12 col-md-6 mb-3">
+                      <label for="formGroupPlatformPack" class="form-label">Plataforma</label>
+                      <select class="form-select" formControlName="platformProxys" aria-label="Default select example" id="formGroupPlatformPack">
+                        <option selected></option>
+                        <option value="instantproxies">Instantproxies</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                      <label for="formGroupIdPack" class="form-label">Id paquete</label>
+                      <input formControlName="idPackageProxys" type="text" class="form-control" placeholder="Ingrese el Id de paquete" id="formGroupIdPack">
+                      <div *ngIf="getValue('idPackageProxys')?.invalid && (getValue('idPackageProxys')?.touched || getValue('idPackageProxys')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('idPackageProxys')?.errors?.required">El campo es requerido</p>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
                         <label for="floatingTextarea2">Escribe los proxys</label>
-                        <textarea formControlName="proxysStrings" class="form-control mt-2" placeholder="proxy1:port,proxy2:port,proxy3:port....." id="floatingTextarea2" style="height: 200px"></textarea>
+                        <textarea formControlName="proxysStrings" class="form-control mt-2" placeholder="Pega acá tus proxys" id="floatingTextarea2" style="height: 200px"></textarea>
                         <div *ngIf="getValue('proxysStrings')?.invalid && (getValue('proxysStrings')?.touched || getValue('proxysStrings')?.dirty)">
                             <p class="fieldErr" *ngIf="getValue('proxysStrings')?.errors?.required">El campo es requerido</p>
                         </div>
