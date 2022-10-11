@@ -38,6 +38,7 @@ export class ProxysComponent implements OnInit {
     this.proxysForm = this.fb.group({
       platformProxys: ['', Validators.required],
       idPackageProxys: ['', Validators.required],
+      datePackageProxys: ['', Validators.required],
       proxysStrings: ['', Validators.required]
     });
   }
@@ -61,7 +62,7 @@ export class ProxysComponent implements OnInit {
       (data:any) => {
         this.proxys=data.prsModels
         this.proxysLength=data.prsModels.length
-        // console.log(this.proxys);
+        console.log(this.proxys);
         this.ifBot=true
       },
       err => {
@@ -104,6 +105,7 @@ export class ProxysComponent implements OnInit {
       const data = {
         id: this.proxysForm.value.idPackageProxys,
         platform: this.proxysForm.value.platformProxys,
+        dateExpirated: this.proxysForm.value.datePackageProxys,
       }
       this.botService.validIdPackProxy(this.proxysForm.value.idPackageProxys).subscribe(
         (dataUno:any) => {
@@ -123,15 +125,7 @@ export class ProxysComponent implements OnInit {
                 err => {}
               )
             },
-            err => {
-              console.log(err);
-              Swal.fire({
-                icon: 'error',
-                title: 'El paquete ya existe en el bot container',
-                showConfirmButton: false,
-                timer: 2500
-              })
-            }
+            err => {}
           )
         }
       )
