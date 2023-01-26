@@ -5,6 +5,6 @@ export const environment = {
   urlLaunch: 'http://localhost:3000/api',
   urlExpuesta: 'http://localhost:3020/api',
   urlLaunchExpuesta: 'http://localhost:3000/api',
-  API_KEY: '53c2bdb3539e491fa00d12be2f489d20',
+  API_KEY: '0756ec43d4bb4702afbbba0de85736b8',
   LOGIN_APP: false
 };
