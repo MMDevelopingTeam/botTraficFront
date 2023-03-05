@@ -101,7 +101,7 @@
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="floatingTextarea2">Escribe los proxys</label>
-                        <textarea formControlName="proxysStrings" class="form-control mt-2" placeholder="Pega acá tus proxys" id="floatingTextarea2" style="height: 200px"></textarea>
+                        <textarea formControlName="proxysStrings" class="form-control mt-2" placeholder="Pega acá tus proxys en el siguiente formato: \n xxxx.xxx.xxx.xxx:xxxx," id="floatingTextarea2" style="height: 200px"></textarea>
                         <div *ngIf="getValue('proxysStrings')?.invalid && (getValue('proxysStrings')?.touched || getValue('proxysStrings')?.dirty)">
                             <p class="fieldErr" *ngIf="getValue('proxysStrings')?.errors?.required">El campo es requerido</p>
                         </div>

@@ -45,6 +45,8 @@ export class ViewPlatformComponent implements OnInit {
   registers: any;
   registersLength: any;
   idRegisterCompBotC: any;
+  killBotsregisters: any;
+  botAnyLength: any;
 
   constructor( 
     private router: Router,
@@ -540,8 +542,9 @@ export class ViewPlatformComponent implements OnInit {
     }
     this.botService.getKillBotsByModel(this.dataLicences.botContainer_idBotContainer.ip, data).subscribe(
       (data:any) => {
-        // console.log(data);
+        console.log(data);
         this.lengthkillbots=data.acctsModelsLength
+        this.botAnyLength=data.botAnyLength
       }
     )
   }

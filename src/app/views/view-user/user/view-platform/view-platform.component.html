@@ -97,7 +97,18 @@
         <div class="container">
           <form [formGroup]="launchBotsForm">
             <div *ngIf="lengthkillbots !== null" class="col-md-12">
-              <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">Numero total de bots mixtos corriendole a la modelo:</span><span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type !== 'actsMixed'">Numero de bots corriendole a la modelo:</span><h3>{{lengthkillbots}}</h3>
+              <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">Numero total de bots mixtos corriendole a la modelo:</span>
+              <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type !== 'actsMixed'">Numero de bots corriendole a la modelo:</span>
+              <div class="row">
+                <div class="col-md-6 text-center">
+                  <span>Bots logueados</span>
+                  <h3>{{lengthkillbots}}</h3>
+                </div>
+                <div class="col-md-6 text-center">
+                  <span>Bots anonimos</span>
+                  <h3>{{botAnyLength}}</h3>
+                </div>
+              </div>
             </div>
             <div class="col-md-12">
               <label for="nBots" class="form-label">Numéro de bots</label>
@@ -152,7 +163,18 @@
         <div class="container">
           <form [formGroup]="killBotsForm">
             <div *ngIf="lengthkillbots !== null" class="col-md-12">
-              <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">Numero total de bots mixtos corriendole a la modelo:</span><span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type !== 'actsMixed'">Numero de bots corriendole a la modelo:</span><h3>{{lengthkillbots}}</h3>
+              <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">Numero total de bots mixtos corriendole a la modelo:</span>
+              <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type !== 'actsMixed'">Numero de bots corriendole a la modelo:</span>
+              <div class="row">
+                <div class="col-md-6 text-center">
+                  <span>Bots logueados</span>
+                  <h3>{{lengthkillbots}}</h3>
+                </div>
+                <div class="col-md-6 text-center">
+                  <span>Bots anonimos</span>
+                  <h3>{{botAnyLength}}</h3>
+                </div>
+              </div>
             </div>
             <div class="col-md-12">
               <label for="nBots" class="form-label">Numéro de killBots</label>
