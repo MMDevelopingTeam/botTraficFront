@@ -239,6 +239,15 @@ export class ViewPlatformComponent implements OnInit {
     value.nameModel=this.modelo
     value.userId=this.usuario._id
     value.idRegisterCompBotContainer=this.dataLicences._id
+    if (value.nBots <= 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'El numero de bots debe ser mayor a 0',
+        showConfirmButton: false,
+        timer: 2500
+      })
+      return;
+    }
     if (value.nBots > this.lengthkillbots) {
       Swal.fire({
         icon: 'warning',
@@ -356,6 +365,15 @@ export class ViewPlatformComponent implements OnInit {
     value.nameModel=this.modelo
     value.userId=this.usuario._id
     value.idRegisterCompBotContainer=this.dataLicences._id
+    if (value.nBots <= 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'El numero de bots debe ser mayor a 0',
+        showConfirmButton: false,
+        timer: 2500
+      })
+      return;
+    }
     if (value.nBots > this.lengthkillbots) {
       Swal.fire({
         icon: 'warning',
@@ -473,6 +491,15 @@ export class ViewPlatformComponent implements OnInit {
     value.nameModel=this.modelo
     value.userId=this.usuario._id
     value.idRegisterCompBotContainer=this.dataLicences._id
+    if (value.nBots <= 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'El numero de bots debe ser mayor a 0',
+        showConfirmButton: false,
+        timer: 2500
+      })
+      return;
+    }
     if (value.nBots < 10) {
       return this.notificationService.showErr('El numero de bots debe ser mayor o igual a 10')
     }

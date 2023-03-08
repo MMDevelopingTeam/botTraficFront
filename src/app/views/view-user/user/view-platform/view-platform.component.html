@@ -99,14 +99,24 @@
             <div *ngIf="lengthkillbots !== null" class="col-md-12">
               <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">Numero total de bots mixtos corriendole a la modelo:</span>
               <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type !== 'actsMixed'">Numero de bots corriendole a la modelo:</span>
-              <div class="row">
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">
                 <div class="col-md-6 text-center">
                   <span>Bots logueados</span>
-                  <h3>{{lengthkillbots}}</h3>
+                  <h2>{{lengthkillbots}}</h2>
                 </div>
                 <div class="col-md-6 text-center">
                   <span>Bots anonimos</span>
-                  <h3>{{botAnyLength}}</h3>
+                  <h2>{{botAnyLength}}</h2>
+                </div>
+              </div>
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLogued'">
+                <div class="col-md-12 text-center">
+                  <h2>{{lengthkillbots}}</h2>
+                </div>
+              </div>
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsAny'">
+                <div class="col-md-12 text-center">
+                  <h2>{{botAnyLength}}</h2>
                 </div>
               </div>
             </div>
@@ -165,14 +175,24 @@
             <div *ngIf="lengthkillbots !== null" class="col-md-12">
               <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">Numero total de bots mixtos corriendole a la modelo:</span>
               <span *ngIf="dataLicences.registerLicenses.licenses_idLicense.type !== 'actsMixed'">Numero de bots corriendole a la modelo:</span>
-              <div class="row">
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsMixed'">
                 <div class="col-md-6 text-center">
                   <span>Bots logueados</span>
-                  <h3>{{lengthkillbots}}</h3>
+                  <h2>{{lengthkillbots}}</h2>
                 </div>
                 <div class="col-md-6 text-center">
                   <span>Bots anonimos</span>
-                  <h3>{{botAnyLength}}</h3>
+                  <h2>{{botAnyLength}}</h2>
+                </div>
+              </div>
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLogued'">
+                <div class="col-md-12 text-center">
+                  <h2>{{lengthkillbots}}</h2>
+                </div>
+              </div>
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsAny'">
+                <div class="col-md-12 text-center">
+                  <h2>{{botAnyLength}}</h2>
                 </div>
               </div>
             </div>
