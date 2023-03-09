@@ -374,7 +374,7 @@ export class ViewPlatformComponent implements OnInit {
       })
       return;
     }
-    if (value.nBots > this.lengthkillbots) {
+    if (value.nBots > this.botAnyLength) {
       Swal.fire({
         icon: 'warning',
         title: 'El numéro de killBots no puede ser mayor al numero de bots corriendo',
