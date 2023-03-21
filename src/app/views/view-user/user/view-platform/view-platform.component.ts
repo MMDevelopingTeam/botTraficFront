@@ -47,6 +47,8 @@ export class ViewPlatformComponent implements OnInit {
   idRegisterCompBotC: any;
   killBotsregisters: any;
   botAnyLength: any;
+  killBotDelay: boolean = false;
+  loadingInfo: boolean = false;
 
   constructor( 
     private router: Router,
@@ -265,6 +267,7 @@ export class ViewPlatformComponent implements OnInit {
         if ((value.nBots+this.dataLicences.acctsFree) > this.dataLicences.acctsUsed) {
           return this.notificationService.showErr('No es posible matar mas cuentas en el bot container')
         }
+        this.killBotDelay = true;
         this.botService.killBot(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
           (data:any) => {
             const dataV = {
@@ -292,6 +295,7 @@ export class ViewPlatformComponent implements OnInit {
               this.getRegisterCompBotC(this.idRegisterCompBotC);
             }, 1000);
             this.resetFormKill();
+            this.killBotDelay = false;
             jQuery("#killbotsModal").modal("hide");
             Swal.fire({
               icon: 'success',
@@ -563,13 +567,14 @@ export class ViewPlatformComponent implements OnInit {
   }
 
   getLengthActsModel() {
+    this.loadingInfo = true;
     const data = {
       nameModel: this.nickname,
       id_registerBotCompany: this.dataLicences._id
     }
     this.botService.getKillBotsByModel(this.dataLicences.botContainer_idBotContainer.ip, data).subscribe(
       (data:any) => {
-        console.log(data);
+        this.loadingInfo = false;
         this.lengthkillbots=data.acctsModelsLength
         this.botAnyLength=data.botAnyLength
       }

@@ -111,12 +111,18 @@
               </div>
               <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLogued'">
                 <div class="col-md-12 text-center">
-                  <h2>{{lengthkillbots}}</h2>
+                  <h2 *ngIf="!loadingInfo">{{lengthkillbots}}</h2>
+                  <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                 </div>
               </div>
               <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsAny'">
                 <div class="col-md-12 text-center">
-                  <h2>{{botAnyLength}}</h2>
+                  <h2 *ngIf="!loadingInfo">{{botAnyLength}}</h2>
+                  <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -187,12 +193,18 @@
               </div>
               <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLogued'">
                 <div class="col-md-12 text-center">
-                  <h2>{{lengthkillbots}}</h2>
+                  <h2 *ngIf="!loadingInfo">{{lengthkillbots}}</h2>
+                  <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                 </div>
               </div>
               <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsAny'">
                 <div class="col-md-12 text-center">
-                  <h2>{{botAnyLength}}</h2>
+                  <h2 *ngIf="!loadingInfo">{{botAnyLength}}</h2>
+                  <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -231,7 +243,12 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormKill()">Cerrar</button>
-        <button type="button" class="btn btn-primary" (click)="switchBots('kill')">Matar</button>
+        <button [disabled]="killBotDelay" type="button" class="btn btn-primary" (click)="switchBots('kill')">
+          <span *ngIf="!killBotDelay">Matar</span>
+          <div *ngIf="killBotDelay" class="spinner-border text-light spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </button>
       </div>
     </div>
   </div>
