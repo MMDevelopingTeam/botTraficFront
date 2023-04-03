@@ -190,7 +190,8 @@
                   <option selected></option>
                   <option value="actsLogued">cuentas logueadas</option>
                   <option value="actsAny">cuentas anonimas</option>
-                  <option value="actsMixed">cuentas mixtas</option>
+                  <!-- <option value="actsMixed">cuentas mixtas</option> -->
+                  <option value="actsLoguedAndFollow">cuentas logueadas con seguidores</option>
                 </select>
                 <div *ngIf="getValueCreate('type')?.invalid && (getValueCreate('type')?.touched || getValueCreate('type')?.dirty)">
                   <p class="fieldErr" *ngIf="getValueCreate('type')?.errors?.required">El campo es requerido</p>

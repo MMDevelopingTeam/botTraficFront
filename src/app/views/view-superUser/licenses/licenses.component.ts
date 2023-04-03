@@ -103,6 +103,8 @@ export class LicensesComponent implements OnInit {
       this.licenceFullName = "Cuentas anonimas"
     } else if (this.license.type === "actsLogued") {
       this.licenceFullName = "Cuentas logueadas"
+    } else if (this.license.type === "actsLoguedAndFollow") {
+      this.licenceFullName = "Cuentas logueadas con seguidores"
     }
   }
 
@@ -114,6 +116,8 @@ export class LicensesComponent implements OnInit {
       this.licenceFullName = "Cuentas anonimas"
     } else if (this.licenseEdit.type === "actsLogued") {
       this.licenceFullName = "Cuentas logueadas"
+    } else if (this.license.type === "actsLoguedAndFollow") {
+      this.licenceFullName = "Cuentas logueadas con seguidores"
     }
   }
 
