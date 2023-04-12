@@ -48,6 +48,7 @@ export class ViewPlatformComponent implements OnInit {
   killBotsregisters: any;
   botAnyLength: any;
   killBotDelay: boolean = false;
+  launchBotDelay: boolean = false;
   loadingInfo: boolean = false;
   botLengthFollow: any;
 
@@ -207,6 +208,7 @@ export class ViewPlatformComponent implements OnInit {
         if (value.nBots > this.dataLicences) {
           return this.notificationService.showErr('El numero de bots no puede se mayor al permitido en el bot container')
         }
+        this.launchBotDelay = true;
         this.botService.launchBot(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
           (data:any) => {
             const body = {
@@ -228,6 +230,7 @@ export class ViewPlatformComponent implements OnInit {
               this.getRegisterCompBotC(this.idRegisterCompBotC);
             }, 1000);
             this.resetFormLaunch();
+            this.launchBotDelay = false;
             jQuery("#launchBotsmodal").modal("hide");
             Swal.fire({
               icon: 'success',

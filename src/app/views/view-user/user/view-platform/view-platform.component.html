@@ -87,12 +87,12 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="launchBotsmodal" tabindex="-1" aria-labelledby="launchBotsmodalLabel" aria-hidden="true">
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="launchBotsmodal" tabindex="-1" aria-labelledby="launchBotsmodalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="launchBotsmodalLabel">Lanzar bots</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" [disabled]="launchBotDelay"></button>
       </div>
       <div class="modal-body" *ngIf="dataLicences">
         <div class="container">
@@ -169,20 +169,25 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormLaunch()">Cerrar</button>
-        <button type="button" class="btn btn-primary" (click)="switchBots('launch')">Lanzar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" [disabled]="launchBotDelay" (click)="resetFormLaunch()">Cerrar</button>
+        <button type="button" class="btn btn-primary" [disabled]="launchBotDelay" (click)="switchBots('launch')">
+          <span *ngIf="!launchBotDelay">Lanzar</span>
+          <div *ngIf="launchBotDelay" class="spinner-border text-light spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- killbots Modal -->
-<div class="modal fade" id="killbotsModal" tabindex="-1" aria-labelledby="killbotsModalLabel" aria-hidden="true">
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="killbotsModal" tabindex="-1" aria-labelledby="killbotsModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="killbotsModalLabel">Matar bots</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" [disabled]="killBotDelay"></button>
       </div>
       <div class="modal-body" *ngIf="dataLicences">
         <div class="container">
@@ -259,8 +264,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormKill()">Cerrar</button>
-        <button [disabled]="killBotDelay" type="button" class="btn btn-primary" (click)="switchBots('kill')">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetFormKill()" [disabled]="killBotDelay">Cerrar</button>
+        <button [disabled]="killBotDelay" type="button" class="btn btn-primary" (click)="switchBots('kill')" [disabled]="killBotDelay">
           <span *ngIf="!killBotDelay">Matar</span>
           <div *ngIf="killBotDelay" class="spinner-border text-light spinner-border-sm" role="status">
             <span class="visually-hidden">Loading...</span>
