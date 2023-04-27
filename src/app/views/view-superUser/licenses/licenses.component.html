@@ -192,6 +192,7 @@
                   <option value="actsAny">cuentas anonimas</option>
                   <!-- <option value="actsMixed">cuentas mixtas</option> -->
                   <option value="actsLoguedAndFollow">cuentas logueadas con seguidores</option>
+                  <option value="actsLoguedColor">cuentas logueadas de color</option>
                 </select>
                 <div *ngIf="getValueCreate('type')?.invalid && (getValueCreate('type')?.touched || getValueCreate('type')?.dirty)">
                   <p class="fieldErr" *ngIf="getValueCreate('type')?.errors?.required">El campo es requerido</p>

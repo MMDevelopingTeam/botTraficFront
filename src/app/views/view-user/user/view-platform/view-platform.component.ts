@@ -189,6 +189,12 @@ export class ViewPlatformComponent implements OnInit {
     if (type === 'kill' && this.dataLicences.registerLicenses.licenses_idLicense.type === 'actsLoguedAndFollow') {
       this.killBotsWithFollows()
     }
+    if (type === 'launch' && this.dataLicences.registerLicenses.licenses_idLicense.type === 'actsLoguedColor') {
+      this.launchBotsWithColor()
+    }
+    if (type === 'kill' && this.dataLicences.registerLicenses.licenses_idLicense.type === 'actsLoguedColor') {
+      this.killBotsWithColor()
+    }
   }
 
   launchBots() {
@@ -662,6 +668,133 @@ export class ViewPlatformComponent implements OnInit {
         }
         this.killBotDelay = true;
         this.botService.killBotWithFollows(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
+          (data:any) => {
+            const dataV = {
+              nameModel: value.nameModel,
+              userId:value.userId,
+              nBots:value.nBots,
+              killBots: true
+            }
+            this.modelsService.createRegister(dataV).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            const body = {
+              nBots: value.nBots,
+              Kill:true
+            }
+            this.botService.updateBotConatinerArrayComp(body, this.dataLicences._id).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            setTimeout(() => {
+              this.getRegisters();
+              this.getRegisterCompBotC(this.idRegisterCompBotC);
+            }, 1000);
+            this.resetFormKill();
+            this.killBotDelay = false;
+            jQuery("#killbotsModal").modal("hide");
+            Swal.fire({
+              icon: 'success',
+              title: 'Bots kill correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          err => console.log(err)
+        )
+      },
+      err => console.log(err)
+    )
+  }
+
+  launchBotsWithColor () {
+    let value = this.launchBotsForm.value
+    value.nameModel=this.modelo
+    value.userId=this.usuario._id
+    value.idRegisterCompBotContainer=this.dataLicences._id
+    // console.log(value);
+    if (value.nBots < 10) {
+      return this.notificationService.showErr('El numero de bots debe ser mayor o igual a 10')
+    }
+    this.userService.getTokenBot(value).subscribe(
+      (res: any) => {
+        const info = {
+          token: res.token
+        }
+        if (value.nBots > this.dataLicences) {
+          return this.notificationService.showErr('El numero de bots no puede se mayor al permitido en el bot container')
+        }
+        this.botService.launchBotWithColor(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
+          (data:any) => {
+            const body = {
+              nBots: value.nBots,
+              Launch:true
+            }
+            this.botService.updateBotConatinerArrayComp(body, this.dataLicences._id).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            this.modelsService.createRegister(value).subscribe(
+              (data:any) => {
+              },
+              err => {}
+            )
+            setTimeout(() => {
+              this.getRegisters();
+              this.getRegisterCompBotC(this.idRegisterCompBotC);
+            }, 1000);
+            this.resetFormLaunch();
+            jQuery("#launchBotsmodal").modal("hide");
+            Swal.fire({
+              icon: 'success',
+              title: 'Bots lanzados correctamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          },
+          err => {}
+        )
+      },
+      err => console.log(err)
+    )
+  }
+  killBotsWithColor () {
+    let value = this.killBotsForm.value
+    value.nameModel=this.modelo
+    value.userId=this.usuario._id
+    value.idRegisterCompBotContainer=this.dataLicences._id
+    if (value.nBots <= 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'El numero de bots debe ser mayor a 0',
+        showConfirmButton: false,
+        timer: 2500
+      })
+      return;
+    }
+    if (value.nBots > this.botLengthFollow) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'El numéro de killBots no puede ser mayor al numero de bots corriendo',
+        showConfirmButton: false,
+        timer: 3500
+      })
+      return;
+    }
+    this.userService.getTokenkillBot(value).subscribe(
+      (res: any) => {
+        const info = {
+          token: res.token
+        }
+        if ((value.nBots+this.dataLicences.acctsFree) > this.dataLicences.acctsUsed) {
+          return this.notificationService.showErr('No es posible matar mas cuentas en el bot container')
+        }
+        this.killBotDelay = true;
+        this.botService.killBotWithColor(this.dataLicences.botContainer_idBotContainer.ip, info).subscribe(
           (data:any) => {
             const dataV = {
               nameModel: value.nameModel,
