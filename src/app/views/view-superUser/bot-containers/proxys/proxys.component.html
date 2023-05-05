@@ -13,6 +13,10 @@
             <i class="fa-solid fa-plus"></i>
             Añadir proxys
         </button>
+        <button [disabled]="!ifBot" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#addProxyColorModal">
+            <i class="fa-solid fa-plus"></i>
+            Añadir proxys de color
+        </button>
         <button [disabled]="proxysLength <= 0 || loadingMs" (click)="latencia()" style="max-height: 40px; min-width: 160px;" class="btn btn-success m-3">
           <div *ngIf="!loadingMs">
               <i class="fa-solid fa-wifi"></i>
@@ -37,7 +41,50 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="text-center" *ngFor="let proxy of proxys | paginate: {id: 'pageBotC', itemsPerPage: 15, currentPage: p, totalItems: proxysLength }">
+              <tr class="text-center" *ngFor="let proxy of proxys | paginate: {id: 'pageBotC', itemsPerPage: 10, currentPage: p, totalItems: proxysLength }">
+                <th>{{proxy.proxy}}</th>
+                <td>{{proxy.Nusers}}</td>
+                <td>{{proxy.idPackage.id}}</td>
+                <td>
+                    <i *ngIf="!proxy.isFull" class="fa-solid fa-circle-check" style="color: green;"></i>
+                    <i *ngIf="proxy.isFull" class="fa-solid fa-circle-xmark" style="color: red;"></i>
+                </td>
+                <td>
+                    <i *ngIf="!proxy.isDown" class="fa-solid fa-circle-check" style="color: green;"></i>
+                    <i *ngIf="proxy.isDown" class="fa-solid fa-circle-xmark" style="color: red;"></i>
+                </td>
+                <td>{{proxy.ms}} <span style="font-weight: 700;">ms</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-md-12 text-center" style="padding: 10px;">
+            <pagination-controls id="pageBotC" (pageChange)="p = $event"></pagination-controls>
+          </div>
+          <div *ngIf="!proxys" class="text-center">
+            <h3>No tienes proxys o no pudiero cargar</h3>
+          </div>
+    </div>
+    <div class="col-1 col-md-1"></div>
+    <div class="col-1 col-md-1"></div>
+    <div class="col-10 col-md-10">
+        <div class="row my-4">
+            <div class="col-12 col-md-12">
+                <h3 class="text-center">Proxys para cuentas de color</h3>
+            </div>
+        </div>
+        <table class="table" *ngIf="proxysColor">
+            <thead class="table-dark">
+              <tr class="text-center">
+                <th scope="col">Proxy</th>
+                <th scope="col">Num Usuarios</th>
+                <th scope="col">Id paquete</th>
+                <th scope="col">Disponibilidad</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Latencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center" *ngFor="let proxy of proxysColor | paginate: {id: 'pageBotC', itemsPerPage: 10, currentPage: p, totalItems: proxysColorLength }">
                 <th>{{proxy.proxy}}</th>
                 <td>{{proxy.Nusers}}</td>
                 <td>{{proxy.idPackage.id}}</td>
@@ -113,6 +160,58 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForm()">Cerrar</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveProxys()" [disabled]="proxysForm.invalid">Guardar proxys</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal proxys de color-->
+<div class="modal fade" id="addProxyColorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProxyColorModalLabel">Agregar proxys para cuentas de color</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-12 col-md-12">
+                <form class="row" [formGroup]="proxysForm">
+                    <div class="col-12 col-md-12 mb-3">
+                      <label for="formGroupPlatformPack" class="form-label">Plataforma</label>
+                      <select class="form-select" formControlName="platformProxys" aria-label="Default select example" id="formGroupPlatformPack">
+                        <option selected></option>
+                        <option value="instantproxies">Instantproxies</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                      <label for="formGroupIdPack" class="form-label">Id paquete</label>
+                      <input formControlName="idPackageProxys" type="text" class="form-control" placeholder="Ingrese el Id de paquete" id="formGroupIdPack">
+                      <div *ngIf="getValue('idPackageProxys')?.invalid && (getValue('idPackageProxys')?.touched || getValue('idPackageProxys')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('idPackageProxys')?.errors?.required">El campo es requerido</p>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                      <label for="formGroupDatePack" class="form-label">Fecha de caducidad</label>
+                      <input formControlName="datePackageProxys" type="date" class="form-control" placeholder="Ingrese la fecha de caducidad" id="formGroupDatePack">
+                      <div *ngIf="getValue('datePackageProxys')?.invalid && (getValue('datePackageProxys')?.touched || getValue('datePackageProxys')?.dirty)">
+                        <p class="fieldErr" *ngIf="getValue('datePackageProxys')?.errors?.required">El campo es requerido</p>
+                      </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="floatingTextarea2">Escribe los proxys</label>
+                        <textarea formControlName="proxysStrings" class="form-control mt-2" placeholder="Pega acá tus proxys en el siguiente formato: \n xxxx.xxx.xxx.xxx:xxxx," id="floatingTextarea2" style="height: 200px"></textarea>
+                        <div *ngIf="getValue('proxysStrings')?.invalid && (getValue('proxysStrings')?.touched || getValue('proxysStrings')?.dirty)">
+                            <p class="fieldErr" *ngIf="getValue('proxysStrings')?.errors?.required">El campo es requerido</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForm()">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveProxys(true)" [disabled]="proxysForm.invalid">Guardar proxys</button>
       </div>
     </div>
   </div>

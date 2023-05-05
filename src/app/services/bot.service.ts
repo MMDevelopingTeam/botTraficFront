@@ -19,6 +19,12 @@ export class BotService {
     }
     return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getproxys`);
   }
+  getAllProxysColor(ip: any) {
+    if (ip === undefined) {
+      return this.http.get(`${environment.urlLaunchExpuesta}/storage/getProxysColor`);
+    }
+    return this.http.get(`http://${ip || 'localhost'}:3000/api/storage/getProxysColor`);
+  }
   getLatenciaProxys(ip: any) {
     if (ip === undefined) {
       return this.http.get(`${environment.urlLaunchExpuesta}/storage/msProxys`);
@@ -65,6 +71,12 @@ export class BotService {
       return this.http.post(`${environment.urlLaunchExpuesta}/storage/proxysString`, proxys);
     }
     return this.http.post(`http://${ip || 'localhost'}:3000/api/storage/proxysString`, proxys);
+  }
+  saveProxysColor(proxys:any, ip:any){
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/storage/proxysColorString`, proxys);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/storage/proxysColorString`, proxys);
   }
   createIdPackProxy(proxys:any, ip:any){
     if (ip === undefined) {

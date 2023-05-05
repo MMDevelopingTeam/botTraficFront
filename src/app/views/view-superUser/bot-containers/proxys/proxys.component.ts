@@ -15,9 +15,11 @@ export class ProxysComponent implements OnInit {
   id: any;
   botContainer: any;
   proxys: any;
+  proxysColor: any;
 
   p:any;
   proxysLength:any;
+  proxysColorLength:any;
 
   ifBot: boolean=false;
 
@@ -52,6 +54,7 @@ export class ProxysComponent implements OnInit {
       (data:any) => {
         this.botContainer=data.dataBotContainer
         this.getProxys();
+        this.getProxysColor();
       },
       err => {}
     )
@@ -74,6 +77,26 @@ export class ProxysComponent implements OnInit {
         })
       }
     )
+  }
+  
+  getProxysColor(){
+    this.botService.getAllProxysColor(this.botContainer.ip).subscribe(
+      (data:any) => {
+        this.proxysColor=data.prsModels
+        this.proxysColorLength=data.prsModels.length
+        console.log('1',this.proxysColor);
+        this.ifBot=true
+      },
+      err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al conectar al bot',
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+    )
+    
   }
 
   latencia(){
@@ -100,7 +123,7 @@ export class ProxysComponent implements OnInit {
     )
   }
 
-  saveProxys(){
+  saveProxys(isColor: boolean = false){
     if (this.proxysForm.valid) {
       const data = {
         id: this.proxysForm.value.idPackageProxys,
@@ -111,19 +134,37 @@ export class ProxysComponent implements OnInit {
         (dataUno:any) => {
           this.botService.createIdPackProxy(data, this.botContainer.ip).subscribe(
             (dataDos:any) => {
-              this.botService.saveProxys(this.proxysForm.value, this.botContainer.ip).subscribe(
-                (dataTres:any) => {
-                  this.resetForm();
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Proxys agregados correctamente',
-                    showConfirmButton: false,
-                    timer: 2500
-                  })
-                  this.getProxys()
-                },
-                err => {}
-              )
+              if (isColor == false) {
+                this.botService.saveProxys(this.proxysForm.value, this.botContainer.ip).subscribe(
+                  (dataTres:any) => {
+                    this.resetForm();
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Proxys agregados correctamente',
+                      showConfirmButton: false,
+                      timer: 2500
+                    })
+                    this.getProxys()
+                    this.getProxysColor()
+                  },
+                  err => {}
+                )
+              }else{
+                this.botService.saveProxysColor(this.proxysForm.value, this.botContainer.ip).subscribe(
+                  (dataTres:any) => {
+                    this.resetForm();
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Proxys agregados correctamente',
+                      showConfirmButton: false,
+                      timer: 2500
+                    })
+                    this.getProxys()
+                    this.getProxysColor()
+                  },
+                  err => {}
+                )
+              }
             },
             err => {}
           )

@@ -51,6 +51,7 @@ export class ViewPlatformComponent implements OnInit {
   launchBotDelay: boolean = false;
   loadingInfo: boolean = false;
   botLengthFollow: any;
+  botColorsLength: any;
 
   constructor( 
     private router: Router,
@@ -716,8 +717,8 @@ export class ViewPlatformComponent implements OnInit {
     value.userId=this.usuario._id
     value.idRegisterCompBotContainer=this.dataLicences._id
     // console.log(value);
-    if (value.nBots < 10) {
-      return this.notificationService.showErr('El numero de bots debe ser mayor o igual a 10')
+    if (value.nBots < 0) {
+      return this.notificationService.showErr('El numero de bots debe ser mayor a 0')
     }
     this.userService.getTokenBot(value).subscribe(
       (res: any) => {
@@ -776,7 +777,7 @@ export class ViewPlatformComponent implements OnInit {
       })
       return;
     }
-    if (value.nBots > this.botLengthFollow) {
+    if (value.nBots > this.botColorsLength) {
       Swal.fire({
         icon: 'warning',
         title: 'El numéro de killBots no puede ser mayor al numero de bots corriendo',
@@ -849,6 +850,7 @@ export class ViewPlatformComponent implements OnInit {
         this.lengthkillbots=data.acctsModelsLength
         this.botAnyLength=data.botAnyLength
         this.botLengthFollow=data.botLengthFollow
+        this.botColorsLength=data.botColorsLength
       }
     )
   }

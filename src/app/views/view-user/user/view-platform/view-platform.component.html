@@ -135,6 +135,14 @@
                   </div>
                 </div>
               </div>
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLoguedColor'">
+                <div class="col-md-12 text-center">
+                  <h2 *ngIf="!loadingInfo">{{botColorsLength}}</h2>
+                  <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-md-12">
               <label for="nBots" class="form-label">Numéro de bots</label>
@@ -225,6 +233,14 @@
               <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLoguedAndFollow'">
                 <div class="col-md-12 text-center">
                   <h2 *ngIf="!loadingInfo">{{botLengthFollow}}</h2>
+                  <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLoguedColor'">
+                <div class="col-md-12 text-center">
+                  <h2 *ngIf="!loadingInfo">{{botColorsLength}}</h2>
                   <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
