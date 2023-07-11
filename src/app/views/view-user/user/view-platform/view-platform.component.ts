@@ -69,7 +69,8 @@ export class ViewPlatformComponent implements OnInit {
       nameModel: [''],
       userId: [''],
       nBots: ['', Validators.required],
-      idRegisterCompBotContainer: ['']
+      idRegisterCompBotContainer: [''],
+      idPackageProxie: ['']
     });
     this.killBotsForm = this.fb.group({
       nameModel: [''],
