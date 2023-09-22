@@ -159,6 +159,20 @@ export class BotService {
     return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/killBotColor`, name_model)
     // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
   }
+  launchBotSendMessage(ip: any, name_model: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/bot/BotSendMessage`, name_model);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/BotSendMessage`, name_model)
+    // return this.http.post(`http://localhost:3000/api/bot`, name_model)
+  }
+  killBotSendMessage(ip: any, name_model: any) {
+    if (ip === undefined) {
+      return this.http.post(`${environment.urlLaunchExpuesta}/bot/killBotSendMessage`, name_model);
+    }
+    return this.http.post(`http://${ip || 'localhost'}:3000/api/bot/killBotSendMessage`, name_model)
+    // return this.http.post(`http://localhost:3000/api/killbot`, name_model)
+  }
   createActs(ip: any, body: any) {
     if (ip === undefined) {
       return this.http.post(`${environment.urlLaunchExpuesta}/accounts/accoutsbot`, body);

@@ -37,6 +37,7 @@
                       <samp *ngIf="licence.licenses_idLicense.type === 'actsMixed'">Cuentas mixtas</samp>
                       <samp *ngIf="licence.licenses_idLicense.type === 'actsLoguedAndFollow'">Cuentas logueadas con seguidores</samp>
                       <samp *ngIf="licence.licenses_idLicense.type === 'actsLoguedColor'">Cuentas logueadas de color</samp>
+                      <samp *ngIf="licence.licenses_idLicense.type === 'actsLoguedSendMessage'">Cuentas logueadas con envio de mensajes</samp>
                     </option>
                   </select>
                 </div>
@@ -143,6 +144,14 @@
                   </div>
                 </div>
               </div>
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLoguedSendMessage'">
+                <div class="col-md-12 text-center">
+                  <!-- <h2 *ngIf="!loadingInfo">{{botSendMessgeLength}}</h2> -->
+                  <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-md-12">
               <label for="nBots" class="form-label">Numéro de bots</label>
@@ -241,6 +250,14 @@
               <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLoguedColor'">
                 <div class="col-md-12 text-center">
                   <h2 *ngIf="!loadingInfo">{{botColorsLength}}</h2>
+                  <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="dataLicences.registerLicenses.licenses_idLicense.type === 'actsLoguedSendMessage'">
+                <div class="col-md-12 text-center">
+                  <!-- <h2 *ngIf="!loadingInfo">{{botSendMessgeLength}}</h2> -->
                   <div *ngIf="loadingInfo" class="spinner-border m-3" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
